@@ -1,0 +1,58 @@
+[gd_scene load_steps=3 format=3 uid="uid://p50n1klyjo22"]
+
+[ext_resource type="Script" uid="uid://bpgd1dy2xbgfb" path="res://scripts/equipment_slot.gd" id="1_54mtl"]
+[ext_resource type="Texture2D" uid="uid://bx05gnx7w3o2r" path="res://icon.svg" id="2_gsnhd"]
+
+[node name="EquipmentSlot" type="ColorRect"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.334122, 0.334122, 0.334122, 1)
+script = ExtResource("1_54mtl")
+background_image = ExtResource("2_gsnhd")
+
+[node name="GridContainer" type="GridContainer" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+
+[node name="BackgroundImage" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+
+[node name="Filter" type="ColorRect" parent="."]
+modulate = Color(1, 1, 1, 0.27451)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ItemContainer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
