@@ -39,7 +39,7 @@ func remove_item(item: Item, hover: bool = false) -> void:
 	_item_to_first_grid.erase(item)
 	if item.get_parent() == _item_container: 
 		_item_container.remove_child(item)
-	var removal_grids = _get_affected_grids(first_grid, item)
+	var removal_grids = first_grid.get_all_grids()
 	for removal_grid in removal_grids:
 		removal_grid.clear_grid()
 		if hover: 
@@ -62,6 +62,27 @@ func add_quick_move_target(target_inv: Inventory) -> void: _quick_move_targets.a
 ## 移除快速移动目标
 func remove_quick_move_target(target_inv: Inventory) -> void: _quick_move_targets.erase(target_inv)
 
+## 处理格子的hover和lose hover
+func on_grid_hover(grid: InventoryGrid, is_hover: bool) -> void:
+	if InventorySystem.has_moving_item():
+		var affected_grids = _get_affected_grids(grid, InventorySystem.get_moving_item(), InventorySystem.get_moving_offset(), true)
+		var is_conflict = not _is_valid(InventorySystem.get_moving_item())
+		if not is_conflict:
+			for affected_grid in affected_grids:
+				if not affected_grid.is_empty():
+					is_conflict = true
+		for affected_grid in affected_grids:
+			affected_grid.hover(is_conflict) if is_hover else affected_grid.lose_hover()
+
+## 处理格子点击事件
+func on_grid_selected(grid: InventoryGrid) -> void:
+	# 如果有正在移动的物品，则尝试放置物品
+	if InventorySystem.has_moving_item():
+		_handle_item_placement(grid)
+	# 没有正在移动的物品，如果格子有存储的物品，则移动物品
+	elif grid.get_stored_item():
+		_handle_item_moving(grid)
+
 func _ready() -> void:
 	if not Engine.is_editor_hint():
 		_setup_inventory_grid()
@@ -81,9 +102,6 @@ func _setup_inventory_grid() -> void:
 			var grid = InventoryGrid.new_grid(grid_id, self)
 			_grid_container.add_child(grid)
 			_grids.append(grid)
-			grid.sig_selected.connect(_on_grid_selected)
-			grid.sig_hovered.connect(_on_grid_hover.bind(true))
-			grid.sig_hover_lost.connect(_on_grid_hover.bind(false))
 
 ## 物品是否可以放在这个Inventory
 func _is_valid(item: Item) -> bool:
@@ -106,27 +124,6 @@ func _place_item(item: Item, grids: Array[InventoryGrid]) -> void:
 		)
 		grids[i].taken(item, offset, grids)
 	item.global_position = grids[0].global_position
-
-## 处理格子的hover和lose hover
-func _on_grid_hover(grid: InventoryGrid, is_hover: bool) -> void:
-	if InventorySystem.has_moving_item():
-		var affected_grids = _get_affected_grids(grid, InventorySystem.get_moving_item(), InventorySystem.get_moving_offset(), true)
-		var is_conflict = not _is_valid(InventorySystem.get_moving_item())
-		if not is_conflict:
-			for affected_grid in affected_grids:
-				if not affected_grid.is_empty():
-					is_conflict = true
-		for affected_grid in affected_grids:
-			affected_grid.hover(is_conflict) if is_hover else affected_grid.lose_hover()
-
-## 处理格子点击事件
-func _on_grid_selected(grid: InventoryGrid) -> void:
-	# 如果有正在移动的物品，则尝试放置物品
-	if InventorySystem.has_moving_item():
-		_handle_item_placement(grid)
-	# 没有正在移动的物品，如果格子有存储的物品，则移动物品
-	elif grid.get_stored_item():
-		_handle_item_moving(grid)
 
 ## 处理格子点击时的物品放置逻辑
 func _handle_item_placement(grid: InventoryGrid) -> void:

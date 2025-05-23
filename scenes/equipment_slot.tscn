@@ -36,9 +36,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+texture = ExtResource("2_gsnhd")
 expand_mode = 1
 
 [node name="Filter" type="ColorRect" parent="."]
+visible = false
 modulate = Color(1, 1, 1, 0.27451)
 layout_mode = 1
 anchors_preset = 15

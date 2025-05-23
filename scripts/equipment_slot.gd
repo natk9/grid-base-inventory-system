@@ -4,7 +4,11 @@ class_name EquipmentSlot
 
 @export var valid_color = Color.GREEN
 @export var invalid_color = Color.RED
-@export var background_image: Texture2D
+@export var background_image: Texture2D:
+	set(value):
+		background_image = value
+		if _background_image:
+			_background_image.texture = value
 
 @onready var _filter: ColorRect = $Filter
 @onready var _background_image: TextureRect = $BackgroundImage
@@ -21,6 +25,19 @@ func remove_item(item: Item, hover: bool = false) -> void:
 
 func try_equip_unequip(item: Item) -> void:
 	InventorySystem.unequip(item, self)
+
+## 处理格子的hover和lose hover
+func on_grid_hover(_grid: InventoryGrid, is_hover: bool) -> void:
+	if is_hover:
+		if InventorySystem.has_moving_item():
+			_filter.show()
+			var is_conflict = not _is_valid(InventorySystem.get_moving_item()) or not _item_to_first_grid.is_empty()
+			if not is_conflict:
+				_filter.color = valid_color
+			else:
+				_filter.color = invalid_color
+	else:
+		_filter.hide()
 
 func _ready() -> void:
 	super._ready()
@@ -57,16 +74,3 @@ func _handle_item_moving(grid: InventoryGrid) -> void:
 	InventorySystem.move_item(item, grid.get_local_offset(), true)
 	# 从这个库存中删除正在移动的物品
 	remove_item(item, true)
-
-## 处理格子的hover和lose hover
-func _on_grid_hover(_grid: InventoryGrid, is_hover: bool) -> void:
-	if is_hover:
-		if InventorySystem.has_moving_item():
-			_filter.show()
-			var is_conflict = not _is_valid(InventorySystem.get_moving_item()) or not _item_to_first_grid.is_empty()
-			if not is_conflict:
-				_filter.color = valid_color
-			else:
-				_filter.color = invalid_color
-	else:
-		_filter.hide()

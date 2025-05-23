@@ -17,6 +17,7 @@ var _item_data: ItemResourceData
 # =====Getter=====
 func get_item_type() -> ItemResourceData.Type: return _item_data.type
 func get_item_shape() -> Vector2i: return Vector2i(_item_data.column, _item_data.row)
+func get_item_data() -> ItemResourceData: return _item_data
 # ================
 
 ## 工厂方法，新建一个物品

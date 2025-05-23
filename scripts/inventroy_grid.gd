@@ -39,6 +39,7 @@ func is_empty() -> bool: return _stored_item == null
 func get_id() -> int: return _id
 func get_stored_item() -> Item: return _stored_item
 func get_local_offset() -> Vector2i: return Vector2i(_local_column, _local_row)
+func get_all_grids() -> Array[InventoryGrid]: return _all_grids
 # ====================
 
 ## 新建格子
@@ -60,6 +61,7 @@ func taken(item, offset: Vector2i, all_grids: Array[InventoryGrid]) -> void:
 ## 检查物品是否存储与当前格子，如果是则清空
 func clear_grid() -> void:
 	_stored_item = null
+	_all_grids = []
 	_change_state(GridState.EMPTY)
 
 func hover(is_conflict: bool) -> void:
@@ -98,7 +100,7 @@ func _change_state(state: GridState) -> void:
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_click") && get_global_rect().has_point(get_global_mouse_position()):
-		sig_selected.emit(self)
+		_inventory.on_grid_selected(self)
 	if event.is_action_pressed("ui_quick_move") && get_global_rect().has_point(get_global_mouse_position()):
 		if _stored_item:
 			_inventory.try_quick_move(_stored_item)
@@ -107,7 +109,7 @@ func _input(event: InputEvent) -> void:
 			_inventory.try_equip_unequip(_stored_item)
 
 func _on_mouse_entered() -> void:
-	sig_hovered.emit(self)
+	_inventory.on_grid_hover(self, true)
 
 func _on_mouse_exited() -> void:
-	sig_hover_lost.emit(self)
+	_inventory.on_grid_hover(self, false)
