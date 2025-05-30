@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dx0ci2anxtjyl"
-path="res://.godot/imported/boots_1.png-e480b69e8375aee0b2a14aeb52555aef.ctex"
+uid="uid://6itv31rftqpv"
+path="res://.godot/imported/boots_background.png-38d1b9d6c838723accb0102ce45f5acf.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/equipments/boots_1.png"
-dest_files=["res://.godot/imported/boots_1.png-e480b69e8375aee0b2a14aeb52555aef.ctex"]
+source_file="res://plugins/grid_base_inventory_system/assets/images/ui/boots_background.png"
+dest_files=["res://.godot/imported/boots_background.png-38d1b9d6c838723accb0102ce45f5acf.ctex"]
 
 [params]
 

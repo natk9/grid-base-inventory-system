@@ -1,5 +1,10 @@
 extends Node
 
+## 当穿戴装备成功时触发，可用于计算属性
+signal sig_equipped(item: Item)
+## 当脱掉装备成功时触发，可用于计算属性
+signal sig_unequipped(item: Item)
+
 ## 格子大小
 const GRID_SIZE: int = 32
 
@@ -23,6 +28,12 @@ func get_moving_item_layer() -> CanvasLayer:
 		_moving_item_layer.layer = 128
 		get_tree().root.add_child(_moving_item_layer)
 	return _moving_item_layer
+func get_all_equipments() -> Array[EquipmentResourceData]:
+	var equipments = [] as Array[EquipmentResourceData]
+	for slot in _equipment_slots:
+		if not slot.is_empty():
+			equipments.append(slot.get_equipped())
+	return equipments
 # ================
 
 ## 增加装备槽

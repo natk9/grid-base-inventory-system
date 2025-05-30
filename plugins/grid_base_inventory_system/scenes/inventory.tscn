@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dw0v5gh1l4juy"]
 
-[ext_resource type="Script" uid="uid://bqr0xk1hbeent" path="res://scripts/inventory.gd" id="1_8gnlb"]
+[ext_resource type="Script" uid="uid://bqr0xk1hbeent" path="res://plugins/grid_base_inventory_system/scripts/inventory.gd" id="1_8gnlb"]
 
 [node name="Inventory" type="ColorRect"]
 anchors_preset = 8

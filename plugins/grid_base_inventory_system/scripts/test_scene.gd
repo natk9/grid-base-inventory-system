@@ -17,9 +17,9 @@ func _ready() -> void:
 	$Button.pressed.connect(_on_button_pressed)
 
 func _on_button_pressed() -> void:
-	var item1 = Item.new_item(load("res://resources/armor_1.tres"))
-	var item2 = Item.new_item(load("res://resources/boots_1.tres"))
-	var item3 = Item.new_item(load("res://resources/sword_1.tres"))
+	var item1 = Item.new_item(load("res://plugins/grid_base_inventory_system/resources/armor_1.tres"))
+	var item2 = Item.new_item(load("res://plugins/grid_base_inventory_system/resources/boots_1.tres"))
+	var item3 = Item.new_item(load("res://plugins/grid_base_inventory_system/resources/sword_1.tres"))
 	
 	inventory_1.add_item(item1)
 	inventory_1.add_item(item2)

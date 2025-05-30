@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://p50n1klyjo22"]
 
-[ext_resource type="Script" uid="uid://bpgd1dy2xbgfb" path="res://scripts/equipment_slot.gd" id="1_54mtl"]
+[ext_resource type="Script" uid="uid://bpgd1dy2xbgfb" path="res://plugins/grid_base_inventory_system/scripts/equipment_slot.gd" id="1_54mtl"]
 [ext_resource type="Texture2D" uid="uid://bx05gnx7w3o2r" path="res://icon.svg" id="2_gsnhd"]
 
 [node name="EquipmentSlot" type="ColorRect"]

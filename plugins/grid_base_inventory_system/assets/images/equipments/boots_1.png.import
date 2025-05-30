@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bjn2eod45pyu5"
-path="res://.godot/imported/armor_background.png-cd8a732eec6bbeb5e809814fcf6eb5cd.ctex"
+uid="uid://dx0ci2anxtjyl"
+path="res://.godot/imported/boots_1.png-819f075f0658413d95c93476eaa60027.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/ui/armor_background.png"
-dest_files=["res://.godot/imported/armor_background.png-cd8a732eec6bbeb5e809814fcf6eb5cd.ctex"]
+source_file="res://plugins/grid_base_inventory_system/assets/images/equipments/boots_1.png"
+dest_files=["res://.godot/imported/boots_1.png-819f075f0658413d95c93476eaa60027.ctex"]
 
 [params]
 

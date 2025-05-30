@@ -2,6 +2,12 @@
 
 这是一个基于 Godot 引擎的物品库存系统实现，包含完整的背包、装备槽、物品拖拽等功能。
 
+## v1.0.2 更新
+- 移动所有内容到 plugins 文件夹，方便集成
+- 增加 EquipmentResourceData.gd，用于装备属性和穿戴校验（test_need()）
+- InventorySystem 增加穿戴（sig_equipped）和脱装备（sig_unequipped）信号
+- InventorySystem 增加 get_all_equipments() 方法，返回所以已装备物品的 EquipmentResourceData 数组，可用于计算属性
+
 ## 功能特性
 
 - 🎒 可配置的背包系统（行列布局）

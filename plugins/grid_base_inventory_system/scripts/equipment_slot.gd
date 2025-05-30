@@ -13,6 +13,11 @@ class_name EquipmentSlot
 @onready var _filter: ColorRect = $Filter
 @onready var _background_image: TextureRect = $BackgroundImage
 
+func get_equipped_data() -> EquipmentResourceData:
+	if _item_to_first_grid.is_empty():
+		return null
+	return _item_to_first_grid.keys()[0].get_item_data() as EquipmentResourceData
+
 ## 移除物品
 func remove_item(item: Item, hover: bool = false) -> void:
 	_item_to_first_grid.erase(item)
@@ -22,6 +27,7 @@ func remove_item(item: Item, hover: bool = false) -> void:
 		grid.clear_grid()
 		if hover: 
 			grid.hover(false)
+	InventorySystem.sig_unequipped.emit(item)
 
 func try_equip_unequip(item: Item) -> void:
 	InventorySystem.unequip(item, self)
@@ -46,7 +52,7 @@ func _ready() -> void:
 
 ## 物品是否可以放在这个Slot
 func _is_valid(item: Item) -> bool:
-	if _item_to_first_grid.is_empty():
+	if _item_to_first_grid.is_empty() && item.get_item_data().test_need():
 		return super._is_valid(item)
 	return false
 
@@ -67,6 +73,7 @@ func _place_item(item: Item, grids: Array[InventoryGrid]) -> void:
 	for grid in _grids:
 		grid.taken(item, Vector2i.ZERO, grids)
 		item.global_position = Vector2(size.x / 2 + global_position.x - item.size.x / 2, size.y / 2 + global_position.y - item.size.y / 2)
+	InventorySystem.sig_equipped.emit(item)
 
 ## 处理格子点击时的物品移动逻辑
 func _handle_item_moving(grid: InventoryGrid) -> void:

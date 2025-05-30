@@ -17,7 +17,7 @@ enum GridState {EMPTY, TAKEN, HORVERING, CONFLICT}
 
 @onready var _background: ColorRect = $Border/Background
 
-static var GRID_SCENE: PackedScene = preload("res://scenes/inventroy_grid.tscn")
+static var GRID_SCENE: PackedScene = preload("res://plugins/grid_base_inventory_system/scenes/inventroy_grid.tscn")
 
 ## 当前格子在数组中的Index
 var _id: int

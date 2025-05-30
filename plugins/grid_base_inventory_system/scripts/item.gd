@@ -2,7 +2,7 @@ extends Control
 class_name Item
 
 ## 物品场景
-static var ITEM_SCENE: PackedScene = preload("res://scenes/item.tscn")
+static var ITEM_SCENE: PackedScene = preload("res://plugins/grid_base_inventory_system/scenes/item.tscn")
 
 ## 是否正在移动
 var _is_moving := false

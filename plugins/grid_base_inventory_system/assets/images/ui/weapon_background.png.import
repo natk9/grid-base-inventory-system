@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://6itv31rftqpv"
-path="res://.godot/imported/boots_background.png-c29736c49ec69748a8cd7da276682a37.ctex"
+uid="uid://dgbd8awuhu8tb"
+path="res://.godot/imported/weapon_background.png-fec31f00797c643e4c6610e13caab8d8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/ui/boots_background.png"
-dest_files=["res://.godot/imported/boots_background.png-c29736c49ec69748a8cd7da276682a37.ctex"]
+source_file="res://plugins/grid_base_inventory_system/assets/images/ui/weapon_background.png"
+dest_files=["res://.godot/imported/weapon_background.png-fec31f00797c643e4c6610e13caab8d8.ctex"]
 
 [params]
 

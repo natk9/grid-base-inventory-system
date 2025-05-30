@@ -22,7 +22,7 @@ general/stretch/mode="canvas_items"
 
 [autoload]
 
-InventorySystem="*res://scripts/inventory_system.gd"
+InventorySystem="*res://plugins/grid_base_inventory_system/scripts/inventory_system.gd"
 
 [display]
 
