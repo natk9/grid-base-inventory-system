@@ -25,8 +25,8 @@ func get_moving_item_layer() -> CanvasLayer:
 		_moving_item_layer.layer = 128
 		get_tree().root.add_child(_moving_item_layer)
 	return _moving_item_layer
-func get_all_equipments() -> Array[EquipmentResourceData]:
-	var equipments = [] as Array[EquipmentResourceData]
+func get_all_equipments() -> Array[ItemResourceData]:
+	var equipments = [] as Array[ItemResourceData]
 	for slot in _equipment_slots:
 		if not slot.is_empty():
 			equipments.append(slot.get_equipped())
@@ -46,6 +46,7 @@ func equip(item: Item, inventory: Inventory) -> void:
 	for slot in _equipment_slots:
 		if slot.add_item(item):
 			inventory.remove_item(item)
+			sig_equipped.emit(item)
 			return
 
 ## 尝试脱掉装备
@@ -53,6 +54,7 @@ func unequip(item: Item, slot: EquipmentSlot) -> void:
 	for inventory in _main_inventories:
 		if inventory.add_item(item):
 			slot.remove_item(item)
+			sig_unequipped.emit(item)
 			return
 
 ## 是否有物品正在移动

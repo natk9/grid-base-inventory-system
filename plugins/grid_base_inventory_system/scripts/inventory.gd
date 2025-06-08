@@ -58,7 +58,7 @@ func try_quick_move(item: Item) -> void:
 			remove_item(item)
 			break
 
-func try_equip_unequip(item: Item) -> void:
+func try_use(item: Item) -> void:
 	InventorySystem.equip(item, self)
 
 func try_consume(item: Item) -> void:

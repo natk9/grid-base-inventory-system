@@ -29,9 +29,9 @@ enum Type{
 ## 物品的图片
 @export var image: Texture2D
 ## 物品所占的列数
-@export_range(1, 6) var column: int
+@export_range(1, 6) var column: int = 1
 ## 物品所占的行数
-@export_range(1, 6) var row: int
+@export_range(1, 6) var row: int = 1
 ## 物品类型
 @export var type: Type
 

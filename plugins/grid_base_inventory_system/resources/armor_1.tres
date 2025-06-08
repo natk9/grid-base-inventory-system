@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="EquipmentResourceData" load_steps=3 format=3 uid="uid://dqssmr8gdyj15"]
+[gd_resource type="Resource" script_class="ItemResourceData" load_steps=3 format=3 uid="uid://dqssmr8gdyj15"]
 
 [ext_resource type="Texture2D" uid="uid://con7wq8b2vr02" path="res://plugins/grid_base_inventory_system/assets/images/equipments/armor_1.png" id="1_4yt47"]
-[ext_resource type="Script" uid="uid://bf4kds44aastp" path="res://plugins/grid_base_inventory_system/scripts/equipment_resource_data.gd" id="1_adio4"]
+[ext_resource type="Script" uid="uid://cfk0c3qnyqymj" path="res://plugins/grid_base_inventory_system/scripts/item_resource_data.gd" id="1_adio4"]
 
 [resource]
 script = ExtResource("1_adio4")

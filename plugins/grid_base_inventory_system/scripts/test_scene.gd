@@ -20,10 +20,12 @@ func _on_button_pressed() -> void:
 	var item1 = Item.new_item(load("res://plugins/grid_base_inventory_system/resources/armor_1.tres"))
 	var item2 = Item.new_item(load("res://plugins/grid_base_inventory_system/resources/boots_1.tres"))
 	var item3 = Item.new_item(load("res://plugins/grid_base_inventory_system/resources/sword_1.tres"))
+	var item4 = Item.new_item(load("res://plugins/grid_base_inventory_system/resources/healing_bottle_1.tres"))
 	
 	inventory_1.add_item(item1)
 	inventory_1.add_item(item2)
 	inventory_1.add_item(item3)
+	inventory_1.add_item(item4)
 	
 	inventory_1.add_quick_move_target(inventory_3)
 	inventory_1.add_quick_move_target(inventory_2)

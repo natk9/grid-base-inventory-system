@@ -13,10 +13,10 @@ class_name EquipmentSlot
 @onready var _filter: ColorRect = $Filter
 @onready var _background_image: TextureRect = $BackgroundImage
 
-func get_equipped_data() -> EquipmentResourceData:
+func get_equipped_data() -> ItemResourceData:
 	if _item_to_first_grid.is_empty():
 		return null
-	return _item_to_first_grid.keys()[0].get_item_data() as EquipmentResourceData
+	return _item_to_first_grid.keys()[0].get_item_data()
 
 ## 移除物品
 func remove_item(item: Item, hover: bool = false) -> void:
