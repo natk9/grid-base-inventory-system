@@ -29,7 +29,7 @@ func remove_item(item: Item, hover: bool = false) -> void:
 			grid.hover(false)
 	InventorySystem.sig_unequipped.emit(item)
 
-func try_equip_unequip(item: Item) -> void:
+func try_use(item: Item) -> void:
 	InventorySystem.unequip(item, self)
 
 ## 处理格子的hover和lose hover

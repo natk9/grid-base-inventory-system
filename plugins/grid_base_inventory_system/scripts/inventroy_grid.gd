@@ -1,13 +1,6 @@
 extends Control
 class_name InventoryGrid
 
-## 当格子被选中的时候触发
-signal sig_selected(InventoryGrid)
-## 鼠标悬停在格子上时触发
-signal sig_hovered(InventoryGrid)
-## 鼠标离开格子时触发
-signal sig_hover_lost(InventoryGrid)
-
 enum GridState {EMPTY, TAKEN, HORVERING, CONFLICT}
 
 @export var empty_color = Color.DARK_SLATE_GRAY
@@ -114,19 +107,18 @@ func _change_state(state: GridState) -> void:
 			background.color = conflict_color
 
 func _input(event: InputEvent) -> void:
-	if _stored_item && _stored_item.get_item_type():
-		if event.is_action_pressed("ui_click") && get_global_rect().has_point(get_global_mouse_position()):
-			_inventory.on_grid_selected(self)
-		if event.is_action_pressed("ui_quick_move") && get_global_rect().has_point(get_global_mouse_position()):
-			if _stored_item:
-				_inventory.try_quick_move(_stored_item)
-		if event.is_action_pressed("ui_use") && get_global_rect().has_point(get_global_mouse_position()):
-			if _stored_item && _stored_item.get_item_type() == ItemResourceData.Type.CONSUMABLE:
-				# 消耗品，消耗掉
-				_inventory.try_consume(_stored_item)
-			else:
-				# 其他，位移
-				_inventory.try_use(_stored_item)
+	if event.is_action_pressed("ui_click") && get_global_rect().has_point(get_global_mouse_position()):
+		_inventory.on_grid_selected(self)
+	if event.is_action_pressed("ui_quick_move") && get_global_rect().has_point(get_global_mouse_position()):
+		if _stored_item:
+			_inventory.try_quick_move(_stored_item)
+	if event.is_action_pressed("ui_use") && get_global_rect().has_point(get_global_mouse_position()):
+		if _stored_item && _stored_item.get_item_type() == ItemResourceData.Type.CONSUMABLE:
+			# 消耗品，消耗掉
+			_inventory.try_consume(_stored_item)
+		else:
+			# 其他，位移
+			_inventory.try_use(_stored_item)
 		
 
 func _on_mouse_entered() -> void:
