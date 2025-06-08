@@ -21,8 +21,8 @@ func get_equipped_data() -> EquipmentResourceData:
 ## 移除物品
 func remove_item(item: Item, hover: bool = false) -> void:
 	_item_to_first_grid.erase(item)
-	if item.get_parent() == _item_container: 
-		_item_container.remove_child(item)
+	if item.get_parent() == item_container: 
+		item_container.remove_child(item)
 	for grid in _grids:
 		grid.clear_grid()
 		if hover: 
@@ -36,6 +36,7 @@ func try_equip_unequip(item: Item) -> void:
 func on_grid_hover(_grid: InventoryGrid, is_hover: bool) -> void:
 	if is_hover:
 		if InventorySystem.has_moving_item():
+			InventorySystem.get_moving_item().update_size(grid_size)
 			_filter.show()
 			var is_conflict = not _is_valid(InventorySystem.get_moving_item()) or not _item_to_first_grid.is_empty()
 			if not is_conflict:
@@ -67,7 +68,8 @@ func _handle_item_placement(_grid: InventoryGrid) -> void:
 
 ## 放置物品，更新格子状态
 func _place_item(item: Item, grids: Array[InventoryGrid]) -> void:
-	item.reparent(_item_container) if item.get_parent() else _item_container.add_child(item)
+	item.update_size(grid_size)
+	item.reparent(item_container) if item.get_parent() else item_container.add_child(item)
 	# 把物品加入库存
 	_item_to_first_grid[item] =  grids[0]
 	for grid in _grids:

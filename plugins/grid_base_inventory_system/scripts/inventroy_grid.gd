@@ -15,7 +15,8 @@ enum GridState {EMPTY, TAKEN, HORVERING, CONFLICT}
 @export var hovering_color = Color.LIGHT_SLATE_GRAY
 @export var conflict_color = Color.ORANGE_RED
 
-@onready var _background: ColorRect = $Border/Background
+@onready var border: ColorRect = %Border
+@onready var background: ColorRect = %Background
 
 static var GRID_SCENE: PackedScene = preload("res://plugins/grid_base_inventory_system/scenes/inventroy_grid.tscn")
 
@@ -77,36 +78,54 @@ func lose_hover() -> void:
 		_change_state(GridState.TAKEN)
 
 func _ready() -> void:
+	_handle_size_and_position()
+	
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	_change_state(GridState.EMPTY)
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
+
+func _handle_size_and_position() -> void:
+	custom_minimum_size.x = _inventory.grid_size
+	custom_minimum_size.y = _inventory.grid_size
+	border.size.x = _inventory.grid_size
+	border.size.y = _inventory.grid_size
+	border.position.x = _inventory.grid_size / -2
+	border.position.y = _inventory.grid_size / -2
+	background.size.x = _inventory.grid_size - _inventory.grid_border_size * 2
+	background.size.y = _inventory.grid_size - _inventory.grid_border_size * 2
+	background.position.x = _inventory.grid_border_size
+	background.position.y = _inventory.grid_border_size
 
 ## 根据格子状态更新格子颜色
 func _change_state(state: GridState) -> void:
 	match state:
 		GridState.TAKEN:
 			_state = GridState.TAKEN
-			_background.color = taken_color
+			background.color = taken_color
 		GridState.EMPTY:
 			_state = GridState.EMPTY
-			_background.color = empty_color
+			background.color = empty_color
 		GridState.HORVERING:
 			_state = GridState.HORVERING
-			_background.color = hovering_color
+			background.color = hovering_color
 		GridState.CONFLICT:
 			_state = GridState.CONFLICT
-			_background.color = conflict_color
+			background.color = conflict_color
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_click") && get_global_rect().has_point(get_global_mouse_position()):
-		_inventory.on_grid_selected(self)
-	if event.is_action_pressed("ui_quick_move") && get_global_rect().has_point(get_global_mouse_position()):
-		if _stored_item:
-			_inventory.try_quick_move(_stored_item)
-	if event.is_action_pressed("ui_equip_unequip") && get_global_rect().has_point(get_global_mouse_position()):
-		if _stored_item:
-			_inventory.try_equip_unequip(_stored_item)
+	if _stored_item.get_item_type() != ItemResourceData.Type.CONSUMABLE:
+		if event.is_action_pressed("ui_click") && get_global_rect().has_point(get_global_mouse_position()):
+			_inventory.on_grid_selected(self)
+		if event.is_action_pressed("ui_quick_move") && get_global_rect().has_point(get_global_mouse_position()):
+			if _stored_item:
+				_inventory.try_quick_move(_stored_item)
+		if event.is_action_pressed("ui_equip_unequip") && get_global_rect().has_point(get_global_mouse_position()):
+			if _stored_item:
+				_inventory.try_equip_unequip(_stored_item)
+	else:
+		# 消耗品
+		_inventory.try_consume(_stored_item)
 
 func _on_mouse_entered() -> void:
 	_inventory.on_grid_hover(self, true)

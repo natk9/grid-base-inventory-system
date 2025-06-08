@@ -23,9 +23,10 @@ anchor_left = 0.0
 anchor_right = 0.0
 offset_left = 200.0
 offset_top = -400.0
-offset_right = 584.0
-offset_bottom = 368.0
+offset_right = 488.0
+offset_bottom = 176.0
 grow_horizontal = 1
+grid_size = 24
 inventory_columns = 12
 inventory_rows = 24
 valid_item_types = Array[int]([0])
@@ -60,10 +61,11 @@ text = "物品数量：999"
 
 [node name="Inventory3" parent="." instance=ExtResource("1_g7g4h")]
 layout_mode = 1
-offset_left = 245.0
+offset_left = 178.0
 offset_top = -400.0
-offset_right = 373.0
-offset_bottom = -272.0
+offset_right = 370.0
+offset_bottom = -208.0
+grid_size = 48
 inventory_columns = 4
 inventory_rows = 4
 valid_item_types = Array[int]([8])

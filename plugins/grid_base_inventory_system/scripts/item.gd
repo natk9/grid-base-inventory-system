@@ -38,9 +38,15 @@ func start_moving(force_item_position: bool = false) ->void:
 func stop_moving() -> void:
 	_is_moving = false
 
+## 更新物品大小
+func update_size(grid_size: int) -> void:
+	var new_size = Vector2(grid_size * _item_data.column, grid_size * _item_data.row)
+	var new_scale = new_size / size
+	size = new_size
+	_position_offset *= new_scale
+
 ## 设置物品的大小和图片
 func _ready() -> void:
-	size = Vector2(InventorySystem.GRID_SIZE * _item_data.column, InventorySystem.GRID_SIZE * _item_data.row)
 	item_image.texture = _item_data.image
 	
 ## 处理物品跟随鼠标

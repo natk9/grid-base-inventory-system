@@ -5,9 +5,6 @@ signal sig_equipped(item: Item)
 ## 当脱掉装备成功时触发，可用于计算属性
 signal sig_unequipped(item: Item)
 
-## 格子大小
-const GRID_SIZE: int = 32
-
 ## 正在移动的物品
 var _moving_item: Item
 ## 正在移动的物品的偏移量

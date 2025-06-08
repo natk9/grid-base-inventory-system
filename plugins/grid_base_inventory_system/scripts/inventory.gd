@@ -2,6 +2,10 @@
 extends ColorRect
 class_name Inventory
 
+## 格子大小
+@export var grid_size: int = 32
+## 格子边框大小（内边框）
+@export var grid_border_size: int = 1
 ## 库存系统配置 - 列数
 @export var inventory_columns: int
 ## 库存系统配置 - 行数
@@ -12,9 +16,9 @@ class_name Inventory
 @export var valid_item_types: Array[ItemResourceData.Type]
 
 ## 格子容器
-@onready var _grid_container: GridContainer = $GridContainer
+@onready var grid_container: GridContainer = $GridContainer
 ## 放置Item的地方
-@onready var _item_container: Control = $ItemContainer
+@onready var item_container: Control = $ItemContainer
 
 ## 当前库存拥有的所有格子
 var _grids: Array[InventoryGrid] = []
@@ -37,8 +41,8 @@ func add_item(item: Item) -> bool:
 func remove_item(item: Item, hover: bool = false) -> void:
 	var first_grid = _item_to_first_grid[item]
 	_item_to_first_grid.erase(item)
-	if item.get_parent() == _item_container: 
-		_item_container.remove_child(item)
+	if item.get_parent() == item_container: 
+		item_container.remove_child(item)
 	var removal_grids = first_grid.get_all_grids()
 	for removal_grid in removal_grids:
 		removal_grid.clear_grid()
@@ -57,6 +61,13 @@ func try_quick_move(item: Item) -> void:
 func try_equip_unequip(item: Item) -> void:
 	InventorySystem.equip(item, self)
 
+func try_consume(item: Item) -> void:
+	if item.get_item_type() == ItemResourceData.Type.CONSUMABLE:
+		if item.get_item_data().test_need():
+			item.get_item_data().consume()
+	# 移除物品
+	remove_item(item)
+
 ## 添加快速移动目标
 func add_quick_move_target(target_inv: Inventory) -> void: _quick_move_targets.append(target_inv)
 ## 移除快速移动目标
@@ -65,6 +76,7 @@ func remove_quick_move_target(target_inv: Inventory) -> void: _quick_move_target
 ## 处理格子的hover和lose hover
 func on_grid_hover(grid: InventoryGrid, is_hover: bool) -> void:
 	if InventorySystem.has_moving_item():
+		InventorySystem.get_moving_item().update_size(grid_size)
 		var affected_grids = _get_affected_grids(grid, InventorySystem.get_moving_item(), InventorySystem.get_moving_offset(), true)
 		var is_conflict = not _is_valid(InventorySystem.get_moving_item())
 		if not is_conflict:
@@ -89,18 +101,18 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if resize_in_editor && Engine.is_editor_hint():
-		var new_size = Vector2(inventory_columns * InventorySystem.GRID_SIZE, inventory_rows * InventorySystem.GRID_SIZE)
+		var new_size = Vector2(inventory_columns * grid_size, inventory_rows * grid_size)
 		if new_size != size:
 			size = new_size
 
 ## 初始化库存系统格子
 func _setup_inventory_grid() -> void:
-	_grid_container.columns = inventory_columns
+	grid_container.columns = inventory_columns
 	for row in range(inventory_rows):
 		for column in range(inventory_columns):
 			var grid_id = row * inventory_columns + column
 			var grid = InventoryGrid.new_grid(grid_id, self)
-			_grid_container.add_child(grid)
+			grid_container.add_child(grid)
 			_grids.append(grid)
 
 ## 物品是否可以放在这个Inventory
@@ -113,7 +125,7 @@ func _is_valid(item: Item) -> bool:
 
 ## 放置物品，更新格子状态
 func _place_item(item: Item, grids: Array[InventoryGrid]) -> void:
-	item.reparent(_item_container) if item.get_parent() else _item_container.add_child(item)
+	item.reparent(item_container) if item.get_parent() else item_container.add_child(item)
 	# 把物品加入库存
 	_item_to_first_grid[item] =  grids[0]
 	for i in range(grids.size()):
@@ -124,6 +136,7 @@ func _place_item(item: Item, grids: Array[InventoryGrid]) -> void:
 		)
 		grids[i].taken(item, offset, grids)
 	item.global_position = grids[0].global_position
+	item.update_size(grid_size)
 
 ## 处理格子点击时的物品放置逻辑
 func _handle_item_placement(grid: InventoryGrid) -> void:

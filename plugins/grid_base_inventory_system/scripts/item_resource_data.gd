@@ -34,3 +34,12 @@ enum Type{
 @export_range(1, 6) var row: int
 ## 物品类型
 @export var type: Type
+
+## 使用条件
+func test_need() -> bool:
+	return true
+
+## 消耗
+func consume() -> bool:
+	print("消耗")
+	return true
