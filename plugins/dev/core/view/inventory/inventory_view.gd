@@ -40,9 +40,16 @@ class_name InventoryView
 
 var _grid_container: GridContainer
 var _item_container: Node
+
 var _items: Array[ItemView]
 var _item_grids_map: Dictionary[ItemView, Array]
 var _grid_map: Dictionary[Vector2i, GridView]
+var _grid_item_map: Dictionary[Vector2i, ItemView]
+
+func move_item(coordinates: Vector2i, offset: Vector2i) -> void:
+	var item = _grid_item_map[coordinates]
+	assert(item)
+	InventoryController.move_item(inventory_name, item.data)
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
@@ -63,31 +70,42 @@ func _ready() -> void:
 	_init_grids()
 	InventoryController.sig_item_added.connect(_on_item_added)
 	InventoryController.sig_item_removed.connect(_on_item_removed)
-	InventoryController.sig_item_moved.connect(_on_item_moved)
 
+## 添加物品时调用，显示添加的物品
 func _on_item_added(inv_name:String, item_data: ItemData, grids: Array[Vector2i]) -> void:
 	if not inv_name == inventory_name:
 		return
 	
-	_draw_item(item_data, grids)
-	for grid in grids:
-		_grid_map[grid].state = GridView.State.TAKEN
-
-func _on_item_removed(inv_name:String, item_data: ItemData) -> void:
-	pass
-
-func _on_item_moved(inv_name:String, item_data: ItemData, target_grids: Array[Vector2i]) -> void:
-	pass
-
-## 绘制物品
-func _draw_item(item_data: ItemData, grids: Array[Vector2i]) -> void:
-	var item = ItemView.new(item_data)
-	_item_container.add_child(item)
+	var item = _draw_item(item_data, grids)
 	_items.append(item)
 	_item_grids_map[item] = grids
+	for grid in grids:
+		_grid_map[grid].taken(grid - grids[0])
+		_grid_item_map[grid] = item
+
+## 移除物品时调用，反向遍历，释放空间
+func _on_item_removed(inv_name:String, item_data: ItemData) -> void:
+	if not inv_name == inventory_name:
+		return
+	
+	for i in range(_items.size() - 1, -1, -1):
+		var item = _items[i]
+		if item.data == item_data:
+			var grids = _item_grids_map[item]
+			for grid in grids:
+				_grid_map[grid].release()
+				_grid_item_map[grid] = null
+			item.queue_free()
+			_items.remove_at(i)
+
+## 绘制物品
+func _draw_item(item_data: ItemData, grids: Array[Vector2i]) -> ItemView:
+	var item = ItemView.new(item_data)
+	_item_container.add_child(item)
 	var left_corner_grid_view = _grid_map[grids[0]]
 	item.update_display(grid_size, left_corner_grid_view.global_position)
 	item.global_position = left_corner_grid_view.global_position
+	return item
 
 ## 初始化格子容器
 func _init_grid_container() -> void:
@@ -107,9 +125,10 @@ func _init_item_container() -> void:
 func _init_grids() -> void:
 	for row in inventory_rows:
 		for col in inventory_columns:
-			var grid = GridView.new(grid_size, grid_border_size, grid_border_color, gird_background_color_empty, gird_background_color_taken, gird_background_color_conflict)
+			var coordinates = Vector2i(col, row)
+			var grid = GridView.new(self, coordinates, grid_size, grid_border_size, grid_border_color, gird_background_color_empty, gird_background_color_taken, gird_background_color_conflict)
 			_grid_container.add_child(grid)
-			_grid_map[Vector2i(col, row)] = grid
+			_grid_map[coordinates] = grid
 
 ## 编辑器中绘制自身
 func _draw() -> void:

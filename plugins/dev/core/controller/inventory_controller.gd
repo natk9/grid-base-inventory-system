@@ -2,7 +2,6 @@ extends Node
 
 signal sig_item_added(inv_name: String, item_data: ItemData, grids: Array[Vector2i])
 signal sig_item_removed(inv_name: String, item_data: ItemData)
-signal sig_item_moved(inv_name:String, item_data: ItemData, target_grids: Array[Vector2i])
 
 var _inventory_datas: Dictionary[String, InventoryData]
 
@@ -16,9 +15,24 @@ func regist_inventory(inv_name: String, columns: int, rows: int) -> bool:
 			return false
 	return true
 
-func add_item(inv_name: String, item_data: ItemData) -> bool:
-	var grids = _inventory_datas[inv_name].add_item(item_data)
+## 向指定背包添加物品
+## 成功：返回复制后的 ItemData
+## 失败，返回 null
+func add_item(inv_name: String, item_data: ItemData) -> ItemData:
+	var new_data = item_data.duplicate()
+	var grids = _inventory_datas[inv_name].add_item(new_data)
 	if not grids.is_empty():
-		sig_item_added.emit(inv_name, item_data, grids)
-		return true
-	return false
+		sig_item_added.emit(inv_name, new_data, grids)
+		return new_data
+	return null
+
+func remove_item(inv_name: String, item_data: ItemData) -> void:
+	var inv = _inventory_datas[inv_name]
+	if inv.has_item(item_data):
+		inv.remove_item(item_data)
+		sig_item_removed.emit(inv_name, item_data)
+
+func move_item(inv_name: String, item_data: ItemData) -> void:
+	# 从原背包中删除物品
+	remove_item(inv_name, item_data)
+	# 创建正在移动的物品 View

@@ -39,6 +39,9 @@ func remove_item(item: ItemData) -> void:
 		_items.erase(item)
 		_item_grids_map.erase(item)
 
+func has_item(item: ItemData) -> bool:
+	return _items.has(item)
+
 ## 找到第一个可以放下这个物品的格子
 ## 如果有，返回所有格子的数组
 ## 如果没有，返回空数组

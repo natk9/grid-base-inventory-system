@@ -15,6 +15,10 @@ var state: State = State.EMPTY:
 		state = value
 		queue_redraw()
 
+var coordinates: Vector2i = Vector2i.ZERO
+var offset: Vector2i = Vector2i.ZERO
+var has_taken: bool = false
+
 var _size: int
 var _border_size: int
 var _border_color: Color
@@ -22,9 +26,24 @@ var _empty_color: Color
 var _taken_color: Color
 var _conflict_color: Color
 
-func _init(size: int = 32, border_size: int = 1, 
+var _inventory_view: InventoryView
+
+func taken(offset: Vector2i) -> void:
+	has_taken = true
+	self.offset = offset
+	state = State.TAKEN
+
+func release() -> void:
+	has_taken = false
+	self.offset = Vector2i.ZERO
+	state = State.EMPTY
+
+func _init(inventoryView: InventoryView, coordinates: Vector2i,
+	size: int = 32, border_size: int = 1, 
 	border_color: Color = DEFAULT_BORDER_COLOR, empty_color: Color = DEFAULT_EMPTY_COLOR, 
 	taken_color: Color = DEFAULT_TAKEN_COLOR, conflict_color: Color = DEFAULT_CONFLICT_COLOR):
+		_inventory_view = inventoryView
+		self.coordinates = coordinates
 		_size = size
 		_border_size = border_size
 		_border_color = border_color
@@ -32,6 +51,15 @@ func _init(size: int = 32, border_size: int = 1,
 		_taken_color = taken_color
 		_conflict_color = conflict_color
 		custom_minimum_size = Vector2(_size, _size)
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_click") && get_global_rect().has_point(get_global_mouse_position()):
+		if has_taken:
+			_inventory_view.move_item(coordinates, offset)
+	if event.is_action_pressed("ui_quick_move") && get_global_rect().has_point(get_global_mouse_position()):
+		pass
+	if event.is_action_pressed("ui_use") && get_global_rect().has_point(get_global_mouse_position()):
+		pass
 
 func _draw() -> void:
 	draw_rect(Rect2(0, 0, _size, _size), _border_color, true)
