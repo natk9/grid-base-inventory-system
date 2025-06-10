@@ -1,0 +1,34 @@
+[gd_scene load_steps=3 format=3 uid="uid://csjvmu777yo5q"]
+
+[ext_resource type="Script" uid="uid://b3x4mwtjmm4tp" path="res://plugins/dev/core/view/inventory/inventory_view.gd" id="1_n01jp"]
+[ext_resource type="Script" uid="uid://dy2bqex483xwa" path="res://plugins/dev/core/test/test_scene.gd" id="1_ofb33"]
+
+[node name="TestScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ofb33")
+
+[node name="InventoryView" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 102.0
+offset_top = 153.0
+offset_right = 486.0
+offset_bottom = 921.0
+script = ExtResource("1_n01jp")
+inventory_columns = 12
+inventory_rows = 24
+metadata/_custom_type_script = "uid://b3x4mwtjmm4tp"
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1076.0
+offset_top = 677.0
+offset_right = 1117.0
+offset_bottom = 708.0
+text = "Test"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

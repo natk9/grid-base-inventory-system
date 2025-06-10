@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://calutlkyxhhn0"]
+
+[ext_resource type="Script" uid="uid://c5uqs7o5b2w68" path="res://plugins/dev/core/model/item_data.gd" id="1_6kgfc"]
+[ext_resource type="Texture2D" uid="uid://h387k1xiin2o" path="res://plugins/dev/assets/test_item_icons/boots.png" id="1_ihin7"]
+
+[resource]
+script = ExtResource("1_6kgfc")
+icon = ExtResource("1_ihin7")
+columns = 2
+rows = 2
+metadata/_custom_type_script = "uid://c5uqs7o5b2w68"
