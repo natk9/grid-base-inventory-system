@@ -3,33 +3,29 @@ extends Node
 signal sig_item_added(inv_name: String, item_data: ItemData, grids: Array[Vector2i])
 signal sig_item_removed(inv_name: String, item_data: ItemData)
 
-var _inventory_datas: Dictionary[String, InventoryData]
+var _inventroy_repository: InventoryRepository = InventoryRepository.new()
 
 func regist_inventory(inv_name: String, columns: int, rows: int) -> bool:
-	if not _inventory_datas.has(inv_name):
-		_inventory_datas[inv_name] = InventoryData.new(columns, rows)
+	var inv_data = _inventroy_repository.get_inventory(inv_name)
+	if inv_data:
+		var is_same_size = inv_data.rows == rows and inv_data.columns == columns
+		return is_same_size
 	else:
-		var inv_data = _inventory_datas[inv_name]
-		if inv_data.rows != rows or inv_data.columns != columns:
-			push_error("Inventory [%s] has existed but with different size." % inv_name)
-			return false
-	return true
+		return _inventroy_repository.add_inventory(inv_name, columns, rows)
 
 ## 向指定背包添加物品
-## 成功：返回复制后的 ItemData
-## 失败，返回 null
-func add_item(inv_name: String, item_data: ItemData) -> ItemData:
+## 注意：此处传入的 item_data 将被复制，以确保多个相同物品的 data 互相独立
+func add_item(inv_name: String, item_data: ItemData) -> void:
 	var new_data = item_data.duplicate()
-	var grids = _inventory_datas[inv_name].add_item(new_data)
+	var grids = _inventroy_repository.add_item(inv_name, new_data)
 	if not grids.is_empty():
 		sig_item_added.emit(inv_name, new_data, grids)
-		return new_data
-	return null
 
+## 移除指定背包中的指定物品
+## 注意：此处的 item_data 必须是背包中的实际数据，不能是 load 出来的 Resource
+##      添加到背包中的时候，item_data 被复制了，以确保多个相同物品的 data 互相独立
 func remove_item(inv_name: String, item_data: ItemData) -> void:
-	var inv = _inventory_datas[inv_name]
-	if inv.has_item(item_data):
-		inv.remove_item(item_data)
+	if _inventroy_repository.remove_item(inv_name, item_data):
 		sig_item_removed.emit(inv_name, item_data)
 
 func move_item(inv_name: String, item_data: ItemData) -> void:
