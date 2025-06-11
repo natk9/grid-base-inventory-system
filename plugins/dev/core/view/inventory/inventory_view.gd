@@ -37,6 +37,10 @@ class_name InventoryView
 	set(value):
 		gird_background_color_conflict = value
 		queue_redraw()
+@export var grid_background_color_avilable: Color = GridView.DEFAULT_AVILABLE_COLOR:
+	set(value):
+		grid_background_color_avilable = value
+		queue_redraw()
 
 var _grid_container: GridContainer
 var _item_container: Node
@@ -51,16 +55,54 @@ func move_item(grid_id: Vector2i, offset: Vector2i) -> void:
 		return
 	var item = _grid_item_map[grid_id]
 	var item_data = item.data
-	if InventoryController.move_item_start(inventory_name, grid_id):
+	if InventoryController.move_item_start(inventory_name, grid_id, offset):
 		var moving_item = ItemView.new(item_data)
-		moving_item.update_display(grid_size, get_global_mouse_position())
 		InventoryUtils.get_moving_item_layer().add_child(moving_item)
-		moving_item.move()
+		moving_item.move(grid_size, offset)
 
-func place_item(grid_id) -> void:
+func place_item(grid_id: Vector2i) -> void:
 	if InventoryController.has_moving_item():
 		if InventoryController.move_item_end(inventory_name, grid_id):
 			InventoryUtils.clear_moving_layer()
+
+func grid_hover(grid_id: Vector2i) -> void:
+	if not InventoryController.has_moving_item():
+		return
+	var moving_item_offset = InventoryController.get_moving_item_offset()
+	var moving_item = InventoryController.get_moving_item()
+	var item_shape = moving_item.get_shape()
+	var grids = _get_grids_by_shape(grid_id - moving_item_offset, item_shape)
+	var has_conflict = item_shape.x * item_shape.y != grids.size()
+	for grid in grids:
+		if has_conflict:
+			break
+		has_conflict = _grid_map[grid].has_taken
+	for grid in grids:
+		var grid_view = _grid_map[grid]
+		grid_view.state = GridView.State.CONFLICT if has_conflict else GridView.State.AVILABLE
+
+func grid_lose_hover(grid_id: Vector2i) -> void:
+	if not InventoryController.has_moving_item():
+		return
+	var moving_item_offset = InventoryController.get_moving_item_offset()
+	var moving_item = InventoryController.get_moving_item()
+	var item_shape = moving_item.get_shape()
+	var grids = _get_grids_by_shape(grid_id - moving_item_offset, item_shape)
+	for grid in grids:
+		var grid_view = _grid_map[grid]
+		grid_view.state = GridView.State.TAKEN if grid_view.has_taken else GridView.State.EMPTY
+
+## 从start（左上角）开始的位置
+## 如果可以放下这个shape，返回所有格子的数组
+## 否则返回空数组
+func _get_grids_by_shape(start: Vector2i, shape: Vector2i) -> Array[Vector2i]:
+	var ret = [] as Array[Vector2i]
+	for row in shape.y:
+		for col in shape.x:
+			var grid_id = Vector2i(start.x + col, start.y + row)
+			if _grid_map.has(grid_id):
+				ret.append(grid_id)
+	return ret
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
@@ -137,7 +179,8 @@ func _init_grids() -> void:
 	for row in inventory_rows:
 		for col in inventory_columns:
 			var grid_id = Vector2i(col, row)
-			var grid = GridView.new(self, grid_id, grid_size, grid_border_size, grid_border_color, gird_background_color_empty, gird_background_color_taken, gird_background_color_conflict)
+			var grid = GridView.new(self, grid_id, grid_size, grid_border_size, grid_border_color, 
+				gird_background_color_empty, gird_background_color_taken, gird_background_color_conflict, grid_background_color_avilable)
 			_grid_container.add_child(grid)
 			_grid_map[grid_id] = grid
 

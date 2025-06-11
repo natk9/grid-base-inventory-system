@@ -2,13 +2,14 @@ extends Control
 class_name GridView
 
 enum State{
-	EMPTY, TAKEN, CONFLICT
+	EMPTY, TAKEN, CONFLICT, AVILABLE
 }
 
 const DEFAULT_BORDER_COLOR: Color = Color.GRAY
 const DEFAULT_EMPTY_COLOR: Color = Color.DARK_SLATE_GRAY
 const DEFAULT_TAKEN_COLOR: Color = Color.LIGHT_SLATE_GRAY
 const DEFAULT_CONFLICT_COLOR: Color = Color.INDIAN_RED
+const DEFAULT_AVILABLE_COLOR: Color = Color.STEEL_BLUE
 
 var state: State = State.EMPTY:
 	set(value):
@@ -25,6 +26,7 @@ var _border_color: Color
 var _empty_color: Color
 var _taken_color: Color
 var _conflict_color: Color
+var _avilable_color: Color
 
 var _inventory_view: InventoryView
 
@@ -41,7 +43,10 @@ func release() -> void:
 func _init(inventoryView: InventoryView, grid_id: Vector2i,
 	size: int = 32, border_size: int = 1, 
 	border_color: Color = DEFAULT_BORDER_COLOR, empty_color: Color = DEFAULT_EMPTY_COLOR, 
-	taken_color: Color = DEFAULT_TAKEN_COLOR, conflict_color: Color = DEFAULT_CONFLICT_COLOR):
+	taken_color: Color = DEFAULT_TAKEN_COLOR, conflict_color: Color = DEFAULT_CONFLICT_COLOR,
+	avilable_color: Color = DEFAULT_AVILABLE_COLOR
+	):
+		_avilable_color = avilable_color
 		_inventory_view = inventoryView
 		self.grid_id = grid_id
 		_size = size
@@ -52,10 +57,21 @@ func _init(inventoryView: InventoryView, grid_id: Vector2i,
 		_conflict_color = conflict_color
 		custom_minimum_size = Vector2(_size, _size)
 
+func _ready() -> void:
+	mouse_entered.connect(_on_mouse_entered)
+	mouse_exited.connect(_on_mouse_exited)
+
+func _on_mouse_entered() -> void:
+	_inventory_view.grid_hover(grid_id)
+
+func _on_mouse_exited() -> void:
+	_inventory_view.grid_lose_hover(grid_id)
+
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_click") && get_global_rect().has_point(get_global_mouse_position()):
 		if has_taken:
 			_inventory_view.move_item(grid_id, offset)
+			_on_mouse_entered()
 		else:
 			_inventory_view.place_item(grid_id)
 	if event.is_action_pressed("ui_quick_move") && get_global_rect().has_point(get_global_mouse_position()):
@@ -74,4 +90,6 @@ func _draw() -> void:
 			background_color = _taken_color
 		State.CONFLICT:
 			background_color = _conflict_color
+		State.AVILABLE:
+			background_color = _avilable_color
 	draw_rect(Rect2(_border_size, _border_size, inner_size, inner_size), background_color, true)

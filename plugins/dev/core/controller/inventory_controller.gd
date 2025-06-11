@@ -5,6 +5,7 @@ signal sig_item_removed(inv_name: String, item_data: ItemData)
 
 var _inventroy_repository: InventoryRepository = InventoryRepository.new()
 var _moving_item: ItemData
+var _moving_item_offset: Vector2i = Vector2i.ZERO
 
 ## 注册背包
 ## 如果已经有了，则检查要注册的大小是否和已有的数据一致
@@ -25,10 +26,11 @@ func add_item(inv_name: String, item_data: ItemData) -> void:
 	if not grids.is_empty():
 		sig_item_added.emit(inv_name, new_data, grids)
 
-func move_item_start(inv_name: String, grid_id: Vector2i) -> bool:
-	var item_data = _inventroy_repository.find_item_data_by_grid(inv_name, grid_id)
+func move_item_start(inv_name: String, grid_id: Vector2i, offset: Vector2i) -> bool:
+	var item_data = _inventroy_repository.find_item_data_by_grid(inv_name, grid_id - offset)
 	if item_data:
 		_moving_item = item_data
+		_moving_item_offset = offset
 		# 从原背包中删除物品
 		_remove_item(inv_name, item_data)
 		return true
@@ -38,10 +40,11 @@ func move_item_end(inv_name: String, grid_id: Vector2i) -> bool:
 	if has_moving_item():
 		var inv = _inventroy_repository.get_inventory(inv_name)
 		if inv:
-			var grids = inv.try_add_to_grid(get_moving_item(), grid_id)
+			var grids = inv.try_add_to_grid(get_moving_item(), grid_id - _moving_item_offset)
 			if grids:
 				sig_item_added.emit(inv_name, _moving_item, grids)
 				_moving_item = null
+				_moving_item_offset = Vector2i.ZERO
 				return true
 	return false
 
@@ -50,6 +53,9 @@ func has_moving_item() -> bool:
 
 func get_moving_item() -> ItemData:
 	return _moving_item
+
+func get_moving_item_offset() -> Vector2i:
+	return _moving_item_offset
 
 ## 移除指定背包中的指定物品
 func _remove_item(inv_name: String, item_data: ItemData) -> void:
