@@ -4,13 +4,16 @@ class_name InventoryData
 @export var columns: int = 2
 @export var rows: int = 2
 
+var avilable_types: Array[ItemData.Type]
+
 var _items: Array[ItemData] = []
 var _item_grids_map: Dictionary[ItemData, Array]
 var _grid_item_map: Dictionary[Vector2i, ItemData] = {} 
 
-func _init(new_columns: int, new_rows: int) -> void:
-	columns = new_columns
-	rows = new_rows
+func _init(columns: int, rows: int, avilable_types: Array[ItemData.Type]) -> void:
+	self.avilable_types = avilable_types
+	self.columns = columns
+	self.rows = rows
 	for row in rows:
 		for col in columns:
 			var pos = Vector2i(col, row)
@@ -19,9 +22,11 @@ func _init(new_columns: int, new_rows: int) -> void:
 ## 尝试把物品添加到第一个空位
 ## 成功返回占用的格子
 ## 失败返回空数组
-func add_item(item: ItemData) -> Array[Vector2i]:
-	var grids = _find_first_availble_grids(item)
-	_add_item_to_grids(item, grids)
+func add_item(item_data: ItemData) -> Array[Vector2i]:
+	if not is_item_avilable(item_data):
+		return [] as Array[Vector2i]
+	var grids = _find_first_availble_grids(item_data)
+	_add_item_to_grids(item_data, grids)
 	return grids
 
 ## 如果容器中有这个物品，删除所有信息
@@ -33,6 +38,9 @@ func remove_item(item: ItemData) -> void:
 		_items.erase(item)
 		_item_grids_map.erase(item)
 
+func is_item_avilable(item_data: ItemData) -> bool:
+	return avilable_types.has(ItemData.Type.ALL) or avilable_types.has(item_data.type)
+
 func has_item(item: ItemData) -> bool:
 	return _items.has(item)
 
@@ -42,6 +50,8 @@ func find_item_data_by_grid(grid_id: Vector2i) -> ItemData:
 	return null
 
 func try_add_to_grid(item_data: ItemData, grid_id: Vector2i) -> Array[Vector2i]:
+	if not is_item_avilable(item_data):
+		return [] as Array[Vector2i]
 	var grids = _try_get_empty_grids_by_shape(grid_id, item_data.get_shape())
 	_add_item_to_grids(item_data, grids)
 	return grids

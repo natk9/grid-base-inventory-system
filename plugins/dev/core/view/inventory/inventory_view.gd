@@ -12,6 +12,8 @@ class_name InventoryView
 	set(value):
 		inventory_rows = value
 		_recalculate_size()
+@export var avilable_types: Array[ItemData.Type] = [ItemData.Type.ALL]
+
 @export_category("Grid Settings")
 @export var grid_size: int = 32:
 	set(value):
@@ -50,7 +52,7 @@ var _item_grids_map: Dictionary[ItemView, Array]
 var _grid_map: Dictionary[Vector2i, GridView]
 var _grid_item_map: Dictionary[Vector2i, ItemView]
 
-func move_item(grid_id: Vector2i, offset: Vector2i) -> void:
+func try_move_item(grid_id: Vector2i, offset: Vector2i) -> void:
 	if InventoryController.has_moving_item():
 		return
 	var item = _grid_item_map[grid_id]
@@ -60,7 +62,7 @@ func move_item(grid_id: Vector2i, offset: Vector2i) -> void:
 		InventoryUtils.get_moving_item_layer().add_child(moving_item)
 		moving_item.move(grid_size, offset)
 
-func place_item(grid_id: Vector2i) -> void:
+func try_place_moving_item(grid_id: Vector2i) -> void:
 	if InventoryController.has_moving_item():
 		if InventoryController.move_item_end(inventory_name, grid_id):
 			InventoryUtils.clear_moving_layer()
@@ -72,7 +74,7 @@ func grid_hover(grid_id: Vector2i) -> void:
 	var moving_item = InventoryController.get_moving_item()
 	var item_shape = moving_item.get_shape()
 	var grids = _get_grids_by_shape(grid_id - moving_item_offset, item_shape)
-	var has_conflict = item_shape.x * item_shape.y != grids.size()
+	var has_conflict = item_shape.x * item_shape.y != grids.size() or not InventoryController.is_item_avilable(inventory_name, moving_item)
 	for grid in grids:
 		if has_conflict:
 			break
@@ -113,7 +115,7 @@ func _ready() -> void:
 		push_error("Inventory must have a name.")
 		return
 	
-	var ret = InventoryController.regist_inventory(inventory_name, inventory_columns, inventory_rows)
+	var ret = InventoryController.regist_inventory(inventory_name, inventory_columns, inventory_rows, avilable_types)
 	if not ret:
 		return
 	

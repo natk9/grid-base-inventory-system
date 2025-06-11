@@ -3,10 +3,10 @@ class_name InventoryRepository
 
 var _inventory_datas: Dictionary[String, InventoryData]
 
-func add_inventory(inv_name: String, columns: int, rows: int) -> bool:
+func add_inventory(inv_name: String, columns: int, rows: int, avilable_types: Array[ItemData.Type]) -> bool:
 	var inv = get_inventory(inv_name)
 	if not inv:
-		_inventory_datas[inv_name] = InventoryData.new(columns, rows)
+		_inventory_datas[inv_name] = InventoryData.new(columns, rows, avilable_types)
 		return true
 	return false
 

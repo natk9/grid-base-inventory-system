@@ -20,13 +20,13 @@ var grid_id: Vector2i = Vector2i.ZERO
 var offset: Vector2i = Vector2i.ZERO
 var has_taken: bool = false
 
-var _size: int
-var _border_size: int
-var _border_color: Color
-var _empty_color: Color
-var _taken_color: Color
-var _conflict_color: Color
-var _avilable_color: Color
+var _size: int = 32
+var _border_size: int = 1
+var _border_color: Color = DEFAULT_BORDER_COLOR
+var _empty_color: Color = DEFAULT_EMPTY_COLOR
+var _taken_color: Color = DEFAULT_TAKEN_COLOR
+var _conflict_color: Color = DEFAULT_CONFLICT_COLOR
+var _avilable_color: Color = DEFAULT_AVILABLE_COLOR
 
 var _inventory_view: InventoryView
 
@@ -40,12 +40,8 @@ func release() -> void:
 	self.offset = Vector2i.ZERO
 	state = State.EMPTY
 
-func _init(inventoryView: InventoryView, grid_id: Vector2i,
-	size: int = 32, border_size: int = 1, 
-	border_color: Color = DEFAULT_BORDER_COLOR, empty_color: Color = DEFAULT_EMPTY_COLOR, 
-	taken_color: Color = DEFAULT_TAKEN_COLOR, conflict_color: Color = DEFAULT_CONFLICT_COLOR,
-	avilable_color: Color = DEFAULT_AVILABLE_COLOR
-	):
+func _init(inventoryView: InventoryView, grid_id: Vector2i,size: int, border_size: int, 
+	border_color: Color, empty_color: Color, taken_color: Color, conflict_color: Color, avilable_color: Color):
 		_avilable_color = avilable_color
 		_inventory_view = inventoryView
 		self.grid_id = grid_id
@@ -70,12 +66,12 @@ func _on_mouse_exited() -> void:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_click") && get_global_rect().has_point(get_global_mouse_position()):
 		if has_taken:
-			_inventory_view.move_item(grid_id, offset)
+			_inventory_view.try_move_item(grid_id, offset)
 			_on_mouse_entered()
 		else:
-			_inventory_view.place_item(grid_id)
+			_inventory_view.try_place_moving_item(grid_id)
 	if event.is_action_pressed("ui_quick_move") && get_global_rect().has_point(get_global_mouse_position()):
-		pass
+		print("ui_quick_move")
 	if event.is_action_pressed("ui_use") && get_global_rect().has_point(get_global_mouse_position()):
 		pass
 

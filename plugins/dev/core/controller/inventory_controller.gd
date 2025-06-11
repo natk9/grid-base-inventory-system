@@ -10,13 +10,19 @@ var _moving_item_offset: Vector2i = Vector2i.ZERO
 ## 注册背包
 ## 如果已经有了，则检查要注册的大小是否和已有的数据一致
 ## 如果还没有，则新增背包数据
-func regist_inventory(inv_name: String, columns: int, rows: int) -> bool:
+func regist_inventory(inv_name: String, columns: int, rows: int, avilable_types: Array[ItemData.Type]) -> bool:
 	var inv_data = _inventroy_repository.get_inventory(inv_name)
 	if inv_data:
 		var is_same_size = inv_data.rows == rows and inv_data.columns == columns
-		return is_same_size
+		var is_same_avilable_types = avilable_types.size() == inv_data.avilable_types.size()
+		if is_same_avilable_types:
+			for i in range(avilable_types.size()):
+				is_same_avilable_types = avilable_types[i] == inv_data.avilable_types[i]
+				if not is_same_avilable_types:
+					break
+		return is_same_size && is_same_avilable_types
 	else:
-		return _inventroy_repository.add_inventory(inv_name, columns, rows)
+		return _inventroy_repository.add_inventory(inv_name, columns, rows, avilable_types)
 
 ## 向指定背包添加物品
 ## 注意：此处传入的 item_data 将被复制，以确保多个相同物品的 data 互相独立
@@ -46,6 +52,12 @@ func move_item_end(inv_name: String, grid_id: Vector2i) -> bool:
 				_moving_item = null
 				_moving_item_offset = Vector2i.ZERO
 				return true
+	return false
+
+func is_item_avilable(inv_name: String, item_data: ItemData) -> bool:
+	var inv = _inventroy_repository.get_inventory(inv_name)
+	if inv:
+		return inv.is_item_avilable(item_data)
 	return false
 
 func has_moving_item() -> bool:

@@ -8,4 +8,5 @@ script = ExtResource("1_6kgfc")
 icon = ExtResource("1_ihin7")
 columns = 2
 rows = 2
+type = 5
 metadata/_custom_type_script = "uid://c5uqs7o5b2w68"
