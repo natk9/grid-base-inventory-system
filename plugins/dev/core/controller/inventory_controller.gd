@@ -4,7 +4,11 @@ signal sig_item_added(inv_name: String, item_data: ItemData, grids: Array[Vector
 signal sig_item_removed(inv_name: String, item_data: ItemData)
 
 var _inventroy_repository: InventoryRepository = InventoryRepository.new()
+var _moving_item: ItemData
 
+## 注册背包
+## 如果已经有了，则检查要注册的大小是否和已有的数据一致
+## 如果还没有，则新增背包数据
 func regist_inventory(inv_name: String, columns: int, rows: int) -> bool:
 	var inv_data = _inventroy_repository.get_inventory(inv_name)
 	if inv_data:
@@ -21,14 +25,33 @@ func add_item(inv_name: String, item_data: ItemData) -> void:
 	if not grids.is_empty():
 		sig_item_added.emit(inv_name, new_data, grids)
 
+func move_item_start(inv_name: String, grid_id: Vector2i) -> bool:
+	var item_data = _inventroy_repository.find_item_data_by_grid(inv_name, grid_id)
+	if item_data:
+		_moving_item = item_data
+		# 从原背包中删除物品
+		_remove_item(inv_name, item_data)
+		return true
+	return false
+
+func move_item_end(inv_name: String, grid_id: Vector2i) -> bool:
+	if has_moving_item():
+		var inv = _inventroy_repository.get_inventory(inv_name)
+		if inv:
+			var grids = inv.try_add_to_grid(get_moving_item(), grid_id)
+			if grids:
+				sig_item_added.emit(inv_name, _moving_item, grids)
+				_moving_item = null
+				return true
+	return false
+
+func has_moving_item() -> bool:
+	return _moving_item != null
+
+func get_moving_item() -> ItemData:
+	return _moving_item
+
 ## 移除指定背包中的指定物品
-## 注意：此处的 item_data 必须是背包中的实际数据，不能是 load 出来的 Resource
-##      添加到背包中的时候，item_data 被复制了，以确保多个相同物品的 data 互相独立
-func remove_item(inv_name: String, item_data: ItemData) -> void:
+func _remove_item(inv_name: String, item_data: ItemData) -> void:
 	if _inventroy_repository.remove_item(inv_name, item_data):
 		sig_item_removed.emit(inv_name, item_data)
-
-func move_item(inv_name: String, item_data: ItemData) -> void:
-	# 从原背包中删除物品
-	remove_item(inv_name, item_data)
-	# 创建正在移动的物品 View

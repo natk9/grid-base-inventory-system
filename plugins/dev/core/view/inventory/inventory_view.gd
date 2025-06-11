@@ -46,10 +46,21 @@ var _item_grids_map: Dictionary[ItemView, Array]
 var _grid_map: Dictionary[Vector2i, GridView]
 var _grid_item_map: Dictionary[Vector2i, ItemView]
 
-func move_item(coordinates: Vector2i, offset: Vector2i) -> void:
-	var item = _grid_item_map[coordinates]
-	assert(item)
-	InventoryController.move_item(inventory_name, item.data)
+func move_item(grid_id: Vector2i, offset: Vector2i) -> void:
+	if InventoryController.has_moving_item():
+		return
+	var item = _grid_item_map[grid_id]
+	var item_data = item.data
+	if InventoryController.move_item_start(inventory_name, grid_id):
+		var moving_item = ItemView.new(item_data)
+		moving_item.update_display(grid_size, get_global_mouse_position())
+		InventoryUtils.get_moving_item_layer().add_child(moving_item)
+		moving_item.move()
+
+func place_item(grid_id) -> void:
+	if InventoryController.has_moving_item():
+		if InventoryController.move_item_end(inventory_name, grid_id):
+			InventoryUtils.clear_moving_layer()
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
@@ -125,10 +136,10 @@ func _init_item_container() -> void:
 func _init_grids() -> void:
 	for row in inventory_rows:
 		for col in inventory_columns:
-			var coordinates = Vector2i(col, row)
-			var grid = GridView.new(self, coordinates, grid_size, grid_border_size, grid_border_color, gird_background_color_empty, gird_background_color_taken, gird_background_color_conflict)
+			var grid_id = Vector2i(col, row)
+			var grid = GridView.new(self, grid_id, grid_size, grid_border_size, grid_border_color, gird_background_color_empty, gird_background_color_taken, gird_background_color_conflict)
 			_grid_container.add_child(grid)
-			_grid_map[coordinates] = grid
+			_grid_map[grid_id] = grid
 
 ## 编辑器中绘制自身
 func _draw() -> void:

@@ -20,15 +20,9 @@ func _init(new_columns: int, new_rows: int) -> void:
 ## 成功返回占用的格子
 ## 失败返回空数组
 func add_item(item: ItemData) -> Array[Vector2i]:
-	# 检查位置有效性
 	var grids = _find_first_availble_grids(item)
-	if not grids.is_empty():
-		_items.append(item)
-		_item_grids_map[item] = grids
-		for grid in grids:
-			_grid_item_map[grid] = item
-		return grids
-	return [] as Array[Vector2i]
+	_add_item_to_grids(item, grids)
+	return grids
 
 ## 如果容器中有这个物品，删除所有信息
 func remove_item(item: ItemData) -> void:
@@ -41,6 +35,25 @@ func remove_item(item: ItemData) -> void:
 
 func has_item(item: ItemData) -> bool:
 	return _items.has(item)
+
+func find_item_data_by_grid(grid_id: Vector2i) -> ItemData:
+	if _grid_item_map.has(grid_id):
+		return _grid_item_map[grid_id]
+	return null
+
+func try_add_to_grid(item_data: ItemData, grid_id: Vector2i) -> Array[Vector2i]:
+	var grids = _try_get_empty_grids_by_shape(grid_id, item_data.get_shape())
+	_add_item_to_grids(item_data, grids)
+	return grids
+
+func _add_item_to_grids(item_data: ItemData, grids: Array[Vector2i]) -> bool:
+	if not grids.is_empty():
+		_items.append(item_data)
+		_item_grids_map[item_data] = grids
+		for grid in grids:
+			_grid_item_map[grid] = item_data
+		return true
+	return false
 
 ## 找到第一个可以放下这个物品的格子
 ## 如果有，返回所有格子的数组
@@ -63,9 +76,9 @@ func _try_get_empty_grids_by_shape(start: Vector2i, shape: Vector2i) -> Array[Ve
 	var ret = [] as Array[Vector2i]
 	for row in shape.y:
 		for col in shape.x:
-			var grid = Vector2i(start.x + col, start.y + row)
-			if _grid_item_map[grid] == null:
-				ret.append(grid)
+			var grid_id = Vector2i(start.x + col, start.y + row)
+			if _grid_item_map.has(grid_id) and _grid_item_map[grid_id] == null:
+				ret.append(grid_id)
 			else:
 				return [] as Array[Vector2i]
 	return ret
