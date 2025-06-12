@@ -14,26 +14,26 @@ script = ExtResource("1_ofb33")
 
 [node name="InventoryView" type="Control" parent="."]
 anchors_preset = 0
-offset_left = 102.0
-offset_top = 153.0
-offset_right = 486.0
-offset_bottom = 921.0
+offset_left = 35.0
+offset_top = 33.0
+offset_right = 419.0
+offset_bottom = 289.0
 script = ExtResource("1_n01jp")
+inventory_name = "inv_1"
 inventory_columns = 12
-inventory_rows = 24
+inventory_rows = 8
 metadata/_custom_type_script = "uid://b3x4mwtjmm4tp"
 
 [node name="InventoryView2" type="Control" parent="."]
 anchors_preset = 0
-offset_left = 545.0
-offset_top = 154.0
-offset_right = 929.0
-offset_bottom = 922.0
+offset_left = 448.0
+offset_top = 33.0
+offset_right = 832.0
+offset_bottom = 545.0
 script = ExtResource("1_n01jp")
-inventory_name = "Default1"
+inventory_name = "inv_2"
 inventory_columns = 12
-inventory_rows = 24
-avilable_types = Array[int]([2])
+inventory_rows = 16
 metadata/_custom_type_script = "uid://b3x4mwtjmm4tp"
 
 [node name="Button" type="Button" parent="."]

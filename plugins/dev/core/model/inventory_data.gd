@@ -7,7 +7,7 @@ class_name InventoryData
 var avilable_types: Array[ItemData.Type]
 
 var _items: Array[ItemData] = []
-var _item_grids_map: Dictionary[ItemData, Array]
+var _item_grids_map: Dictionary[ItemData, Array] # Array[grid_id: Vector2i]
 var _grid_item_map: Dictionary[Vector2i, ItemData] = {} 
 
 func _init(columns: int, rows: int, avilable_types: Array[ItemData.Type]) -> void:
@@ -24,7 +24,7 @@ func _init(columns: int, rows: int, avilable_types: Array[ItemData.Type]) -> voi
 ## 失败返回空数组
 func add_item(item_data: ItemData) -> Array[Vector2i]:
 	if not is_item_avilable(item_data):
-		return [] as Array[Vector2i]
+		return []
 	var grids = _find_first_availble_grids(item_data)
 	_add_item_to_grids(item_data, grids)
 	return grids
@@ -51,7 +51,7 @@ func find_item_data_by_grid(grid_id: Vector2i) -> ItemData:
 
 func try_add_to_grid(item_data: ItemData, grid_id: Vector2i) -> Array[Vector2i]:
 	if not is_item_avilable(item_data):
-		return [] as Array[Vector2i]
+		return []
 	var grids = _try_get_empty_grids_by_shape(grid_id, item_data.get_shape())
 	_add_item_to_grids(item_data, grids)
 	return grids
@@ -77,18 +77,18 @@ func _find_first_availble_grids(item: ItemData) -> Array[Vector2i]:
 				var grids = _try_get_empty_grids_by_shape(Vector2i(col, row), item.get_shape())
 				if not grids.is_empty():
 					return grids
-	return [] as Array[Vector2i]
+	return []
 
 ## 从start（左上角）开始的位置
 ## 如果可以放下这个shape，返回所有格子的数组
 ## 否则返回空数组
 func _try_get_empty_grids_by_shape(start: Vector2i, shape: Vector2i) -> Array[Vector2i]:
-	var ret = [] as Array[Vector2i]
+	var ret: Array[Vector2i] = []
 	for row in shape.y:
 		for col in shape.x:
 			var grid_id = Vector2i(start.x + col, start.y + row)
 			if _grid_item_map.has(grid_id) and _grid_item_map[grid_id] == null:
 				ret.append(grid_id)
 			else:
-				return [] as Array[Vector2i]
+				return []
 	return ret

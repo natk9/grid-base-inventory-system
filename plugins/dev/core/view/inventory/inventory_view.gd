@@ -3,7 +3,7 @@ extends Control
 class_name InventoryView
 
 @export_category("Inventory Settings")
-@export var inventory_name: String = "Default"
+@export var inventory_name: String = "default"
 @export var inventory_columns: int = 2:
 	set(value):
 		inventory_columns = value
@@ -67,6 +67,9 @@ func try_place_moving_item(grid_id: Vector2i) -> void:
 		if InventoryController.move_item_end(inventory_name, grid_id):
 			InventoryUtils.clear_moving_layer()
 
+func quick_move(grid_id: Vector2i) -> void:
+	InventoryController.quick_move(inventory_name, grid_id)
+
 func grid_hover(grid_id: Vector2i) -> void:
 	if not InventoryController.has_moving_item():
 		return
@@ -94,18 +97,6 @@ func grid_lose_hover(grid_id: Vector2i) -> void:
 		var grid_view = _grid_map[grid]
 		grid_view.state = GridView.State.TAKEN if grid_view.has_taken else GridView.State.EMPTY
 
-## 从start（左上角）开始的位置
-## 如果可以放下这个shape，返回所有格子的数组
-## 否则返回空数组
-func _get_grids_by_shape(start: Vector2i, shape: Vector2i) -> Array[Vector2i]:
-	var ret = [] as Array[Vector2i]
-	for row in shape.y:
-		for col in shape.x:
-			var grid_id = Vector2i(start.x + col, start.y + row)
-			if _grid_map.has(grid_id):
-				ret.append(grid_id)
-	return ret
-
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		call_deferred("_recalculate_size")
@@ -125,6 +116,18 @@ func _ready() -> void:
 	_init_grids()
 	InventoryController.sig_item_added.connect(_on_item_added)
 	InventoryController.sig_item_removed.connect(_on_item_removed)
+
+## 从start（左上角）开始的位置
+## 如果可以放下这个shape，返回所有格子的数组
+## 否则返回空数组
+func _get_grids_by_shape(start: Vector2i, shape: Vector2i) -> Array[Vector2i]:
+	var ret: Array[Vector2i] = []
+	for row in shape.y:
+		for col in shape.x:
+			var grid_id = Vector2i(start.x + col, start.y + row)
+			if _grid_map.has(grid_id):
+				ret.append(grid_id)
+	return ret
 
 ## 添加物品时调用，显示添加的物品
 func _on_item_added(inv_name:String, item_data: ItemData, grids: Array[Vector2i]) -> void:

@@ -71,7 +71,8 @@ func _input(event: InputEvent) -> void:
 		else:
 			_inventory_view.try_place_moving_item(grid_id)
 	if event.is_action_pressed("ui_quick_move") && get_global_rect().has_point(get_global_mouse_position()):
-		print("ui_quick_move")
+		if has_taken:
+			_inventory_view.quick_move(grid_id)
 	if event.is_action_pressed("ui_use") && get_global_rect().has_point(get_global_mouse_position()):
 		pass
 

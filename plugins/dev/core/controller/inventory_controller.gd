@@ -54,6 +54,19 @@ func move_item_end(inv_name: String, grid_id: Vector2i) -> bool:
 				return true
 	return false
 
+func quick_move(inv_name: String, grid_id: Vector2i) -> void:
+	var target_inventories = _inventroy_repository.get_quick_move_relations(inv_name)
+	var item_to_move = _inventroy_repository.find_item_data_by_grid(inv_name, grid_id)
+	if target_inventories.is_empty() or not item_to_move:
+		return
+	for target_inv in target_inventories:
+		var grids = _inventroy_repository.add_item(target_inv, item_to_move)
+		if not grids.is_empty():
+			_inventroy_repository.remove_item(inv_name, item_to_move)
+			sig_item_added.emit(target_inv, item_to_move, grids)
+			sig_item_removed.emit(inv_name, item_to_move)
+			return
+	
 func is_item_avilable(inv_name: String, item_data: ItemData) -> bool:
 	var inv = _inventroy_repository.get_inventory(inv_name)
 	if inv:
@@ -68,6 +81,12 @@ func get_moving_item() -> ItemData:
 
 func get_moving_item_offset() -> Vector2i:
 	return _moving_item_offset
+
+func add_quick_move_relation(inv_name: String, target_inv_name: String) -> void:
+	_inventroy_repository.add_quick_move_relation(inv_name, target_inv_name)
+
+func remove_quick_move_relation(inv_name: String, target_inv_name: String) -> void:
+	_inventroy_repository.remove_quick_move_relation(inv_name, target_inv_name)
 
 ## 移除指定背包中的指定物品
 func _remove_item(inv_name: String, item_data: ItemData) -> void:
