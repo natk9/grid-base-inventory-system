@@ -22,15 +22,12 @@ general/stretch/mode="canvas_items"
 
 [autoload]
 
-InventorySystem="*res://plugins/grid_base_inventory_system/scripts/inventory_system.gd"
-InventoryController="*res://plugins/dev/core/controller/inventory_controller.gd"
-InventoryUtils="*res://plugins/dev/core/util/inventory_utils.gd"
+GBIS="*res://plugins/grid_base_inventory_system/core/grid_base_inventory_system.gd"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/size/mode=3
 window/stretch/mode="canvas_items"
 
 [input]
