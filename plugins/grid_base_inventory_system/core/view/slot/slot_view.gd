@@ -7,7 +7,10 @@ class_name SlotView
 	set(value):
 		background = value
 		queue_redraw()
-@export var grid_size: int = 32
+@export var base_size: int = 32:
+	set(value):
+		base_size = value
+		_recalculate_size()
 @export var columns: int = 2:
 	set(value):
 		columns = value
@@ -25,6 +28,9 @@ class_name SlotView
 var _item_container: Node
 var _item_view: ItemView
 
+func is_empty() -> bool:
+	return _item_view == null
+
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		call_deferred("_recalculate_size")
@@ -34,7 +40,7 @@ func _ready() -> void:
 		push_error("Slot must have a name.")
 		return
 	
-	var ret = GBIS.regist_slot(slot_name, avilable_types)
+	var ret = GBIS.slot_regist(slot_name, avilable_types)
 	if not ret:
 		return
 	
@@ -42,6 +48,16 @@ func _ready() -> void:
 	_init_item_container()
 	GBIS.slot_controller.sig_item_equipped.connect(_on_item_equipped)
 	GBIS.slot_controller.sig_item_unequipped.connect(_on_item_unequipped)
+	mouse_entered.connect(_on_slot_hover)
+	mouse_exited.connect(_on_slot_lose_hover)
+
+func _on_slot_hover() -> void:
+	if not GBIS.moving_item:
+		return
+	GBIS.moving_item_view.base_size = base_size
+
+func _on_slot_lose_hover() -> void:
+	pass
 
 func _on_item_equipped(slot_name: String, item_data: ItemData):
 	if slot_name != self.slot_name:
@@ -50,11 +66,16 @@ func _on_item_equipped(slot_name: String, item_data: ItemData):
 	_draw_item(item_data)
 
 func _draw_item(item_data: ItemData) -> void:
-	var item = ItemView.new(item_data, grid_size, global_position)
+	var item = ItemView.new(item_data, base_size)
 	_item_container.add_child(item)
+	var center = global_position + size / 2 - item.size / 2
+	item.global_position = center
 	_item_view = item
 
 func _on_item_unequipped(slot_name: String, item_data: ItemData):
+	if slot_name != self.slot_name:
+		return
+	
 	_item_view.queue_free()
 	_item_view = null
 
@@ -65,18 +86,22 @@ func _init_item_container() -> void:
 
 func _draw() -> void:
 	if background:
-		draw_texture_rect(background, Rect2(0, 0, columns * grid_size, rows * grid_size), false)
+		draw_texture_rect(background, Rect2(0, 0, columns * base_size, rows * base_size), false)
 	else:
-		draw_rect(Rect2(0, 0, columns * grid_size, rows * grid_size), default_background_color)
+		draw_rect(Rect2(0, 0, columns * base_size, rows * base_size), default_background_color)
 
 func _recalculate_size() -> void:
-	size = Vector2(columns * grid_size, rows * grid_size)
+	size = Vector2(columns * base_size, rows * base_size)
 	queue_redraw()
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_click") && get_global_rect().has_point(get_global_mouse_position()):
-		pass
+		if GBIS.moving_item and is_empty():
+			GBIS.slot_equip_moving_item(slot_name)
+		elif not GBIS.moving_item and not is_empty():
+			var item_data = _item_view.data
+			GBIS.slot_move_item(slot_name, base_size)
 	if event.is_action_pressed("ui_quick_move") && get_global_rect().has_point(get_global_mouse_position()):
-		pass
+		print("ui_quick_move")
 	if event.is_action_pressed("ui_use") && get_global_rect().has_point(get_global_mouse_position()):
-		pass
+		print("ui_use")

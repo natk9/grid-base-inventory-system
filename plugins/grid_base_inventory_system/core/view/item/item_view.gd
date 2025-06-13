@@ -2,19 +2,24 @@ extends Control
 class_name ItemView
 
 var data: ItemData
-var grid_size: int
-
+var base_size: int:
+	set(value):
+		base_size = value
+		call_deferred("recalculate_size")
 var _is_moving: bool = false
 var _moving_offset: Vector2i = Vector2i.ZERO
 
-func _init(data: ItemData, grid_size: int, global_position: Vector2) -> void:
+func _init(data: ItemData, base_size: int) -> void:
 	self.data = data
-	self.grid_size = grid_size
-	self.global_position = global_position
-	size = Vector2(data.columns * grid_size, data.rows * grid_size)
+	self.base_size = base_size
+	recalculate_size()
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 
-func move(offset: Vector2i) -> void:
+func recalculate_size() -> void:
+	size = Vector2(data.columns * base_size, data.rows * base_size)
+	queue_redraw()
+
+func move(offset: Vector2i = Vector2i.ZERO) -> void:
 	_is_moving = true
 	_moving_offset = offset
 
@@ -24,4 +29,4 @@ func _draw() -> void:
 
 func _process(delta: float) -> void:
 	if _is_moving:
-		global_position = get_global_mouse_position() - Vector2(grid_size * _moving_offset) - Vector2(grid_size / 2, grid_size / 2)
+		global_position = get_global_mouse_position() - Vector2(base_size * _moving_offset) - Vector2(base_size / 2, base_size / 2)

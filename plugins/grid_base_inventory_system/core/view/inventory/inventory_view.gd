@@ -15,9 +15,9 @@ class_name InventoryView
 @export var avilable_types: Array[GBIS.ItemType] = [GBIS.ItemType.ALL]
 
 @export_category("Grid Settings")
-@export var grid_size: int = 32:
+@export var base_size: int = 32:
 	set(value):
-		grid_size = value
+		base_size = value
 		_recalculate_size()
 @export var grid_border_size: int = 1:
 	set(value):
@@ -52,32 +52,20 @@ var _item_grids_map: Dictionary[ItemView, Array]
 var _grid_map: Dictionary[Vector2i, GridView]
 var _grid_item_map: Dictionary[Vector2i, ItemView]
 
-func try_move_item(grid_id: Vector2i, offset: Vector2i) -> void:
-	if GBIS.has_moving_item():
-		return
-	var item = _grid_item_map[grid_id]
-	var item_data = item.data
-	if GBIS.move_item_start(inventory_name, grid_id, offset):
-		var moving_item = ItemView.new(item_data, grid_size, global_position)
-		GBIS.get_moving_item_layer().add_child(moving_item)
-		moving_item.move(offset)
-
-func try_place_moving_item(grid_id: Vector2i) -> void:
-	if GBIS.has_moving_item():
-		if GBIS.move_item_end(inventory_name, grid_id):
-			GBIS.clear_moving_item()
-
 func quick_move(grid_id: Vector2i) -> void:
-	GBIS.quick_move(inventory_name, grid_id)
+	GBIS.inv_quick_move(inventory_name, grid_id)
 
 func grid_hover(grid_id: Vector2i) -> void:
-	if not GBIS.has_moving_item():
+	if not GBIS.moving_item:
 		return
-	var moving_item_offset = GBIS.get_moving_item_offset()
-	var moving_item = GBIS.get_moving_item()
+	
+	GBIS.moving_item_view.base_size = base_size
+	
+	var moving_item_offset = GBIS.moving_item_offset
+	var moving_item = GBIS.moving_item
 	var item_shape = moving_item.get_shape()
 	var grids = _get_grids_by_shape(grid_id - moving_item_offset, item_shape)
-	var has_conflict = item_shape.x * item_shape.y != grids.size() or not GBIS.is_item_avilable(inventory_name, moving_item)
+	var has_conflict = item_shape.x * item_shape.y != grids.size() or not GBIS.inv_is_item_avilable(inventory_name, moving_item)
 	for grid in grids:
 		if has_conflict:
 			break
@@ -87,10 +75,10 @@ func grid_hover(grid_id: Vector2i) -> void:
 		grid_view.state = GridView.State.CONFLICT if has_conflict else GridView.State.AVILABLE
 
 func grid_lose_hover(grid_id: Vector2i) -> void:
-	if not GBIS.has_moving_item():
+	if not GBIS.moving_item:
 		return
-	var moving_item_offset = GBIS.get_moving_item_offset()
-	var moving_item = GBIS.get_moving_item()
+	var moving_item_offset = GBIS.moving_item_offset
+	var moving_item = GBIS.moving_item
 	var item_shape = moving_item.get_shape()
 	var grids = _get_grids_by_shape(grid_id - moving_item_offset, item_shape)
 	for grid in grids:
@@ -106,7 +94,7 @@ func _ready() -> void:
 		push_error("Inventory must have a name.")
 		return
 	
-	var ret = GBIS.regist_inventory(inventory_name, inventory_columns, inventory_rows, avilable_types)
+	var ret = GBIS.inv_regist(inventory_name, inventory_columns, inventory_rows, avilable_types)
 	if not ret:
 		return
 	
@@ -160,7 +148,7 @@ func _on_item_removed(inv_name:String, item_data: ItemData) -> void:
 ## 绘制物品
 func _draw_item(item_data: ItemData, grids: Array[Vector2i]) -> ItemView:
 	var left_corner_grid_view = _grid_map[grids[0]]
-	var item = ItemView.new(item_data, grid_size, left_corner_grid_view.global_position)
+	var item = ItemView.new(item_data, base_size)
 	_item_container.add_child(item)
 	item.global_position = left_corner_grid_view.global_position
 	return item
@@ -184,7 +172,7 @@ func _init_grids() -> void:
 	for row in inventory_rows:
 		for col in inventory_columns:
 			var grid_id = Vector2i(col, row)
-			var grid = GridView.new(self, grid_id, grid_size, grid_border_size, grid_border_color, 
+			var grid = GridView.new(self, grid_id, base_size, grid_border_size, grid_border_color, 
 				gird_background_color_empty, gird_background_color_taken, gird_background_color_conflict, grid_background_color_avilable)
 			_grid_container.add_child(grid)
 			_grid_map[grid_id] = grid
@@ -192,13 +180,13 @@ func _init_grids() -> void:
 ## 编辑器中绘制自身
 func _draw() -> void:
 	if Engine.is_editor_hint():
-		var inner_size = grid_size - grid_border_size * 2
+		var inner_size = base_size - grid_border_size * 2
 		for row in inventory_rows:
 			for col in inventory_columns:
-				draw_rect(Rect2(col * grid_size, row * grid_size, grid_size, grid_size), grid_border_color, true)
-				draw_rect(Rect2(col * grid_size + grid_border_size, row * grid_size + grid_border_size, inner_size, inner_size), gird_background_color_empty, true)
+				draw_rect(Rect2(col * base_size, row * base_size, base_size, base_size), grid_border_color, true)
+				draw_rect(Rect2(col * base_size + grid_border_size, row * base_size + grid_border_size, inner_size, inner_size), gird_background_color_empty, true)
 
 ## 重新计算大小并绘制
 func _recalculate_size() -> void:
-		size = Vector2(inventory_columns * grid_size, inventory_rows * grid_size)
+		size = Vector2(inventory_columns * base_size, inventory_rows * base_size)
 		queue_redraw()

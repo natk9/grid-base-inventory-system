@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://csjvmu777yo5q"]
+[gd_scene load_steps=4 format=3 uid="uid://csjvmu777yo5q"]
 
 [ext_resource type="Script" uid="uid://b3x4mwtjmm4tp" path="res://plugins/grid_base_inventory_system/core/view/inventory/inventory_view.gd" id="1_n01jp"]
 [ext_resource type="Script" uid="uid://dy2bqex483xwa" path="res://plugins/grid_base_inventory_system/core/test/test_scene.gd" id="1_ofb33"]
 [ext_resource type="Script" uid="uid://dg6xjko3rdcta" path="res://plugins/grid_base_inventory_system/core/view/slot/slot_view.gd" id="3_qmsca"]
-[ext_resource type="Texture2D" uid="uid://dxusr1agnbuhw" path="res://plugins/grid_base_inventory_system/assets/ui/boots_background.png" id="4_566py"]
 
 [node name="TestScene" type="Control"]
 layout_mode = 3
@@ -18,21 +17,20 @@ script = ExtResource("1_ofb33")
 anchors_preset = 0
 offset_left = 35.0
 offset_top = 33.0
-offset_right = 803.0
-offset_bottom = 545.0
+offset_right = 419.0
+offset_bottom = 289.0
 script = ExtResource("1_n01jp")
 inventory_name = "inv_1"
 inventory_columns = 12
 inventory_rows = 8
-base_size = 64
 metadata/_custom_type_script = "uid://b3x4mwtjmm4tp"
 
 [node name="InventoryView2" type="Control" parent="."]
 anchors_preset = 0
-offset_left = 1176.0
-offset_top = 34.0
-offset_right = 1560.0
-offset_bottom = 546.0
+offset_left = 448.0
+offset_top = 33.0
+offset_right = 832.0
+offset_bottom = 545.0
 script = ExtResource("1_n01jp")
 inventory_name = "inv_2"
 inventory_columns = 12
@@ -49,29 +47,11 @@ text = "Test"
 
 [node name="SlotView" type="Control" parent="."]
 anchors_preset = 0
-offset_left = 917.0
-offset_top = 40.0
-offset_right = 1061.0
-offset_bottom = 184.0
+offset_left = 974.0
+offset_top = 37.0
+offset_right = 1038.0
+offset_bottom = 101.0
 script = ExtResource("3_qmsca")
-slot_name = "boots_slot_1"
-background = ExtResource("4_566py")
-base_size = 48
-columns = 3
-rows = 3
-metadata/_custom_type_script = "uid://dg6xjko3rdcta"
-
-[node name="SlotView2" type="Control" parent="."]
-anchors_preset = 0
-offset_left = 867.0
-offset_top = 203.0
-offset_right = 1123.0
-offset_bottom = 587.0
-script = ExtResource("3_qmsca")
-slot_name = "boots_slot_2"
-background = ExtResource("4_566py")
-base_size = 128
-rows = 3
 metadata/_custom_type_script = "uid://dg6xjko3rdcta"
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

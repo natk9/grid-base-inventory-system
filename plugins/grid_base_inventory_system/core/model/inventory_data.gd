@@ -37,9 +37,7 @@ func has_item(item: ItemData) -> bool:
 	return _items.has(item)
 
 func find_item_data_by_grid(grid_id: Vector2i) -> ItemData:
-	if _grid_item_map.has(grid_id):
-		return _grid_item_map[grid_id]
-	return null
+	return _grid_item_map.get(grid_id)
 
 func try_add_to_grid(item_data: ItemData, grid_id: Vector2i) -> Array[Vector2i]:
 	if not is_item_avilable(item_data):
