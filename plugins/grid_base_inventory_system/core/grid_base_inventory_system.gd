@@ -1,6 +1,8 @@
 extends Node
 # 全局名称：GBIS
 
+const DEFAULT_PLAYER: String = "player_1"
+
 enum ItemType{
 	ALL,             # 全部
 	HELMET,          # 头盔
@@ -33,6 +35,8 @@ var inventory_utils: InventoryUtils = InventoryUtils.new()
 var moving_item: ItemData
 var moving_item_view: ItemView
 var moving_item_offset: Vector2i = Vector2i.ZERO
+
+var current_player: String = DEFAULT_PLAYER
 
 # =========================
 
@@ -94,7 +98,7 @@ func slot_regist(slot_name: String, avilable_types: Array[ItemType]) -> bool:
 func slot_try_equip(item_data: ItemData) -> bool:
 	return slot_controller.try_equip(item_data)
 
-func slot_equip_moving_item(slot_name) -> bool:
+func slot_equip_moving_item(slot_name: String) -> bool:
 	if slot_controller.equip_to(slot_name, moving_item):
 		clear_moving_item()
 		return true

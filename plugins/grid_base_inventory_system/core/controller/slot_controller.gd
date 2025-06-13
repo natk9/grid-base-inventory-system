@@ -22,7 +22,7 @@ func regist_slot(slot_name: String, avilable_types: Array[GBIS.ItemType]) -> boo
 
 func get_equipped_item(slot_name: String) -> ItemData:
 	var slot = _slot_repository.get_slot(slot_name)
-	return slot.item if slot else null
+	return slot.equipped_item if slot else null
 
 func try_equip(item_data: ItemData) -> bool:
 	if not item_data:
