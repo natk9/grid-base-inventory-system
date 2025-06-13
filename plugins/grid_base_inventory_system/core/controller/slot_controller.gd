@@ -39,9 +39,8 @@ func equip_to(slot_name, item_data: ItemData) -> bool:
 		return true
 	return true
 
-func unequip(slot_name) -> bool:
+func unequip(slot_name) -> ItemData:
 	var item = _slot_repository.unequip(slot_name)
 	if item:
 		sig_item_unequipped.emit(slot_name, item)
-		return true
-	return false
+	return item

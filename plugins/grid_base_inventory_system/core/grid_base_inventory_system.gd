@@ -2,6 +2,7 @@ extends Node
 # 全局名称：GBIS
 
 const DEFAULT_PLAYER: String = "player_1"
+const DEFAULT_INVENTORY_NAME: String = "default"
 
 enum ItemType{
 	ALL,             # 全部
@@ -37,6 +38,7 @@ var moving_item_view: ItemView
 var moving_item_offset: Vector2i = Vector2i.ZERO
 
 var current_player: String = DEFAULT_PLAYER
+var current_inventories: Array[String] = [DEFAULT_INVENTORY_NAME]
 
 # =========================
 
@@ -49,6 +51,7 @@ func clear_moving_item() -> void:
 	moving_item_view = null
 	moving_item_offset = Vector2i.ZERO
 
+@warning_ignore("shadowed_variable")
 func draw_moving_item(item_data: ItemData, moving_item_offset: Vector2i, base_size: int) -> void:
 	self.moving_item = item_data
 	self.moving_item_offset = moving_item_offset
@@ -66,7 +69,7 @@ func inv_add_item(inv_name: String, item_data: ItemData) -> void:
 
 func inv_move_item(inv_name: String, grid_id: Vector2i, offset: Vector2i, base_size: int) -> void:
 	if moving_item:
-		push_error("Inv: Already had moving item.")
+		push_error("Already had moving item.")
 	var item_data = inventory_controller.find_item_data_by_grid(inv_name, grid_id)
 	if item_data:
 		draw_moving_item(item_data, offset, base_size)
@@ -95,8 +98,12 @@ func inv_remove_quick_move_relation(inv_name: String, target_inv_name: String) -
 func slot_regist(slot_name: String, avilable_types: Array[ItemType]) -> bool:
 	return slot_controller.regist_slot(slot_name, avilable_types)
 
-func slot_try_equip(item_data: ItemData) -> bool:
-	return slot_controller.try_equip(item_data)
+func slot_try_equip(inv_name: String, grid_id: Vector2i) -> bool:
+	var item_data = inventory_controller.find_item_data_by_grid(inv_name, grid_id)
+	if item_data:
+		if slot_controller.try_equip(item_data):
+			inventory_controller.remove_item_by_data(inv_name, item_data)
+	return false
 
 func slot_equip_moving_item(slot_name: String) -> bool:
 	if slot_controller.equip_to(slot_name, moving_item):
@@ -105,11 +112,20 @@ func slot_equip_moving_item(slot_name: String) -> bool:
 	return false
 
 func slot_unequip(slot_name) -> bool:
-	return slot_controller.unequip(slot_name)
+	for current_inventory in current_inventories:
+		if not inventory_controller.is_inventory_existed(current_inventory):
+			push_error("Cannot find inventory name [%s]. Please ensure GBIS.current_main_inventories contains valid inventory name." % current_inventory)
+			return false
+		var item_data = slot_controller.get_equipped_item(slot_name)
+		if inventory_controller.add_item(current_inventory, item_data):
+			slot_controller.unequip(slot_name)
+			return true
+	return false
 
 func slot_move_item(slot_name: String, base_size: int) -> void:
 	if moving_item:
-		push_error("Slot: Already had moving item.")
+		push_error("Already had moving item.")
+		return
 	var item_data = slot_controller.get_equipped_item(slot_name)
 	if item_data:
 		draw_moving_item(item_data, Vector2i.ZERO, base_size)

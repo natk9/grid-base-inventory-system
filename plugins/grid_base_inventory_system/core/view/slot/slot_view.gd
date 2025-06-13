@@ -59,19 +59,22 @@ func _on_slot_hover() -> void:
 func _on_slot_lose_hover() -> void:
 	pass
 
+@warning_ignore("shadowed_variable")
 func _on_item_equipped(slot_name: String, item_data: ItemData):
 	if slot_name != self.slot_name:
 		return
 	
-	_draw_item(item_data)
+	_item_view = _draw_item(item_data)
+	_item_container.add_child(_item_view)
 
-func _draw_item(item_data: ItemData) -> void:
+func _draw_item(item_data: ItemData) -> ItemView:
 	var item = ItemView.new(item_data, base_size)
-	_item_container.add_child(item)
 	var center = global_position + size / 2 - item.size / 2
 	item.global_position = center
-	_item_view = item
+	return item
 
+@warning_ignore("shadowed_variable")
+@warning_ignore("unused_parameter")
 func _on_item_unequipped(slot_name: String, item_data: ItemData):
 	if slot_name != self.slot_name:
 		return
@@ -99,9 +102,7 @@ func _input(event: InputEvent) -> void:
 		if GBIS.moving_item and is_empty():
 			GBIS.slot_equip_moving_item(slot_name)
 		elif not GBIS.moving_item and not is_empty():
-			var item_data = _item_view.data
 			GBIS.slot_move_item(slot_name, base_size)
-	if event.is_action_pressed("ui_quick_move") && get_global_rect().has_point(get_global_mouse_position()):
-		print("ui_quick_move")
 	if event.is_action_pressed("ui_use") && get_global_rect().has_point(get_global_mouse_position()):
-		print("ui_use")
+		if not is_empty():
+			GBIS.slot_unequip(slot_name)

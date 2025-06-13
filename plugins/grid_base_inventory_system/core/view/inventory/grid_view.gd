@@ -30,6 +30,7 @@ var _avilable_color: Color = DEFAULT_AVILABLE_COLOR
 
 var _inventory_view: InventoryView
 
+@warning_ignore("shadowed_variable")
 func taken(offset: Vector2i) -> void:
 	has_taken = true
 	self.offset = offset
@@ -40,6 +41,8 @@ func release() -> void:
 	self.offset = Vector2i.ZERO
 	state = State.EMPTY
 
+@warning_ignore("shadowed_variable")
+@warning_ignore("shadowed_variable_base_class")
 func _init(inventoryView: InventoryView, grid_id: Vector2i,size: int, border_size: int, 
 	border_color: Color, empty_color: Color, taken_color: Color, conflict_color: Color, avilable_color: Color):
 		_avilable_color = avilable_color
@@ -72,9 +75,10 @@ func _input(event: InputEvent) -> void:
 			GBIS.inv_place_moving_item(_inventory_view.inventory_name, grid_id)
 	if event.is_action_pressed("ui_quick_move") && get_global_rect().has_point(get_global_mouse_position()):
 		if has_taken:
-			_inventory_view.quick_move(grid_id)
+			GBIS.inv_quick_move(_inventory_view.inventory_name, grid_id)
 	if event.is_action_pressed("ui_use") && get_global_rect().has_point(get_global_mouse_position()):
-		pass
+		if has_taken:
+			GBIS.slot_try_equip(_inventory_view.inventory_name, grid_id)
 
 func _draw() -> void:
 	draw_rect(Rect2(0, 0, _size, _size), _border_color, true)

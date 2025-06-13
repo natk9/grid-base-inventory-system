@@ -9,6 +9,7 @@ var base_size: int:
 var _is_moving: bool = false
 var _moving_offset: Vector2i = Vector2i.ZERO
 
+@warning_ignore("shadowed_variable")
 func _init(data: ItemData, base_size: int) -> void:
 	self.data = data
 	self.base_size = base_size
@@ -27,6 +28,8 @@ func _draw() -> void:
 	if data.icon:
 		draw_texture_rect(data.icon, Rect2(Vector2.ZERO, size), false)
 
+@warning_ignore("unused_parameter")
 func _process(delta: float) -> void:
 	if _is_moving:
+		@warning_ignore("integer_division")
 		global_position = get_global_mouse_position() - Vector2(base_size * _moving_offset) - Vector2(base_size / 2, base_size / 2)

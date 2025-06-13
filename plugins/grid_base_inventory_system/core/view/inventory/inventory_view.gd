@@ -3,7 +3,7 @@ extends Control
 class_name InventoryView
 
 @export_category("Inventory Settings")
-@export var inventory_name: String = "default"
+@export var inventory_name: String = GBIS.DEFAULT_INVENTORY_NAME
 @export var inventory_columns: int = 2:
 	set(value):
 		inventory_columns = value
@@ -51,9 +51,6 @@ var _items: Array[ItemView]
 var _item_grids_map: Dictionary[ItemView, Array]
 var _grid_map: Dictionary[Vector2i, GridView]
 var _grid_item_map: Dictionary[Vector2i, ItemView]
-
-func quick_move(grid_id: Vector2i) -> void:
-	GBIS.inv_quick_move(inventory_name, grid_id)
 
 func grid_hover(grid_id: Vector2i) -> void:
 	if not GBIS.moving_item:

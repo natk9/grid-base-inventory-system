@@ -25,14 +25,19 @@ func regist_inventory(inv_name: String, columns: int, rows: int, avilable_types:
 
 ## 向指定背包添加物品
 ## 注意：此处传入的 item_data 将被复制，以确保多个相同物品的 data 互相独立
-func add_item(inv_name: String, item_data: ItemData) -> void:
+func add_item(inv_name: String, item_data: ItemData) -> bool:
 	var new_data = item_data.duplicate()
 	var grids = _inventory_repository.add_item(inv_name, new_data)
 	if not grids.is_empty():
 		sig_item_added.emit(inv_name, new_data, grids)
+		return true
+	return false
 
 func find_item_data_by_grid(inv_name: String, grid_id) -> ItemData:
 	return _inventory_repository.find_item_data_by_grid(inv_name, grid_id)
+
+func is_inventory_existed(inv_name: String) -> bool:
+	return _inventory_repository.get_inventory(inv_name) != null
 
 func place_to(inv_name: String, item_data: ItemData, grid_id: Vector2i) -> bool:
 	if item_data:

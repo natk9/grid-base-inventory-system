@@ -46,6 +46,7 @@ func try_add_to_grid(item_data: ItemData, grid_id: Vector2i) -> Array[Vector2i]:
 	_add_item_to_grids(item_data, grids)
 	return grids
 
+@warning_ignore("shadowed_variable")
 func _init(inv_name: String, columns: int, rows: int, avilable_types: Array[GBIS.ItemType]) -> void:
 	self.inv_name = inv_name
 	self.avilable_types = avilable_types
@@ -74,7 +75,7 @@ func _find_first_availble_grids(item: ItemData) -> Array[Vector2i]:
 		for col in columns:
 			# 如果当前格子中没有东西，则判断能否放下这个物品的形状
 			if _grid_item_map[Vector2i(col, row)] == null:
-				var grids = _try_get_empty_grids_by_shape(Vector2i(col, row), item.get_shape())
+				var grids = _try_get_empty_grids_by_shape(Vector2i(col, row), item_shape)
 				if not grids.is_empty():
 					return grids
 	return []
