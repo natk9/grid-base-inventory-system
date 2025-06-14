@@ -23,6 +23,12 @@ func test_need(slot_name: String) -> bool:
 		Don't forget to change GBIS.current_player to the player that is currently being modified." % [GBIS.current_player, slot_name])
 	return true
 
+func equipped(slot_name: String) -> void:
+	push_warning("[Override this function] [%s] equipped item [%s] at slot [%s]" % [GBIS.current_player, item_id, slot_name])
+
+func unequipped(slot_name: String) -> void:
+	push_warning("[Override this function] [%s] unequipped item [%s] at slot [%s]" % [GBIS.current_player, item_id, slot_name])
+
 func use() -> bool:
 	if current_amount > 0:
 		push_warning("[Override this function] item has been used")

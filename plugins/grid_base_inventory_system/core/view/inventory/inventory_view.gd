@@ -87,8 +87,13 @@ func grid_hover(grid_id: Vector2i) -> void:
 	var has_conflict = item_shape.x * item_shape.y != grids.size() or not GBIS.inv_is_item_avilable(inventory_name, moving_item)
 	for grid in grids:
 		if has_conflict:
-			break
+			break 
 		has_conflict = _grid_map[grid].has_taken
+		var item_view = _grid_item_map.get(grid_id)
+		if has_conflict and item_view:
+			var item_data: ItemData = item_view.data
+			if item_data.item_id == GBIS.moving_item.item_id and not item_data.is_full():
+				has_conflict = false
 	for grid in grids:
 		var grid_view = _grid_map[grid]
 		grid_view.state = GridView.State.CONFLICT if has_conflict else GridView.State.AVILABLE

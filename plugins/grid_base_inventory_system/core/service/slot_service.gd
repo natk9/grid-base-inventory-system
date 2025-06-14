@@ -34,7 +34,7 @@ func equip_to(slot_name, item_data: ItemData) -> bool:
 	if _slot_repository.equip_to(slot_name, item_data):
 		GBIS.sig_slot_item_equipped.emit(slot_name, item_data)
 		return true
-	return true
+	return false
 
 func unequip(slot_name) -> ItemData:
 	var item = _slot_repository.unequip(slot_name)

@@ -9,11 +9,13 @@ func equip(item_data: ItemData) -> bool:
 	if not equipped_item:
 		if is_item_avilable(item_data):
 			equipped_item = item_data
+			equipped_item.equipped(slot_name)
 			return true
 	return false
 
 func unequip() -> ItemData:
 	var ret = equipped_item
+	ret.unequipped(slot_name)
 	equipped_item = null
 	return ret
 

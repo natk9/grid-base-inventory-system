@@ -1,14 +1,14 @@
 [gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://w28bhguexksh"]
 
-[ext_resource type="Texture2D" uid="uid://bx05gnx7w3o2r" path="res://icon.svg" id="1_e4mcj"]
+[ext_resource type="Texture2D" uid="uid://tlkilfmuuy0q" path="res://plugins/grid_base_inventory_system/assets/test_item_icons/bottle.png" id="1_e4mcj"]
 [ext_resource type="Script" uid="uid://c5uqs7o5b2w68" path="res://plugins/grid_base_inventory_system/core/model/item_data.gd" id="1_kc0h0"]
 
 [resource]
 script = ExtResource("1_kc0h0")
 item_id = "Test Consumable"
 type = 19
-stack_size = 3
-current_amount = 1
+stack_size = 5
+current_amount = 3
 destroy_if_empty = true
 show_stack = true
 icon = ExtResource("1_e4mcj")
