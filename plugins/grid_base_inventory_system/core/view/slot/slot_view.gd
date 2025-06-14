@@ -46,8 +46,8 @@ func _ready() -> void:
 	
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	_init_item_container()
-	GBIS.slot_controller.sig_item_equipped.connect(_on_item_equipped)
-	GBIS.slot_controller.sig_item_unequipped.connect(_on_item_unequipped)
+	GBIS.sig_slot_item_equipped.connect(_on_item_equipped)
+	GBIS.sig_slot_item_unequipped.connect(_on_item_unequipped)
 	mouse_entered.connect(_on_slot_hover)
 	mouse_exited.connect(_on_slot_lose_hover)
 

@@ -1,10 +1,5 @@
 extends Node
-class_name InventoryController
-
-signal sig_item_added(inv_name: String, item_data: ItemData, grids: Array[Vector2i])
-signal sig_item_removed(inv_name: String, item_data: ItemData)
-@warning_ignore("unused_signal")
-signal sig_item_used(inv_name: String, grid_id: Vector2i, item_data: ItemData)
+class_name InventoryService
 
 var _inventory_repository: InventoryRepository = InventoryRepository.instance
 
@@ -31,7 +26,7 @@ func add_item(inv_name: String, item_data: ItemData) -> bool:
 	var new_data = item_data.duplicate()
 	var grids = _inventory_repository.add_item(inv_name, new_data)
 	if not grids.is_empty():
-		sig_item_added.emit(inv_name, new_data, grids)
+		GBIS.sig_inv_item_added.emit(inv_name, new_data, grids)
 		return true
 	return false
 
@@ -47,7 +42,7 @@ func place_to(inv_name: String, item_data: ItemData, grid_id: Vector2i) -> bool:
 		if inv:
 			var grids = inv.try_add_to_grid(item_data, grid_id - GBIS.moving_item_offset)
 			if grids:
-				sig_item_added.emit(inv_name, item_data, grids)
+				GBIS.sig_inv_item_added.emit(inv_name, item_data, grids)
 				return true
 	return false
 
@@ -60,8 +55,8 @@ func quick_move(inv_name: String, grid_id: Vector2i) -> void:
 		var grids = _inventory_repository.add_item(target_inv, item_to_move)
 		if not grids.is_empty():
 			_inventory_repository.remove_item(inv_name, item_to_move)
-			sig_item_added.emit(target_inv, item_to_move, grids)
-			sig_item_removed.emit(inv_name, item_to_move)
+			GBIS.sig_inv_item_added.emit(target_inv, item_to_move, grids)
+			GBIS.sig_inv_item_removed.emit(inv_name, item_to_move)
 			return
 	
 func is_item_avilable(inv_name: String, item_data: ItemData) -> bool:
@@ -79,4 +74,4 @@ func remove_quick_move_relation(inv_name: String, target_inv_name: String) -> vo
 ## 移除指定背包中的指定物品
 func remove_item_by_data(inv_name: String, item_data: ItemData) -> void:
 	if _inventory_repository.remove_item(inv_name, item_data):
-		sig_item_removed.emit(inv_name, item_data)
+		GBIS.sig_inv_item_removed.emit(inv_name, item_data)

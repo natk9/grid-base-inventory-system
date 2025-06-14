@@ -121,9 +121,9 @@ func _ready() -> void:
 	_init_grid_container()
 	_init_item_container()
 	_init_grids()
-	GBIS.inventory_controller.sig_item_added.connect(_on_item_added)
-	GBIS.inventory_controller.sig_item_removed.connect(_on_item_removed)
-	GBIS.inventory_controller.sig_item_used.connect(_on_item_used)
+	GBIS.sig_inv_item_added.connect(_on_item_added)
+	GBIS.sig_inv_item_removed.connect(_on_item_removed)
+	GBIS.sig_inv_item_used.connect(_on_item_used)
 	
 	if not stack_num_font:
 		stack_num_font = get_theme_font("font")

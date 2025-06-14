@@ -69,7 +69,10 @@ func _on_mouse_exited() -> void:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_click") && get_global_rect().has_point(get_global_mouse_position()):
 		if has_taken:
-			GBIS.inv_move_item(_inventory_view.inventory_name, grid_id, offset, _size)
+			if not GBIS.moving_item:
+				GBIS.inv_move_item(_inventory_view.inventory_name, grid_id, offset, _size)
+			else:
+				GBIS.inv_stack_item(_inventory_view.inventory_name, grid_id)
 			_on_mouse_entered()
 		else:
 			GBIS.inv_place_moving_item(_inventory_view.inventory_name, grid_id)

@@ -1,8 +1,16 @@
 extends Node
 # 全局名称：GBIS
 
-const DEFAULT_PLAYER: String = "player_1"
-const DEFAULT_INVENTORY_NAME: String = "default"
+@warning_ignore("unused_signal")
+signal sig_inv_item_added(inv_name: String, item_data: ItemData, grids: Array[Vector2i])
+@warning_ignore("unused_signal")
+signal sig_inv_item_removed(inv_name: String, item_data: ItemData)
+@warning_ignore("unused_signal")
+signal sig_inv_item_used(inv_name: String, grid_id: Vector2i, item_data: ItemData)
+@warning_ignore("unused_signal")
+signal sig_slot_item_equipped(slot_name: String, item_data: ItemData)
+@warning_ignore("unused_signal")
+signal sig_slot_item_unequipped(slot_name: String, item_data: ItemData)
 
 enum ItemType{
 	ALL,             # 全部
@@ -30,8 +38,11 @@ enum ItemType{
 	SKILL            # 技能
 }
 
-var inventory_controller: InventoryController = InventoryController.new()
-var slot_controller: SlotController = SlotController.new()
+const DEFAULT_PLAYER: String = "player_1"
+const DEFAULT_INVENTORY_NAME: String = "default"
+
+var inventory_service: InventoryService = InventoryService.new()
+var slot_service: SlotService = SlotService.new()
 var inventory_utils: InventoryUtils = InventoryUtils.new()
 
 var moving_item: ItemData
@@ -70,42 +81,46 @@ func draw_moving_item(item_data: ItemData, moving_item_offset: Vector2i, base_si
 # =========================
 
 func inv_regist(inv_name: String, columns: int, rows: int, avilable_types: Array[ItemType]) -> bool:
-	return inventory_controller.regist_inventory(inv_name, columns, rows, avilable_types)
+	return inventory_service.regist_inventory(inv_name, columns, rows, avilable_types)
 
 func inv_find_item_data(inv_name: String, grid_id: Vector2i) -> ItemData:
-	return inventory_controller.find_item_data_by_grid(inv_name, grid_id)
+	return inventory_service.find_item_data_by_grid(inv_name, grid_id)
 
 func inv_add_item(inv_name: String, item_data: ItemData) -> void:
-	inventory_controller.add_item(inv_name, item_data)
+	inventory_service.add_item(inv_name, item_data)
+
+func inv_stack_item(inv_name: String, grid_id: Vector2i) -> void:
+	pass
 
 func inv_move_item(inv_name: String, grid_id: Vector2i, offset: Vector2i, base_size: int) -> void:
 	if moving_item:
 		push_error("Already had moving item.")
-	var item_data = inventory_controller.find_item_data_by_grid(inv_name, grid_id)
+		return
+	var item_data = inventory_service.find_item_data_by_grid(inv_name, grid_id)
 	if item_data:
 		draw_moving_item(item_data, offset, base_size)
-		inventory_controller.remove_item_by_data(inv_name, item_data)
+		inventory_service.remove_item_by_data(inv_name, item_data)
 
 func inv_place_moving_item(inv_name: String, grid_id: Vector2i) -> bool:
-	if inventory_controller.place_to(inv_name, moving_item, grid_id):
+	if inventory_service.place_to(inv_name, moving_item, grid_id):
 		clear_moving_item()
 		return true
 	return false
 
 func inv_quick_move(inv_name: String, grid_id: Vector2i) -> void:
-	inventory_controller.quick_move(inv_name, grid_id)
+	inventory_service.quick_move(inv_name, grid_id)
 
 func inv_is_item_avilable(inv_name: String, item_data: ItemData) -> bool:
-	return inventory_controller.is_item_avilable(inv_name, item_data)
+	return inventory_service.is_item_avilable(inv_name, item_data)
 
 func inv_add_quick_move_relation(inv_name: String, target_inv_name: String) -> void:
-	inventory_controller.add_quick_move_relation(inv_name, target_inv_name)
+	inventory_service.add_quick_move_relation(inv_name, target_inv_name)
 
 func inv_remove_quick_move_relation(inv_name: String, target_inv_name: String) -> void:
-	inventory_controller.remove_quick_move_relation(inv_name, target_inv_name)
+	inventory_service.remove_quick_move_relation(inv_name, target_inv_name)
 
 func inv_use(inv_name: String, grid_id: Vector2i) -> bool:
-	var item_data = inventory_controller.find_item_data_by_grid(inv_name, grid_id)
+	var item_data = inventory_service.find_item_data_by_grid(inv_name, grid_id)
 	if equippable_types.has(item_data.type):
 		return _inv_try_equip(inv_name, item_data)
 	elif useable_types.has(item_data.type):
@@ -114,39 +129,39 @@ func inv_use(inv_name: String, grid_id: Vector2i) -> bool:
 
 func _inv_try_equip(inv_name: String, item_data: ItemData) -> bool:
 	if item_data:
-		if slot_controller.try_equip(item_data):
-			inventory_controller.remove_item_by_data(inv_name, item_data)
+		if slot_service.try_equip(item_data):
+			inventory_service.remove_item_by_data(inv_name, item_data)
 			return true
 	return false
 
 func _inv_try_use(inv_name: String, grid_id: Vector2i, item_data: ItemData) -> bool:
 	if item_data:
 		if item_data.use():
-			inventory_controller.remove_item_by_data(inv_name, item_data)
+			inventory_service.remove_item_by_data(inv_name, item_data)
 			return true
 		else:
-			inventory_controller.sig_item_used.emit(inv_name, grid_id, item_data)
+			inventory_service.sig_inv_item_used.emit(inv_name, grid_id, item_data)
 			return true
 	return false
 # =========================
 
 func slot_regist(slot_name: String, avilable_types: Array[ItemType]) -> bool:
-	return slot_controller.regist_slot(slot_name, avilable_types)
+	return slot_service.regist_slot(slot_name, avilable_types)
 
 func slot_equip_moving_item(slot_name: String) -> bool:
-	if slot_controller.equip_to(slot_name, moving_item):
+	if slot_service.equip_to(slot_name, moving_item):
 		clear_moving_item()
 		return true
 	return false
 
 func slot_unequip(slot_name) -> bool:
 	for current_inventory in current_inventories:
-		if not inventory_controller.is_inventory_existed(current_inventory):
+		if not inventory_service.is_inventory_existed(current_inventory):
 			push_error("Cannot find inventory name [%s]. Please ensure GBIS.current_main_inventories contains valid inventory name." % current_inventory)
 			return false
-		var item_data = slot_controller.get_equipped_item(slot_name)
-		if inventory_controller.add_item(current_inventory, item_data):
-			slot_controller.unequip(slot_name)
+		var item_data = slot_service.get_equipped_item(slot_name)
+		if inventory_service.add_item(current_inventory, item_data):
+			slot_service.unequip(slot_name)
 			return true
 	return false
 
@@ -154,7 +169,7 @@ func slot_move_item(slot_name: String, base_size: int) -> void:
 	if moving_item:
 		push_error("Already had moving item.")
 		return
-	var item_data = slot_controller.get_equipped_item(slot_name)
+	var item_data = slot_service.get_equipped_item(slot_name)
 	if item_data:
 		draw_moving_item(item_data, Vector2i.ZERO, base_size)
-		slot_controller.unequip(slot_name)
+		slot_service.unequip(slot_name)
