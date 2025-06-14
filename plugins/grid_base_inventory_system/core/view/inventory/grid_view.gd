@@ -67,7 +67,7 @@ func _on_mouse_exited() -> void:
 	_inventory_view.grid_lose_hover(grid_id)
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_click") && get_global_rect().has_point(get_global_mouse_position()):
+	if event.is_action_pressed("inv_click") && get_global_rect().has_point(get_global_mouse_position()):
 		if has_taken:
 			if not GBIS.moving_item:
 				GBIS.inv_move_item(_inventory_view.inventory_name, grid_id, offset, _size)
@@ -76,12 +76,15 @@ func _input(event: InputEvent) -> void:
 			_on_mouse_entered()
 		else:
 			GBIS.inv_place_moving_item(_inventory_view.inventory_name, grid_id)
-	if event.is_action_pressed("ui_quick_move") && get_global_rect().has_point(get_global_mouse_position()):
+	if event.is_action_pressed("inv_quick_move") && get_global_rect().has_point(get_global_mouse_position()):
 		if has_taken:
 			GBIS.inv_quick_move(_inventory_view.inventory_name, grid_id)
-	if event.is_action_pressed("ui_use") && get_global_rect().has_point(get_global_mouse_position()):
+	if event.is_action_pressed("inv_use") && get_global_rect().has_point(get_global_mouse_position()):
 		if has_taken:
 			GBIS.inv_use(_inventory_view.inventory_name, grid_id)
+	if event.is_action_pressed("inv_split") && get_global_rect().has_point(get_global_mouse_position()):
+		if has_taken and not GBIS.moving_item:
+			GBIS.inv_split_item(_inventory_view.inventory_name, grid_id, offset, _size)
 
 func _draw() -> void:
 	draw_rect(Rect2(0, 0, _size, _size), _border_color, true)

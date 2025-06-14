@@ -99,11 +99,11 @@ func _recalculate_size() -> void:
 	queue_redraw()
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_click") && get_global_rect().has_point(get_global_mouse_position()):
+	if event.is_action_pressed("inv_click") && get_global_rect().has_point(get_global_mouse_position()):
 		if GBIS.moving_item and is_empty():
 			GBIS.slot_equip_moving_item(slot_name)
 		elif not GBIS.moving_item and not is_empty():
 			GBIS.slot_move_item(slot_name, base_size)
-	if event.is_action_pressed("ui_use") && get_global_rect().has_point(get_global_mouse_position()):
+	if event.is_action_pressed("inv_use") && get_global_rect().has_point(get_global_mouse_position()):
 		if not is_empty():
 			GBIS.slot_unequip(slot_name)

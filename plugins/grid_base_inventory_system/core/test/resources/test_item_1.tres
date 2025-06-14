@@ -5,9 +5,12 @@
 
 [resource]
 script = ExtResource("1_6kgfc")
+item_id = "Test Boots"
 type = 5
 stack_size = 1
-current_amoutn = 1
+current_amount = 1
+destroy_if_empty = true
+show_stack = false
 icon = ExtResource("1_ihin7")
 columns = 2
 rows = 2

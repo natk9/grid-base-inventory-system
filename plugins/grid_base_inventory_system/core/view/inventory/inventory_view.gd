@@ -123,7 +123,8 @@ func _ready() -> void:
 	_init_grids()
 	GBIS.sig_inv_item_added.connect(_on_item_added)
 	GBIS.sig_inv_item_removed.connect(_on_item_removed)
-	GBIS.sig_inv_item_used.connect(_on_item_used)
+	GBIS.sig_inv_item_updated_grid_id.connect(_on_item_updated_grid_id)
+	GBIS.sig_inv_item_updated_item_data.connect(_on_item_updated_item_data)
 	
 	if not stack_num_font:
 		stack_num_font = get_theme_font("font")
@@ -168,11 +169,20 @@ func _on_item_removed(inv_name:String, item_data: ItemData) -> void:
 			_items.remove_at(i)
 			break
 
-func _on_item_used(inv_name: String, grid_id: Vector2i, _item_data: ItemData) -> void:
+func _on_item_updated_grid_id(inv_name: String, grid_id: Vector2i) -> void:
 	if not inv_name == inventory_name:
 		return
 	
 	_grid_item_map[grid_id].queue_redraw()
+
+func _on_item_updated_item_data(inv_name: String, item_data: ItemData) -> void:
+	if not inv_name == inventory_name:
+		return
+	
+	for item in _items:
+		if item.data == item_data:
+			item.queue_redraw()
+			break
 
 ## 绘制物品
 func _draw_item(item_data: ItemData, grids: Array[Vector2i]) -> ItemView:

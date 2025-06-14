@@ -5,9 +5,10 @@
 
 [resource]
 script = ExtResource("1_kc0h0")
+item_id = "Test Consumable"
 type = 19
 stack_size = 3
-current_amount = 3
+current_amount = 1
 destroy_if_empty = true
 show_stack = true
 icon = ExtResource("1_e4mcj")

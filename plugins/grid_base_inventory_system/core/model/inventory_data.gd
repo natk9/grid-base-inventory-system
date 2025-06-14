@@ -46,6 +46,13 @@ func try_add_to_grid(item_data: ItemData, grid_id: Vector2i) -> Array[Vector2i]:
 	_add_item_to_grids(item_data, grids)
 	return grids
 
+func find_item_data_by_id(item_id: String) -> Array[ItemData]:
+	var ret: Array[ItemData] = []
+	for item in _items:
+		if item.item_id == item_id:
+			ret.append(item)
+	return ret
+
 @warning_ignore("shadowed_variable")
 func _init(inv_name: String, columns: int, rows: int, avilable_types: Array[GBIS.ItemType]) -> void:
 	self.inv_name = inv_name

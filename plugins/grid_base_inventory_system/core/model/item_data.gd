@@ -2,7 +2,9 @@ extends Resource
 class_name ItemData
 
 @export_group("Common Settings")
+@export var item_id: String = "default"
 @export var type: GBIS.ItemType = GBIS.ItemType.ALL
+@export_group("Stack Settings")
 @export var stack_size: int = 1
 @export var current_amount: int = 1
 @export var destroy_if_empty: bool = true

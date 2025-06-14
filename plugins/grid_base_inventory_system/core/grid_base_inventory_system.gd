@@ -6,7 +6,9 @@ signal sig_inv_item_added(inv_name: String, item_data: ItemData, grids: Array[Ve
 @warning_ignore("unused_signal")
 signal sig_inv_item_removed(inv_name: String, item_data: ItemData)
 @warning_ignore("unused_signal")
-signal sig_inv_item_used(inv_name: String, grid_id: Vector2i, item_data: ItemData)
+signal sig_inv_item_updated_grid_id(inv_name: String, grid_id: Vector2i)
+@warning_ignore("unused_signal")
+signal sig_inv_item_updated_item_data(inv_name: String, item_data: ItemData)
 @warning_ignore("unused_signal")
 signal sig_slot_item_equipped(slot_name: String, item_data: ItemData)
 @warning_ignore("unused_signal")
@@ -87,9 +89,28 @@ func inv_find_item_data(inv_name: String, grid_id: Vector2i) -> ItemData:
 	return inventory_service.find_item_data_by_grid(inv_name, grid_id)
 
 func inv_add_item(inv_name: String, item_data: ItemData) -> void:
-	inventory_service.add_item(inv_name, item_data)
+	if item_data.stack_size > 1:
+		var items = inventory_service.find_item_data_by_id(inv_name, item_data.item_id)
+		for item in items:
+			if not item.is_full():
+				item_data.current_amount = item.add_amount(item_data.current_amount)
+				sig_inv_item_updated_item_data.emit(inv_name, item)
+				if item_data.current_amount <= 0:
+					break
+	if item_data.current_amount > 0:
+		inventory_service.add_item(inv_name, item_data)
 
 func inv_stack_item(inv_name: String, grid_id: Vector2i) -> void:
+	if not moving_item:
+		return
+	var item_data = inventory_service.find_item_data_by_grid(inv_name, grid_id)
+	if item_data.item_id == moving_item.item_id:
+		var amount_left = item_data.add_amount(moving_item.current_amount)
+		if amount_left > 0:
+			moving_item.current_amount = amount_left
+		else:
+			clear_moving_item()
+		sig_inv_item_updated_item_data.emit(inv_name, item_data)
 	pass
 
 func inv_move_item(inv_name: String, grid_id: Vector2i, offset: Vector2i, base_size: int) -> void:
@@ -140,9 +161,14 @@ func _inv_try_use(inv_name: String, grid_id: Vector2i, item_data: ItemData) -> b
 			inventory_service.remove_item_by_data(inv_name, item_data)
 			return true
 		else:
-			inventory_service.sig_inv_item_used.emit(inv_name, grid_id, item_data)
+			sig_inv_item_updated_grid_id.emit(inv_name, grid_id)
 			return true
 	return false
+
+func inv_split_item(inv_name: String, grid_id: Vector2i, offset: Vector2i, base_size: int) -> void:
+	var item_data = inventory_service.split_item(inv_name, grid_id)
+	if item_data:
+		draw_moving_item(item_data, offset, base_size)
 # =========================
 
 func slot_regist(slot_name: String, avilable_types: Array[ItemType]) -> bool:

@@ -30,8 +30,29 @@ func add_item(inv_name: String, item_data: ItemData) -> bool:
 		return true
 	return false
 
-func find_item_data_by_grid(inv_name: String, grid_id) -> ItemData:
+func find_item_data_by_id(inv_name: String, item_id: String) -> Array[ItemData]:
+	var inv = _inventory_repository.get_inventory(inv_name)
+	if inv:
+		return inv.find_item_data_by_id(item_id)
+	return []
+
+func find_item_data_by_grid(inv_name: String, grid_id: Vector2i) -> ItemData:
 	return _inventory_repository.find_item_data_by_grid(inv_name, grid_id)
+
+func split_item(inv_name: String, grid_id: Vector2i) -> ItemData:
+	var inv = _inventory_repository.get_inventory(inv_name)
+	if inv:
+		var item = inv.find_item_data_by_grid(grid_id)
+		if item and item.stack_size > 1 and item.current_amount > 1:
+			var origin_amount = item.current_amount
+			var new_amount_1 = origin_amount / 2
+			var new_amount_2 = origin_amount - new_amount_1
+			item.current_amount = new_amount_1
+			GBIS.sig_inv_item_updated_grid_id.emit(inv_name, grid_id)
+			var new_item = item.duplicate()
+			new_item.current_amount = new_amount_2
+			return new_item
+	return null
 
 func is_inventory_existed(inv_name: String) -> bool:
 	return _inventory_repository.get_inventory(inv_name) != null
