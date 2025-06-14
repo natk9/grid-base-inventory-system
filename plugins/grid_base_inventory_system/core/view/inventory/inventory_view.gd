@@ -2,7 +2,7 @@
 extends Control
 class_name InventoryView
 
-@export_category("Inventory Settings")
+@export_group("Inventory Settings")
 @export var inventory_name: String = GBIS.DEFAULT_INVENTORY_NAME
 @export var inventory_columns: int = 2:
 	set(value):
@@ -14,7 +14,7 @@ class_name InventoryView
 		_recalculate_size()
 @export var avilable_types: Array[GBIS.ItemType] = [GBIS.ItemType.ALL]
 
-@export_category("Grid Settings")
+@export_group("Grid Settings")
 @export var base_size: int = 32:
 	set(value):
 		base_size = value
@@ -44,6 +44,24 @@ class_name InventoryView
 		grid_background_color_avilable = value
 		queue_redraw()
 
+@export_group("Stack Settings")
+@export var stack_num_font: Font:
+	set(value):
+		stack_num_font = value
+		queue_redraw()
+@export var stack_num_font_size: int = 16:
+	set(value):
+		stack_num_font_size = value
+		queue_redraw()
+@export var stack_num_margin: int = 4:
+	set(value):
+		stack_num_margin = value
+		queue_redraw()
+@export var stack_num_color: Color = Color.WHITE:
+	set(value):
+		stack_num_color = value
+		queue_redraw()
+
 var _grid_container: GridContainer
 var _item_container: Node
 
@@ -57,6 +75,10 @@ func grid_hover(grid_id: Vector2i) -> void:
 		return
 	
 	GBIS.moving_item_view.base_size = base_size
+	GBIS.moving_item_view.stack_num_color = stack_num_color
+	GBIS.moving_item_view.stack_num_font = stack_num_font
+	GBIS.moving_item_view.stack_num_font_size = stack_num_font_size
+	GBIS.moving_item_view.stack_num_margin = stack_num_margin
 	
 	var moving_item_offset = GBIS.moving_item_offset
 	var moving_item = GBIS.moving_item
@@ -101,6 +123,10 @@ func _ready() -> void:
 	_init_grids()
 	GBIS.inventory_controller.sig_item_added.connect(_on_item_added)
 	GBIS.inventory_controller.sig_item_removed.connect(_on_item_removed)
+	GBIS.inventory_controller.sig_item_used.connect(_on_item_used)
+	
+	if not stack_num_font:
+		stack_num_font = get_theme_font("font")
 
 ## 从start（左上角）开始的位置
 ## 如果可以放下这个shape，返回所有格子的数组
@@ -142,10 +168,16 @@ func _on_item_removed(inv_name:String, item_data: ItemData) -> void:
 			_items.remove_at(i)
 			break
 
+func _on_item_used(inv_name: String, grid_id: Vector2i, _item_data: ItemData) -> void:
+	if not inv_name == inventory_name:
+		return
+	
+	_grid_item_map[grid_id].queue_redraw()
+
 ## 绘制物品
 func _draw_item(item_data: ItemData, grids: Array[Vector2i]) -> ItemView:
 	var left_corner_grid_view = _grid_map[grids[0]]
-	var item = ItemView.new(item_data, base_size)
+	var item = ItemView.new(item_data, base_size, stack_num_font, stack_num_font_size, stack_num_margin, stack_num_color)
 	_item_container.add_child(item)
 	item.global_position = left_corner_grid_view.global_position
 	return item
@@ -182,6 +214,14 @@ func _draw() -> void:
 			for col in inventory_columns:
 				draw_rect(Rect2(col * base_size, row * base_size, base_size, base_size), grid_border_color, true)
 				draw_rect(Rect2(col * base_size + grid_border_size, row * base_size + grid_border_size, inner_size, inner_size), gird_background_color_empty, true)
+				var font = stack_num_font if stack_num_font else get_theme_font("font")
+				var text_size = font.get_string_size("99", HORIZONTAL_ALIGNMENT_RIGHT, -1, stack_num_font_size)
+				var pos = Vector2(
+					base_size - text_size.x - stack_num_margin,
+					base_size - font.get_descent(stack_num_font_size) - stack_num_margin
+				)
+				pos += Vector2(col * base_size, row * base_size)
+				draw_string(font, pos, "99", HORIZONTAL_ALIGNMENT_RIGHT, -1, stack_num_font_size, stack_num_color)
 
 ## 重新计算大小并绘制
 func _recalculate_size() -> void:

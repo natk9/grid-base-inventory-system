@@ -7,3 +7,5 @@ func _ready() -> void:
 
 func _on_button_pressed() -> void:
 	GBIS.inv_add_item("inv_1", load("res://plugins/grid_base_inventory_system/core/test/resources/test_item_1.tres"))
+	GBIS.inv_add_item("inv_2", load("res://plugins/grid_base_inventory_system/core/test/resources/test_item_2.tres"))
+	GBIS.inv_add_item("inv_1", load("res://plugins/grid_base_inventory_system/core/test/resources/test_item_2.tres"))

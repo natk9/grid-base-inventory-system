@@ -1,6 +1,12 @@
 extends Control
 class_name ItemView
 
+
+var stack_num_font: Font
+var stack_num_font_size: int
+var stack_num_margin: int = 2
+var stack_num_color: Color = Color.WHITE
+
 var data: ItemData
 var base_size: int:
 	set(value):
@@ -10,9 +16,13 @@ var _is_moving: bool = false
 var _moving_offset: Vector2i = Vector2i.ZERO
 
 @warning_ignore("shadowed_variable")
-func _init(data: ItemData, base_size: int) -> void:
+func _init(data: ItemData, base_size: int, stack_num_font: Font = null, stack_num_font_size: int = 16, stack_num_margin: int = 2, stack_num_color: Color = Color.WHEAT) -> void:
 	self.data = data
 	self.base_size = base_size
+	self.stack_num_font = stack_num_font if stack_num_font else get_theme_font("font")
+	self.stack_num_font_size = stack_num_font_size
+	self.stack_num_margin = stack_num_margin
+	self.stack_num_color = stack_num_color
 	recalculate_size()
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 
@@ -27,9 +37,15 @@ func move(offset: Vector2i = Vector2i.ZERO) -> void:
 func _draw() -> void:
 	if data.icon:
 		draw_texture_rect(data.icon, Rect2(Vector2.ZERO, size), false)
+	if data.show_stack:
+		var text_size = stack_num_font.get_string_size(str(data.current_amount), HORIZONTAL_ALIGNMENT_RIGHT, -1, stack_num_font_size)
+		var pos = Vector2(
+			size.x - text_size.x - stack_num_margin,
+			size.y - stack_num_font.get_descent(stack_num_font_size) - stack_num_margin
+		)
+		draw_string(stack_num_font, pos, str(data.current_amount), HORIZONTAL_ALIGNMENT_RIGHT, -1, stack_num_font_size, stack_num_color)
 
-@warning_ignore("unused_parameter")
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if _is_moving:
 		@warning_ignore("integer_division")
 		global_position = get_global_mouse_position() - Vector2(base_size * _moving_offset) - Vector2(base_size / 2, base_size / 2)

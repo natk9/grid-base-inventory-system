@@ -26,7 +26,8 @@ enum ItemType{
 	MOUNT,           # 坐骑
 	CONSUMABLE,      # 消耗品
 	QUEST_ITEM,      # 任务物品
-	MATERIAL         # 材料
+	MATERIAL,        # 材料
+	SKILL            # 技能
 }
 
 var inventory_controller: InventoryController = InventoryController.new()
@@ -39,6 +40,13 @@ var moving_item_offset: Vector2i = Vector2i.ZERO
 
 var current_player: String = DEFAULT_PLAYER
 var current_inventories: Array[String] = [DEFAULT_INVENTORY_NAME]
+
+var useable_types: Array[ItemType] = [ItemType.CONSUMABLE, ItemType.SKILL]
+var equippable_types: Array[ItemType] = [ItemType.HELMET, ItemType.ARMOR, ItemType.GLOVES, 
+										ItemType.PANTS, ItemType.BOOTS, ItemType.RING, ItemType.AMULET, 
+										ItemType.SWORD, ItemType.AXE, ItemType.MACE, ItemType.DAGGER, 
+										ItemType.STAFF, ItemType.WAND, ItemType.BOW, ItemType.CROSSBOW, 
+										ItemType.SHIELD, ItemType.WINGS, ItemType.MOUNT]
 
 # =========================
 
@@ -63,6 +71,9 @@ func draw_moving_item(item_data: ItemData, moving_item_offset: Vector2i, base_si
 
 func inv_regist(inv_name: String, columns: int, rows: int, avilable_types: Array[ItemType]) -> bool:
 	return inventory_controller.regist_inventory(inv_name, columns, rows, avilable_types)
+
+func inv_find_item_data(inv_name: String, grid_id: Vector2i) -> ItemData:
+	return inventory_controller.find_item_data_by_grid(inv_name, grid_id)
 
 func inv_add_item(inv_name: String, item_data: ItemData) -> void:
 	inventory_controller.add_item(inv_name, item_data)
@@ -93,17 +104,34 @@ func inv_add_quick_move_relation(inv_name: String, target_inv_name: String) -> v
 func inv_remove_quick_move_relation(inv_name: String, target_inv_name: String) -> void:
 	inventory_controller.remove_quick_move_relation(inv_name, target_inv_name)
 
+func inv_use(inv_name: String, grid_id: Vector2i) -> bool:
+	var item_data = inventory_controller.find_item_data_by_grid(inv_name, grid_id)
+	if equippable_types.has(item_data.type):
+		return _inv_try_equip(inv_name, item_data)
+	elif useable_types.has(item_data.type):
+		return _inv_try_use(inv_name, grid_id, item_data)
+	return false
+
+func _inv_try_equip(inv_name: String, item_data: ItemData) -> bool:
+	if item_data:
+		if slot_controller.try_equip(item_data):
+			inventory_controller.remove_item_by_data(inv_name, item_data)
+			return true
+	return false
+
+func _inv_try_use(inv_name: String, grid_id: Vector2i, item_data: ItemData) -> bool:
+	if item_data:
+		if item_data.use():
+			inventory_controller.remove_item_by_data(inv_name, item_data)
+			return true
+		else:
+			inventory_controller.sig_item_used.emit(inv_name, grid_id, item_data)
+			return true
+	return false
 # =========================
 
 func slot_regist(slot_name: String, avilable_types: Array[ItemType]) -> bool:
 	return slot_controller.regist_slot(slot_name, avilable_types)
-
-func slot_try_equip(inv_name: String, grid_id: Vector2i) -> bool:
-	var item_data = inventory_controller.find_item_data_by_grid(inv_name, grid_id)
-	if item_data:
-		if slot_controller.try_equip(item_data):
-			inventory_controller.remove_item_by_data(inv_name, item_data)
-	return false
 
 func slot_equip_moving_item(slot_name: String) -> bool:
 	if slot_controller.equip_to(slot_name, moving_item):

@@ -54,7 +54,8 @@ func _ready() -> void:
 func _on_slot_hover() -> void:
 	if not GBIS.moving_item:
 		return
-	GBIS.moving_item_view.base_size = base_size
+	if GBIS.equippable_types.has(GBIS.moving_item_view.data.type):
+		GBIS.moving_item_view.base_size = base_size
 
 func _on_slot_lose_hover() -> void:
 	pass

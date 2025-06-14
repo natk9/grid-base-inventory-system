@@ -78,7 +78,7 @@ func _input(event: InputEvent) -> void:
 			GBIS.inv_quick_move(_inventory_view.inventory_name, grid_id)
 	if event.is_action_pressed("ui_use") && get_global_rect().has_point(get_global_mouse_position()):
 		if has_taken:
-			GBIS.slot_try_equip(_inventory_view.inventory_name, grid_id)
+			GBIS.inv_use(_inventory_view.inventory_name, grid_id)
 
 func _draw() -> void:
 	draw_rect(Rect2(0, 0, _size, _size), _border_color, true)

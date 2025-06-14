@@ -3,6 +3,8 @@ class_name InventoryController
 
 signal sig_item_added(inv_name: String, item_data: ItemData, grids: Array[Vector2i])
 signal sig_item_removed(inv_name: String, item_data: ItemData)
+@warning_ignore("unused_signal")
+signal sig_item_used(inv_name: String, grid_id: Vector2i, item_data: ItemData)
 
 var _inventory_repository: InventoryRepository = InventoryRepository.instance
 
