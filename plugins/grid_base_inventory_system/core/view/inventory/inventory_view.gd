@@ -130,9 +130,41 @@ func _ready() -> void:
 	GBIS.sig_inv_item_removed.connect(_on_item_removed)
 	GBIS.sig_inv_item_updated_grid_id.connect(_on_item_updated_grid_id)
 	GBIS.sig_inv_item_updated_item_data.connect(_on_item_updated_item_data)
+	GBIS.sig_inv_refresh.connect(_on_inventory_refresh)
 	
 	if not stack_num_font:
 		stack_num_font = get_theme_font("font")
+
+func _on_inventory_refresh() -> void:
+	_clear_inv()
+	var inv_data = GBIS.inv_get_all_data(inventory_name)
+	var handled_item: Dictionary[ItemData, ItemView]
+	for grid in _grid_map.keys():
+		var item_data = inv_data.grid_item_map[grid]
+		if item_data and not handled_item.has(item_data):
+			var grids = inv_data.item_grids_map[item_data]
+			var item = _draw_item(item_data, grids[0])
+			handled_item[item_data] = item
+			_items.append(item)
+			_item_grids_map[item] = grids
+			for g in grids:
+				_grid_map[g].taken(g - grids[0])
+				_grid_item_map[g] = item
+			continue
+		elif item_data:
+			_grid_item_map[grid] = handled_item[item_data]
+		else:
+			_grid_item_map[grid] = null
+	pass
+
+func _clear_inv() -> void:
+	for item in _items:
+		item.queue_free()
+	_items = []
+	_item_grids_map = {}
+	for grid in _grid_map.values():
+		grid.release()
+	_grid_item_map = {}
 
 ## 从start（左上角）开始的位置
 ## 如果可以放下这个shape，返回所有格子的数组
@@ -151,7 +183,7 @@ func _on_item_added(inv_name:String, item_data: ItemData, grids: Array[Vector2i]
 	if not inv_name == inventory_name:
 		return
 	
-	var item = _draw_item(item_data, grids)
+	var item = _draw_item(item_data, grids[0])
 	_items.append(item)
 	_item_grids_map[item] = grids
 	for grid in grids:
@@ -190,11 +222,10 @@ func _on_item_updated_item_data(inv_name: String, item_data: ItemData) -> void:
 			break
 
 ## 绘制物品
-func _draw_item(item_data: ItemData, grids: Array[Vector2i]) -> ItemView:
-	var left_corner_grid_view = _grid_map[grids[0]]
+func _draw_item(item_data: ItemData, first_grid: Vector2i) -> ItemView:
 	var item = ItemView.new(item_data, base_size, stack_num_font, stack_num_font_size, stack_num_margin, stack_num_color)
 	_item_container.add_child(item)
-	item.global_position = left_corner_grid_view.global_position
+	item.global_position = _grid_map[first_grid].global_position
 	return item
 
 ## 初始化格子容器

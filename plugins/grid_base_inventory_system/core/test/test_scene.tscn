@@ -49,6 +49,22 @@ offset_right = 1117.0
 offset_bottom = 708.0
 text = "Test"
 
+[node name="Button2" type="Button" parent="."]
+layout_mode = 0
+offset_left = 494.0
+offset_top = 737.0
+offset_right = 538.0
+offset_bottom = 768.0
+text = "Save"
+
+[node name="Button3" type="Button" parent="."]
+layout_mode = 0
+offset_left = 566.0
+offset_top = 738.0
+offset_right = 612.0
+offset_bottom = 769.0
+text = "Load"
+
 [node name="SlotView" type="Control" parent="."]
 anchors_preset = 0
 offset_left = 917.0
@@ -79,3 +95,5 @@ avilable_types = Array[int]([5])
 metadata/_custom_type_script = "uid://dg6xjko3rdcta"
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Button2" to="." method="_on_button_2_pressed"]
+[connection signal="pressed" from="Button3" to="." method="_on_button_3_pressed"]

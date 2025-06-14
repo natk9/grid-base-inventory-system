@@ -1,5 +1,7 @@
-extends Node
+extends Resource
 class_name InventoryRepository
+
+const PREFIX: String = "inv_"
 
 static var instance: InventoryRepository:
 	get:
@@ -7,8 +9,19 @@ static var instance: InventoryRepository:
 			instance = InventoryRepository.new()
 		return instance
 
-var _inventory_data_map: Dictionary[String, InventoryData]
-var _quick_move_relations_map: Dictionary[String, Array] # Array[inv_name: String]
+@export_storage var _inventory_data_map: Dictionary[String, InventoryData]
+@export_storage var _quick_move_relations_map: Dictionary[String, Array] # Array[inv_name: String]
+
+func save() -> void:
+	ResourceSaver.save(self, GBIS.current_save_path + PREFIX + GBIS.current_save_name)
+
+func load() -> void:
+	var saved_repository: InventoryRepository = load(GBIS.current_save_path + PREFIX + GBIS.current_save_name)
+	if not saved_repository:
+		return
+	for inv_name in saved_repository._inventory_data_map.keys():
+		_inventory_data_map[inv_name] = saved_repository._inventory_data_map[inv_name].deep_duplicate()
+	_quick_move_relations_map = saved_repository._quick_move_relations_map.duplicate(true)
 
 func add_inventory(inv_name: String, columns: int, rows: int, avilable_types: Array[GBIS.ItemType]) -> bool:
 	var inv = get_inventory(inv_name)

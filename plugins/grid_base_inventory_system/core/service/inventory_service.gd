@@ -20,6 +20,15 @@ func regist_inventory(inv_name: String, columns: int, rows: int, avilable_types:
 	else:
 		return _inventory_repository.add_inventory(inv_name, columns, rows, avilable_types)
 
+func save() -> void:
+	_inventory_repository.save()
+
+func load() -> void:
+	_inventory_repository.load()
+
+func get_inv_by_name(inv_name: String) -> InventoryData:
+	return _inventory_repository.get_inventory(inv_name)
+
 ## 向指定背包添加物品
 ## 注意：此处传入的 item_data 将被复制，以确保多个相同物品的 data 互相独立
 func add_item(inv_name: String, item_data: ItemData) -> bool:

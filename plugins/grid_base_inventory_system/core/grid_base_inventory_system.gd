@@ -10,6 +10,9 @@ signal sig_inv_item_updated_grid_id(inv_name: String, grid_id: Vector2i)
 @warning_ignore("unused_signal")
 signal sig_inv_item_updated_item_data(inv_name: String, item_data: ItemData)
 @warning_ignore("unused_signal")
+signal sig_inv_refresh
+
+@warning_ignore("unused_signal")
 signal sig_slot_item_equipped(slot_name: String, item_data: ItemData)
 @warning_ignore("unused_signal")
 signal sig_slot_item_unequipped(slot_name: String, item_data: ItemData)
@@ -42,6 +45,7 @@ enum ItemType{
 
 const DEFAULT_PLAYER: String = "player_1"
 const DEFAULT_INVENTORY_NAME: String = "default"
+const DEFAULT_SAVE_FOLDER: String = "res://plugins/grid_base_inventory_system/saves/"
 
 var inventory_service: InventoryService = InventoryService.new()
 var slot_service: SlotService = SlotService.new()
@@ -53,6 +57,8 @@ var moving_item_offset: Vector2i = Vector2i.ZERO
 
 var current_player: String = DEFAULT_PLAYER
 var current_inventories: Array[String] = [DEFAULT_INVENTORY_NAME]
+var current_save_path: String = DEFAULT_SAVE_FOLDER
+var current_save_name: String = "default.tres"
 
 var useable_types: Array[ItemType] = [ItemType.CONSUMABLE, ItemType.SKILL]
 var equippable_types: Array[ItemType] = [ItemType.HELMET, ItemType.ARMOR, ItemType.GLOVES, 
@@ -60,6 +66,14 @@ var equippable_types: Array[ItemType] = [ItemType.HELMET, ItemType.ARMOR, ItemTy
 										ItemType.SWORD, ItemType.AXE, ItemType.MACE, ItemType.DAGGER, 
 										ItemType.STAFF, ItemType.WAND, ItemType.BOW, ItemType.CROSSBOW, 
 										ItemType.SHIELD, ItemType.WINGS, ItemType.MOUNT]
+
+func save() -> void:
+	inventory_service.save()
+
+func load() -> void:
+	await get_tree().process_frame
+	inventory_service.load()
+	sig_inv_refresh.emit()
 
 # =========================
 
@@ -81,6 +95,8 @@ func draw_moving_item(item_data: ItemData, moving_item_offset: Vector2i, base_si
 	moving_item_view.move(moving_item_offset)
 
 # =========================
+func inv_get_all_data(inv_name: String) -> InventoryData:
+	return inventory_service.get_inv_by_name(inv_name)
 
 func inv_regist(inv_name: String, columns: int, rows: int, avilable_types: Array[ItemType]) -> bool:
 	return inventory_service.regist_inventory(inv_name, columns, rows, avilable_types)
