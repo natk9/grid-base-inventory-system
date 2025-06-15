@@ -49,3 +49,8 @@ func _process(_delta: float) -> void:
 	if _is_moving:
 		@warning_ignore("integer_division")
 		global_position = get_global_mouse_position() - Vector2(base_size * _moving_offset) - Vector2(base_size / 2, base_size / 2)
+
+func gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("inv_click") && get_global_rect().has_point(get_global_mouse_position()):
+		data.drop()
+		GBIS.moving_item_service.clear_moving_item()

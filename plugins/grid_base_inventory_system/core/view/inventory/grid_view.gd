@@ -57,6 +57,7 @@ func _init(inventoryView: InventoryView, grid_id: Vector2i,size: int, border_siz
 		custom_minimum_size = Vector2(_size, _size)
 
 func _ready() -> void:
+	mouse_filter = Control.MOUSE_FILTER_STOP
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 
@@ -66,7 +67,7 @@ func _on_mouse_entered() -> void:
 func _on_mouse_exited() -> void:
 	_inventory_view.grid_lose_hover(grid_id)
 
-func _input(event: InputEvent) -> void:
+func _gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("inv_click") && get_global_rect().has_point(get_global_mouse_position()):
 		if has_taken:
 			if not GBIS.moving_item_service.moving_item:

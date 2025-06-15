@@ -60,6 +60,8 @@ func _ready() -> void:
 	GBIS.sig_slot_refresh.connect(_on_slot_refresh)
 	mouse_entered.connect(_on_slot_hover)
 	mouse_exited.connect(_on_slot_lose_hover)
+	
+	call_deferred("_on_slot_refresh")
 
 func _on_slot_refresh() -> void:
 	_clear_slot()
@@ -132,7 +134,7 @@ func _recalculate_size() -> void:
 	size = Vector2(columns * base_size, rows * base_size)
 	queue_redraw()
 
-func _input(event: InputEvent) -> void:
+func _gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("inv_click") && get_global_rect().has_point(get_global_mouse_position()):
 		if GBIS.moving_item_service.moving_item and is_empty():
 			GBIS.equipment_slot_service.equip_moving_item(slot_name)

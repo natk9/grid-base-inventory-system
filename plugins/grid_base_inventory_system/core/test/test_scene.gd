@@ -18,3 +18,6 @@ func _on_button_2_pressed() -> void:
 
 func _on_button_3_pressed() -> void:
 	GBIS.load()
+
+func _on_button_4_pressed() -> void:
+	get_tree().change_scene_to_file("res://plugins/grid_base_inventory_system/core/test/test_scene_2.tscn")

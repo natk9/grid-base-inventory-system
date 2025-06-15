@@ -103,6 +103,7 @@ func grid_hover(grid_id: Vector2i) -> void:
 func grid_lose_hover(grid_id: Vector2i) -> void:
 	if not GBIS.moving_item_service.moving_item:
 		return
+	
 	var moving_item_offset = GBIS.moving_item_service.moving_item_offset
 	var moving_item = GBIS.moving_item_service.moving_item
 	var item_shape = moving_item.get_shape()
@@ -124,7 +125,7 @@ func _ready() -> void:
 	if not ret:
 		return
 	
-	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	mouse_filter = Control.MOUSE_FILTER_STOP
 	_init_grid_container()
 	_init_item_container()
 	_init_grids()
@@ -136,6 +137,8 @@ func _ready() -> void:
 	
 	if not stack_num_font:
 		stack_num_font = get_theme_font("font")
+	
+	call_deferred("_on_inventory_refresh")
 
 func _on_inventory_refresh() -> void:
 	_clear_inv()

@@ -11,3 +11,6 @@ class_name ItemData
 
 func get_shape() -> Vector2i:
 	return Vector2i(columns, rows)
+
+func drop() -> void:
+	push_warning("[Override this function] item [%s] dropped" % item_name)
