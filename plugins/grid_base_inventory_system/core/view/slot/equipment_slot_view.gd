@@ -1,6 +1,6 @@
 @tool
 extends Control
-class_name SlotView
+class_name EquipmentSlotView
 
 @export var slot_name: String = "defalut slot"
 @export var background: Texture2D:
@@ -40,7 +40,7 @@ func _ready() -> void:
 		push_error("Slot must have a name.")
 		return
 	
-	var ret = GBIS.slot_service.regist_slot(slot_name, avilable_types)
+	var ret = GBIS.equipment_slot_service.regist_slot(slot_name, avilable_types)
 	if not ret:
 		return
 	
@@ -101,9 +101,9 @@ func _recalculate_size() -> void:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("inv_click") && get_global_rect().has_point(get_global_mouse_position()):
 		if GBIS.moving_item_service.moving_item and is_empty():
-			GBIS.slot_service.equip_moving_item(slot_name)
+			GBIS.equipment_slot_service.equip_moving_item(slot_name)
 		elif not GBIS.moving_item_service.moving_item and not is_empty():
-			GBIS.slot_service.move_item(slot_name, base_size)
+			GBIS.equipment_slot_service.move_item(slot_name, base_size)
 	if event.is_action_pressed("inv_use") && get_global_rect().has_point(get_global_mouse_position()):
 		if not is_empty():
-			GBIS.slot_service.unequip(slot_name)
+			GBIS.equipment_slot_service.unequip(slot_name)

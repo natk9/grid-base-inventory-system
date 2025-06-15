@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b3x4mwtjmm4tp" path="res://plugins/grid_base_inventory_system/core/view/inventory/inventory_view.gd" id="1_n01jp"]
 [ext_resource type="Script" uid="uid://dy2bqex483xwa" path="res://plugins/grid_base_inventory_system/core/test/test_scene.gd" id="1_ofb33"]
-[ext_resource type="Script" uid="uid://dg6xjko3rdcta" path="res://plugins/grid_base_inventory_system/core/view/slot/slot_view.gd" id="3_qmsca"]
+[ext_resource type="Script" uid="uid://dg6xjko3rdcta" path="res://plugins/grid_base_inventory_system/core/view/slot/equipment_slot_view.gd" id="3_qmsca"]
 [ext_resource type="Texture2D" uid="uid://dxusr1agnbuhw" path="res://plugins/grid_base_inventory_system/assets/ui/boots_background.png" id="4_566py"]
 
 [node name="TestScene" type="Control"]

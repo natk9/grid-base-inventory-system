@@ -1,5 +1,5 @@
 extends Node
-class_name SlotService
+class_name EquipmentSlotService
 
 var _slot_repository: SlotRepository = SlotRepository.instance
 

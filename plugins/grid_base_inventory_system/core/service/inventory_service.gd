@@ -70,7 +70,7 @@ func use_item(inv_name: String, grid_id: Vector2i) -> bool:
 	if not item_data:
 		return false
 	if item_data is EquipmentData:
-		if GBIS.slot_service.try_equip(item_data):
+		if GBIS.equipment_slot_service.try_equip(item_data):
 			remove_item_by_data(inv_name, item_data)
 			return true
 	elif item_data is ConsumableData:

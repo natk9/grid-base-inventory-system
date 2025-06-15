@@ -22,7 +22,7 @@ const DEFAULT_INVENTORY_NAME: String = "default"
 const DEFAULT_SAVE_FOLDER: String = "res://plugins/grid_base_inventory_system/saves/"
 
 var inventory_service: InventoryService = InventoryService.new()
-var slot_service: SlotService = SlotService.new()
+var equipment_slot_service: EquipmentSlotService = EquipmentSlotService.new()
 var moving_item_service: MovingItemService = MovingItemService.new()
 
 var current_player: String = DEFAULT_PLAYER
