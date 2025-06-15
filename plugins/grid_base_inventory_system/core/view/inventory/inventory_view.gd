@@ -93,8 +93,9 @@ func grid_hover(grid_id: Vector2i) -> void:
 		var item_view = _grid_item_map.get(grid_id)
 		if has_conflict and item_view:
 			var item_data: ItemData = item_view.data
-			if item_data.item_name == GBIS.moving_item_service.moving_item.item_name and not item_data.is_full():
-				has_conflict = false
+			if item_data is StackableData:
+				if item_data.item_name == GBIS.moving_item_service.moving_item.item_name and not item_data.is_full():
+					has_conflict = false
 	for grid in grids:
 		var grid_view = _grid_map[grid]
 		grid_view.state = GridView.State.CONFLICT if has_conflict else GridView.State.AVILABLE

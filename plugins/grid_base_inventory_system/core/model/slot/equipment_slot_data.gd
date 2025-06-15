@@ -1,9 +1,9 @@
 extends Resource
 class_name EquipmentSlotData
 
-var equipped_item: ItemData
-var avilable_types: Array[String]
-var slot_name: String
+@export_storage var equipped_item: ItemData
+@export_storage var avilable_types: Array[String]
+@export_storage var slot_name: String
 
 func equip(item_data: ItemData) -> bool:
 	if not equipped_item:

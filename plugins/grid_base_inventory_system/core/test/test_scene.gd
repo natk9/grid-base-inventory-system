@@ -4,7 +4,7 @@ func _ready() -> void:
 	GBIS.inventory_service.add_quick_move_relation("inv_1", "inv_2")
 	GBIS.inventory_service.add_quick_move_relation("inv_2", "inv_1")
 	GBIS.current_inventories = ["inv_1", "inv_2"]
-	#GBIS.load()
+	GBIS.load()
 
 func _on_button_pressed() -> void:
 	var consumable_item_data = load("res://plugins/grid_base_inventory_system/core/test/resources/consumable_1.tres")

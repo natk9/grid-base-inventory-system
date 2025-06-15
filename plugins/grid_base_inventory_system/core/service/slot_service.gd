@@ -60,4 +60,5 @@ func move_item(slot_name: String, base_size: int) -> void:
 	var item_data = get_equipped_item(slot_name)
 	if item_data:
 		GBIS.moving_item_service.draw_moving_item(item_data, Vector2i.ZERO, base_size)
-		unequip(slot_name)
+		_slot_repository.get_slot(slot_name).unequip()
+		GBIS.sig_slot_item_unequipped.emit(slot_name, item_data)
