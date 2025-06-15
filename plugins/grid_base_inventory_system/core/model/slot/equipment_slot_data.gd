@@ -25,6 +25,6 @@ func is_item_avilable(item_data: ItemData) -> bool:
 	return false
 
 @warning_ignore("shadowed_variable")
-func _init(slot_name: String, avilable_types: Array[String]) -> void:
+func _init(slot_name: String = GBIS.DEFAULT_SLOT_NAME, avilable_types: Array[String] = []) -> void:
 	self.slot_name = slot_name
 	self.avilable_types = avilable_types

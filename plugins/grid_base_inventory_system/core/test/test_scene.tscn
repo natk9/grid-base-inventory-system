@@ -73,10 +73,10 @@ offset_right = 494.0
 offset_bottom = 736.0
 script = ExtResource("3_qmsca")
 slot_name = "boots_slot_1"
-background = ExtResource("4_566py")
 base_size = 48
 columns = 3
 rows = 3
+background = ExtResource("4_566py")
 avilable_types = Array[String](["BOOTS"])
 metadata/_custom_type_script = "uid://dg6xjko3rdcta"
 
@@ -88,9 +88,9 @@ offset_right = 319.0
 offset_bottom = 971.0
 script = ExtResource("3_qmsca")
 slot_name = "boots_slot_2"
-background = ExtResource("4_566py")
 base_size = 128
 rows = 3
+background = ExtResource("4_566py")
 avilable_types = Array[String](["BOOTS"])
 metadata/_custom_type_script = "uid://dg6xjko3rdcta"
 
