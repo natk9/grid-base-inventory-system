@@ -12,7 +12,7 @@ class_name InventoryView
 	set(value):
 		inventory_rows = value
 		_recalculate_size()
-@export var avilable_types: Array[GBIS.ItemType] = [GBIS.ItemType.ALL]
+@export var avilable_types: Array[String] = ["ANY"]
 
 @export_group("Grid Settings")
 @export var base_size: int = 32:
@@ -71,20 +71,21 @@ var _grid_map: Dictionary[Vector2i, GridView]
 var _grid_item_map: Dictionary[Vector2i, ItemView]
 
 func grid_hover(grid_id: Vector2i) -> void:
-	if not GBIS.moving_item:
+	if not GBIS.moving_item_service.moving_item:
 		return
 	
-	GBIS.moving_item_view.base_size = base_size
-	GBIS.moving_item_view.stack_num_color = stack_num_color
-	GBIS.moving_item_view.stack_num_font = stack_num_font
-	GBIS.moving_item_view.stack_num_font_size = stack_num_font_size
-	GBIS.moving_item_view.stack_num_margin = stack_num_margin
+	var moving_item_view = GBIS.moving_item_service.moving_item_view
+	moving_item_view.base_size = base_size
+	moving_item_view.stack_num_color = stack_num_color
+	moving_item_view.stack_num_font = stack_num_font
+	moving_item_view.stack_num_font_size = stack_num_font_size
+	moving_item_view.stack_num_margin = stack_num_margin
 	
-	var moving_item_offset = GBIS.moving_item_offset
-	var moving_item = GBIS.moving_item
+	var moving_item_offset = GBIS.moving_item_service.moving_item_offset
+	var moving_item = GBIS.moving_item_service.moving_item
 	var item_shape = moving_item.get_shape()
 	var grids = _get_grids_by_shape(grid_id - moving_item_offset, item_shape)
-	var has_conflict = item_shape.x * item_shape.y != grids.size() or not GBIS.inv_is_item_avilable(inventory_name, moving_item)
+	var has_conflict = item_shape.x * item_shape.y != grids.size() or not GBIS.inventory_service.is_item_avilable(inventory_name, moving_item)
 	for grid in grids:
 		if has_conflict:
 			break 
@@ -92,17 +93,17 @@ func grid_hover(grid_id: Vector2i) -> void:
 		var item_view = _grid_item_map.get(grid_id)
 		if has_conflict and item_view:
 			var item_data: ItemData = item_view.data
-			if item_data.item_id == GBIS.moving_item.item_id and not item_data.is_full():
+			if item_data.item_name == GBIS.moving_item_service.moving_item.item_name and not item_data.is_full():
 				has_conflict = false
 	for grid in grids:
 		var grid_view = _grid_map[grid]
 		grid_view.state = GridView.State.CONFLICT if has_conflict else GridView.State.AVILABLE
 
 func grid_lose_hover(grid_id: Vector2i) -> void:
-	if not GBIS.moving_item:
+	if not GBIS.moving_item_service.moving_item:
 		return
-	var moving_item_offset = GBIS.moving_item_offset
-	var moving_item = GBIS.moving_item
+	var moving_item_offset = GBIS.moving_item_service.moving_item_offset
+	var moving_item = GBIS.moving_item_service.moving_item
 	var item_shape = moving_item.get_shape()
 	var grids = _get_grids_by_shape(grid_id - moving_item_offset, item_shape)
 	for grid in grids:
@@ -118,7 +119,7 @@ func _ready() -> void:
 		push_error("Inventory must have a name.")
 		return
 	
-	var ret = GBIS.inv_regist(inventory_name, inventory_columns, inventory_rows, avilable_types)
+	var ret = GBIS.inventory_service.regist_inventory(inventory_name, inventory_columns, inventory_rows, avilable_types)
 	if not ret:
 		return
 	
@@ -137,7 +138,7 @@ func _ready() -> void:
 
 func _on_inventory_refresh() -> void:
 	_clear_inv()
-	var inv_data = GBIS.inv_get_all_data(inventory_name)
+	var inv_data = GBIS.inventory_service.get_inv_by_name(inventory_name)
 	var handled_item: Dictionary[ItemData, ItemView]
 	for grid in _grid_map.keys():
 		var item_data = inv_data.grid_item_map[grid]
@@ -166,9 +167,6 @@ func _clear_inv() -> void:
 		grid.release()
 	_grid_item_map = {}
 
-## 从start（左上角）开始的位置
-## 如果可以放下这个shape，返回所有格子的数组
-## 否则返回空数组
 func _get_grids_by_shape(start: Vector2i, shape: Vector2i) -> Array[Vector2i]:
 	var ret: Array[Vector2i] = []
 	for row in shape.y:
@@ -178,7 +176,6 @@ func _get_grids_by_shape(start: Vector2i, shape: Vector2i) -> Array[Vector2i]:
 				ret.append(grid_id)
 	return ret
 
-## 添加物品时调用，显示添加的物品
 func _on_item_added(inv_name:String, item_data: ItemData, grids: Array[Vector2i]) -> void:
 	if not inv_name == inventory_name:
 		return
@@ -190,7 +187,6 @@ func _on_item_added(inv_name:String, item_data: ItemData, grids: Array[Vector2i]
 		_grid_map[grid].taken(grid - grids[0])
 		_grid_item_map[grid] = item
 
-## 移除物品时调用，反向遍历，释放空间
 func _on_item_removed(inv_name:String, item_data: ItemData) -> void:
 	if not inv_name == inventory_name:
 		return
@@ -221,14 +217,12 @@ func _on_item_updated_item_data(inv_name: String, item_data: ItemData) -> void:
 			item.queue_redraw()
 			break
 
-## 绘制物品
 func _draw_item(item_data: ItemData, first_grid: Vector2i) -> ItemView:
 	var item = ItemView.new(item_data, base_size, stack_num_font, stack_num_font_size, stack_num_margin, stack_num_color)
 	_item_container.add_child(item)
 	item.global_position = _grid_map[first_grid].global_position
 	return item
 
-## 初始化格子容器
 func _init_grid_container() -> void:
 	_grid_container = GridContainer.new()
 	_grid_container.add_theme_constant_override("h_separation", 0)
@@ -237,12 +231,10 @@ func _init_grid_container() -> void:
 	_grid_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_grid_container)
 
-## 初始化物品容器
 func _init_item_container() -> void:
 	_item_container = Node.new()
 	add_child(_item_container)
 
-## 初始化格子
 func _init_grids() -> void:
 	for row in inventory_rows:
 		for col in inventory_columns:
@@ -252,7 +244,6 @@ func _init_grids() -> void:
 			_grid_container.add_child(grid)
 			_grid_map[grid_id] = grid
 
-## 编辑器中绘制自身
 func _draw() -> void:
 	if Engine.is_editor_hint():
 		var inner_size = base_size - grid_border_size * 2
@@ -269,7 +260,6 @@ func _draw() -> void:
 				pos += Vector2(col * base_size, row * base_size)
 				draw_string(font, pos, "99", HORIZONTAL_ALIGNMENT_RIGHT, -1, stack_num_font_size, stack_num_color)
 
-## 重新计算大小并绘制
 func _recalculate_size() -> void:
 		size = Vector2(inventory_columns * base_size, inventory_rows * base_size)
 		queue_redraw()

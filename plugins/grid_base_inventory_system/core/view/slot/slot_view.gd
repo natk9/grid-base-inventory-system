@@ -23,7 +23,7 @@ class_name SlotView
 	set(value):
 		default_background_color = value
 		queue_redraw()
-@export var avilable_types: Array[GBIS.ItemType] = [GBIS.ItemType.ALL]
+@export var avilable_types: Array[String] = ["ANY"]
 
 var _item_container: Node
 var _item_view: ItemView
@@ -40,7 +40,7 @@ func _ready() -> void:
 		push_error("Slot must have a name.")
 		return
 	
-	var ret = GBIS.slot_regist(slot_name, avilable_types)
+	var ret = GBIS.slot_service.regist_slot(slot_name, avilable_types)
 	if not ret:
 		return
 	
@@ -52,10 +52,10 @@ func _ready() -> void:
 	mouse_exited.connect(_on_slot_lose_hover)
 
 func _on_slot_hover() -> void:
-	if not GBIS.moving_item:
+	if not GBIS.moving_item_service.moving_item:
 		return
-	if GBIS.equippable_types.has(GBIS.moving_item_view.data.type):
-		GBIS.moving_item_view.base_size = base_size
+	if GBIS.moving_item_service.moving_item is EquipmentData:
+		GBIS.moving_item_service.moving_item_view.base_size = base_size
 
 func _on_slot_lose_hover() -> void:
 	pass
@@ -100,10 +100,10 @@ func _recalculate_size() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("inv_click") && get_global_rect().has_point(get_global_mouse_position()):
-		if GBIS.moving_item and is_empty():
-			GBIS.slot_equip_moving_item(slot_name)
-		elif not GBIS.moving_item and not is_empty():
-			GBIS.slot_move_item(slot_name, base_size)
+		if GBIS.moving_item_service.moving_item and is_empty():
+			GBIS.slot_service.equip_moving_item(slot_name)
+		elif not GBIS.moving_item_service.moving_item and not is_empty():
+			GBIS.slot_service.move_item(slot_name, base_size)
 	if event.is_action_pressed("inv_use") && get_global_rect().has_point(get_global_mouse_position()):
 		if not is_empty():
-			GBIS.slot_unequip(slot_name)
+			GBIS.slot_service.unequip(slot_name)

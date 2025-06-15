@@ -3,10 +3,13 @@ class_name InventoryService
 
 var _inventory_repository: InventoryRepository = InventoryRepository.instance
 
-## 注册背包
-## 如果已经有了，则检查要注册的大小是否和已有的数据一致
-## 如果还没有，则新增背包数据
-func regist_inventory(inv_name: String, columns: int, rows: int, avilable_types: Array[GBIS.ItemType]) -> bool:
+func save() -> void:
+	_inventory_repository.save()
+
+func load() -> void:
+	_inventory_repository.load()
+
+func regist_inventory(inv_name: String, columns: int, rows: int, avilable_types: Array[String]) -> bool:
 	var inv_data = _inventory_repository.get_inventory(inv_name)
 	if inv_data:
 		var is_same_size = inv_data.rows == rows and inv_data.columns == columns
@@ -20,46 +23,87 @@ func regist_inventory(inv_name: String, columns: int, rows: int, avilable_types:
 	else:
 		return _inventory_repository.add_inventory(inv_name, columns, rows, avilable_types)
 
-func save() -> void:
-	_inventory_repository.save()
-
-func load() -> void:
-	_inventory_repository.load()
-
 func get_inv_by_name(inv_name: String) -> InventoryData:
 	return _inventory_repository.get_inventory(inv_name)
 
-## 向指定背包添加物品
-## 注意：此处传入的 item_data 将被复制，以确保多个相同物品的 data 互相独立
 func add_item(inv_name: String, item_data: ItemData) -> bool:
-	var new_data = item_data.duplicate()
-	var grids = _inventory_repository.add_item(inv_name, new_data)
+	var new_item_data = item_data.duplicate()
+	if new_item_data is StackableData:
+		var items = find_item_data_by_item_name(inv_name, new_item_data.item_name)
+		for item in items:
+			if not item.is_full():
+				new_item_data.current_amount = item.add_amount(new_item_data.current_amount)
+				var old_item_grids = _inventory_repository.get_inventory(inv_name).find_grids_by_item_data(item)
+				assert(not old_item_grids.is_empty())
+				GBIS.sig_inv_item_updated_grid_id.emit(inv_name, old_item_grids[0])
+				if new_item_data.current_amount <= 0:
+					return true
+		if new_item_data.current_amount <= 0:
+			return true
+	
+	var grids = _inventory_repository.get_inventory(inv_name).add_item(new_item_data)
 	if not grids.is_empty():
-		GBIS.sig_inv_item_added.emit(inv_name, new_data, grids)
+		GBIS.sig_inv_item_added.emit(inv_name, new_item_data, grids)
 		return true
 	return false
 
-func find_item_data_by_id(inv_name: String, item_id: String) -> Array[ItemData]:
+func stack_item(inv_name: String, grid_id: Vector2i) -> void:
+	if not GBIS.moving_item_service.moving_item:
+		return
+	var item_data = find_item_data_by_grid(inv_name, grid_id)
+	if item_data.item_name == GBIS.moving_item_service.moving_item.item_name:
+		var amount_left = item_data.add_amount(GBIS.moving_item_service.moving_item.current_amount)
+		if amount_left > 0:
+			GBIS.moving_item_service.moving_item.current_amount = amount_left
+		else:
+			GBIS.moving_item_service.clear_moving_item()
+		GBIS.sig_inv_item_updated_item_data.emit(inv_name, item_data)
+
+func place_moving_item(inv_name: String, grid_id: Vector2i) -> bool:
+	if place_to(inv_name, GBIS.moving_item_service.moving_item, grid_id):
+		GBIS.moving_item_service.clear_moving_item()
+		return true
+	return false
+
+func use_item(inv_name: String, grid_id: Vector2i) -> bool:
+	var item_data = find_item_data_by_grid(inv_name, grid_id)
+	if not item_data:
+		return false
+	if item_data is EquipmentData:
+		if GBIS.slot_service.try_equip(item_data):
+			remove_item_by_data(inv_name, item_data)
+			return true
+	elif item_data is ConsumableData:
+		if item_data.use():
+			remove_item_by_data(inv_name, item_data)
+		else:
+			GBIS.sig_inv_item_updated_grid_id.emit(inv_name, grid_id)
+		return true
+	return false
+
+func find_item_data_by_item_name(inv_name: String, item_name: String) -> Array[ItemData]:
 	var inv = _inventory_repository.get_inventory(inv_name)
 	if inv:
-		return inv.find_item_data_by_id(item_id)
+		return inv.find_item_data_by_item_name(item_name)
 	return []
 
 func find_item_data_by_grid(inv_name: String, grid_id: Vector2i) -> ItemData:
-	return _inventory_repository.find_item_data_by_grid(inv_name, grid_id)
+	return _inventory_repository.get_inventory(inv_name).find_item_data_by_grid(grid_id)
 
-func split_item(inv_name: String, grid_id: Vector2i) -> ItemData:
+func split_item(inv_name: String, grid_id: Vector2i, offset: Vector2i, base_size: int) -> ItemData:
 	var inv = _inventory_repository.get_inventory(inv_name)
 	if inv:
 		var item = inv.find_item_data_by_grid(grid_id)
-		if item and item.stack_size > 1 and item.current_amount > 1:
+		if item and item is StackableData and item.stack_size > 1 and item.current_amount > 1:
 			var origin_amount = item.current_amount
 			var new_amount_1 = origin_amount / 2
 			var new_amount_2 = origin_amount - new_amount_1
 			item.current_amount = new_amount_1
 			GBIS.sig_inv_item_updated_grid_id.emit(inv_name, grid_id)
+			
 			var new_item = item.duplicate()
 			new_item.current_amount = new_amount_2
+			GBIS.moving_item_service.draw_moving_item(new_item, offset, base_size)
 			return new_item
 	return null
 
@@ -70,7 +114,7 @@ func place_to(inv_name: String, item_data: ItemData, grid_id: Vector2i) -> bool:
 	if item_data:
 		var inv = _inventory_repository.get_inventory(inv_name)
 		if inv:
-			var grids = inv.try_add_to_grid(item_data, grid_id - GBIS.moving_item_offset)
+			var grids = inv.try_add_to_grid(item_data, grid_id - GBIS.moving_item_service.moving_item_offset)
 			if grids:
 				GBIS.sig_inv_item_added.emit(inv_name, item_data, grids)
 				return true
@@ -78,16 +122,13 @@ func place_to(inv_name: String, item_data: ItemData, grid_id: Vector2i) -> bool:
 
 func quick_move(inv_name: String, grid_id: Vector2i) -> void:
 	var target_inventories = _inventory_repository.get_quick_move_relations(inv_name)
-	var item_to_move = _inventory_repository.find_item_data_by_grid(inv_name, grid_id)
+	var item_to_move = _inventory_repository.get_inventory(inv_name).find_item_data_by_grid(grid_id)
 	if target_inventories.is_empty() or not item_to_move:
 		return
-	for target_inv in target_inventories:
-		var grids = _inventory_repository.add_item(target_inv, item_to_move)
-		if not grids.is_empty():
-			_inventory_repository.remove_item(inv_name, item_to_move)
-			GBIS.sig_inv_item_added.emit(target_inv, item_to_move, grids)
-			GBIS.sig_inv_item_removed.emit(inv_name, item_to_move)
-			return
+	for target_inventory in target_inventories:
+		if add_item(target_inventory, item_to_move):
+			remove_item_by_data(inv_name, item_to_move)
+			break
 	
 func is_item_avilable(inv_name: String, item_data: ItemData) -> bool:
 	var inv = _inventory_repository.get_inventory(inv_name)
@@ -101,7 +142,6 @@ func add_quick_move_relation(inv_name: String, target_inv_name: String) -> void:
 func remove_quick_move_relation(inv_name: String, target_inv_name: String) -> void:
 	_inventory_repository.remove_quick_move_relation(inv_name, target_inv_name)
 
-## 移除指定背包中的指定物品
 func remove_item_by_data(inv_name: String, item_data: ItemData) -> void:
-	if _inventory_repository.remove_item(inv_name, item_data):
+	if _inventory_repository.get_inventory(inv_name).remove_item(item_data):
 		GBIS.sig_inv_item_removed.emit(inv_name, item_data)

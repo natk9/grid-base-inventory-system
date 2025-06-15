@@ -4,7 +4,7 @@ class_name InventoryData
 @export var columns: int = 2
 @export var rows: int = 2
 
-@export_storage var avilable_types: Array[GBIS.ItemType]
+@export_storage var avilable_types: Array[String]
 @export_storage var inv_name: String
 
 @export_storage var items: Array[ItemData] = []
@@ -22,9 +22,6 @@ func deep_duplicate() -> InventoryData:
 			ret.grid_item_map[grid] = item
 	return ret
 
-## 尝试把物品添加到第一个空位
-## 成功返回占用的格子
-## 失败返回空数组
 func add_item(item_data: ItemData) -> Array[Vector2i]:
 	if not is_item_avilable(item_data):
 		return []
@@ -32,17 +29,21 @@ func add_item(item_data: ItemData) -> Array[Vector2i]:
 	_add_item_to_grids(item_data, grids)
 	return grids
 
-## 如果容器中有这个物品，删除所有信息
-func remove_item(item: ItemData) -> void:
+func remove_item(item: ItemData) -> bool:
 	if items.has(item):
 		var grids = item_grids_map[item]
 		for grid in grids:
 			grid_item_map[grid] = null
 		items.erase(item)
 		item_grids_map.erase(item)
+		return true
+	return false
 
 func is_item_avilable(item_data: ItemData) -> bool:
-	return avilable_types.has(GBIS.ItemType.ALL) or avilable_types.has(item_data.type)
+	return avilable_types.has("ANY") or avilable_types.has(item_data.type)
+
+func find_grids_by_item_data(item_data: ItemData) -> Array[Vector2i]:
+	return item_grids_map.get(item_data, [])
 
 func has_item(item: ItemData) -> bool:
 	return items.has(item)
@@ -57,15 +58,15 @@ func try_add_to_grid(item_data: ItemData, grid_id: Vector2i) -> Array[Vector2i]:
 	_add_item_to_grids(item_data, grids)
 	return grids
 
-func find_item_data_by_id(item_id: String) -> Array[ItemData]:
+func find_item_data_by_item_name(item_name: String) -> Array[ItemData]:
 	var ret: Array[ItemData] = []
 	for item in items:
-		if item.item_id == item_id:
+		if item.item_name == item_name:
 			ret.append(item)
 	return ret
 
 @warning_ignore("shadowed_variable")
-func _init(inv_name: String = GBIS.DEFAULT_INVENTORY_NAME, columns: int = 0, rows: int = 0, avilable_types: Array[GBIS.ItemType] = []) -> void:
+func _init(inv_name: String = GBIS.DEFAULT_INVENTORY_NAME, columns: int = 0, rows: int = 0, avilable_types: Array[String] = []) -> void:
 	self.inv_name = inv_name
 	self.avilable_types = avilable_types
 	self.columns = columns
@@ -84,9 +85,6 @@ func _add_item_to_grids(item_data: ItemData, grids: Array[Vector2i]) -> bool:
 		return true
 	return false
 
-## 找到第一个可以放下这个物品的格子
-## 如果有，返回所有格子的数组
-## 如果没有，返回空数组
 func _find_first_availble_grids(item: ItemData) -> Array[Vector2i]:
 	var item_shape = item.get_shape()
 	for row in rows:
@@ -98,9 +96,6 @@ func _find_first_availble_grids(item: ItemData) -> Array[Vector2i]:
 					return grids
 	return []
 
-## 从start（左上角）开始的位置
-## 如果可以放下这个shape，返回所有格子的数组
-## 否则返回空数组
 func _try_get_empty_grids_by_shape(start: Vector2i, shape: Vector2i) -> Array[Vector2i]:
 	var ret: Array[Vector2i] = []
 	for row in shape.y:

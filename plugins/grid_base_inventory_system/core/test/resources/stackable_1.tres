@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="StackableData" load_steps=3 format=3 uid="uid://cuj07urfi512p"]
+
+[ext_resource type="Script" uid="uid://bm5efdrlci0qk" path="res://plugins/grid_base_inventory_system/core/model/item/stackable_data.gd" id="1_beju1"]
+[ext_resource type="Texture2D" uid="uid://bx05gnx7w3o2r" path="res://icon.svg" id="1_t5e8d"]
+
+[resource]
+script = ExtResource("1_beju1")
+stack_size = 2
+current_amount = 1
+item_name = "Bless Gem"
+type = "GEM"
+icon = ExtResource("1_t5e8d")
+columns = 1
+rows = 1
+metadata/_custom_type_script = "uid://bm5efdrlci0qk"

@@ -1,15 +1,17 @@
 extends Control
 
 func _ready() -> void:
-	GBIS.inv_add_quick_move_relation("inv_1", "inv_2")
-	GBIS.inv_add_quick_move_relation("inv_2", "inv_1")
+	GBIS.inventory_service.add_quick_move_relation("inv_1", "inv_2")
+	GBIS.inventory_service.add_quick_move_relation("inv_2", "inv_1")
 	GBIS.current_inventories = ["inv_1", "inv_2"]
-	GBIS.load()
+	#GBIS.load()
 
 func _on_button_pressed() -> void:
-	GBIS.inv_add_item("inv_1", load("res://plugins/grid_base_inventory_system/core/test/resources/test_item_1.tres"))
-	GBIS.inv_add_item("inv_2", load("res://plugins/grid_base_inventory_system/core/test/resources/test_item_2.tres"))
-	GBIS.inv_add_item("inv_1", load("res://plugins/grid_base_inventory_system/core/test/resources/test_item_2.tres"))
+	var consumable_item_data = load("res://plugins/grid_base_inventory_system/core/test/resources/consumable_1.tres")
+	var equipment_item_data = load("res://plugins/grid_base_inventory_system/core/test/resources/equipment_1.tres")
+	GBIS.add_item("inv_1", equipment_item_data)
+	GBIS.add_item("inv_1", consumable_item_data)
+	GBIS.add_item("inv_2", consumable_item_data)
 
 func _on_button_2_pressed() -> void:
 	GBIS.save()

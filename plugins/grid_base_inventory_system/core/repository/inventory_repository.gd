@@ -10,7 +10,7 @@ static var instance: InventoryRepository:
 		return instance
 
 @export_storage var _inventory_data_map: Dictionary[String, InventoryData]
-@export_storage var _quick_move_relations_map: Dictionary[String, Array] # Array[inv_name: String]
+@export_storage var _quick_move_relations_map: Dictionary[String, Array]
 
 func save() -> void:
 	ResourceSaver.save(self, GBIS.current_save_path + PREFIX + GBIS.current_save_name)
@@ -23,7 +23,7 @@ func load() -> void:
 		_inventory_data_map[inv_name] = saved_repository._inventory_data_map[inv_name].deep_duplicate()
 	_quick_move_relations_map = saved_repository._quick_move_relations_map.duplicate(true)
 
-func add_inventory(inv_name: String, columns: int, rows: int, avilable_types: Array[GBIS.ItemType]) -> bool:
+func add_inventory(inv_name: String, columns: int, rows: int, avilable_types: Array[String]) -> bool:
 	var inv = get_inventory(inv_name)
 	if not inv:
 		_inventory_data_map[inv_name] = InventoryData.new(inv_name, columns, rows, avilable_types)
@@ -32,25 +32,6 @@ func add_inventory(inv_name: String, columns: int, rows: int, avilable_types: Ar
 
 func get_inventory(inv_name: String) -> InventoryData:
 	return _inventory_data_map.get(inv_name)
-
-func add_item(inv_name: String, item_data: ItemData) -> Array[Vector2i]:
-	var inv = get_inventory(inv_name)
-	if inv:
-		return inv.add_item(item_data)
-	return []
-
-func remove_item(inv_name: String, item_data: ItemData) -> bool:
-	var inv = get_inventory(inv_name)
-	if inv.has_item(item_data):
-		inv.remove_item(item_data)
-		return true
-	return false
-
-func find_item_data_by_grid(inv_name: String, grid_id: Vector2i) -> ItemData:
-	var inv = get_inventory(inv_name)
-	if inv:
-		return inv.find_item_data_by_grid(grid_id)
-	return null
 
 func add_quick_move_relation(inv_name: String, target_inv_name: String) -> void:
 	if _quick_move_relations_map.has(inv_name):

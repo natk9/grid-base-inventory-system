@@ -37,7 +37,7 @@ func move(offset: Vector2i = Vector2i.ZERO) -> void:
 func _draw() -> void:
 	if data.icon:
 		draw_texture_rect(data.icon, Rect2(Vector2.ZERO, size), false)
-	if data.show_stack:
+	if data is StackableData:
 		var text_size = stack_num_font.get_string_size(str(data.current_amount), HORIZONTAL_ALIGNMENT_RIGHT, -1, stack_num_font_size)
 		var pos = Vector2(
 			size.x - text_size.x - stack_num_margin,
