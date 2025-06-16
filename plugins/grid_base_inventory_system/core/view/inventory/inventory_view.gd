@@ -241,7 +241,7 @@ func _on_item_removed(inv_name:String, item_data: ItemData) -> void:
 			_items.remove_at(i)
 			break
 
-## 监听移除物品
+## 监听更新物品
 func _on_inv_item_updated(inv_name: String, grid_id: Vector2i) -> void:
 	if not inv_name == inventory_name:
 		return

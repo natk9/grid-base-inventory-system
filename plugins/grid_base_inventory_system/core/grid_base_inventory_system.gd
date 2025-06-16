@@ -31,7 +31,6 @@ signal sig_item_focused(item_data: ItemData)
 @warning_ignore("unused_signal")
 signal sig_item_focus_lost(item_data: ItemData)
 
-
 ## 默认角色
 const DEFAULT_PLAYER: String = "player_1"
 ## 默认背包名称
