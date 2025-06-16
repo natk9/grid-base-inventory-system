@@ -159,6 +159,10 @@ func refresh() -> void:
 			_grid_item_map[grid] = null
 	pass
 
+## 通过格子ID获取物品视图
+func find_item_view_by_grid(grid_id: Vector2i) -> ItemView:
+	return _grid_item_map.get(grid_id)
+
 ## 初始化
 func _ready() -> void:
 	if Engine.is_editor_hint():

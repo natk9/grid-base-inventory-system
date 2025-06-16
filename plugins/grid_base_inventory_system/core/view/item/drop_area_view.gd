@@ -16,7 +16,7 @@ func resize() -> void:
 
 ## 输入控制
 func _gui_input(event: InputEvent) -> void:
-	if event.is_action_pressed("inv_click") && get_global_rect().has_point(get_global_mouse_position()):
+	if event.is_action_pressed("inv_click"):
 		if GBIS.moving_item_service.moving_item:
 			GBIS.moving_item_service.moving_item.drop()
 			GBIS.moving_item_service.clear_moving_item()

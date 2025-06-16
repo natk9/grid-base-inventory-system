@@ -24,6 +24,13 @@ signal sig_slot_item_equipped(slot_name: String, item_data: ItemData)
 ## 物品已脱下
 @warning_ignore("unused_signal")
 signal sig_slot_item_unequipped(slot_name: String, item_data: ItemData)
+## 焦点物品：监听这个信号以处理信息显示
+@warning_ignore("unused_signal")
+signal sig_item_focused(item_data: ItemData)
+## 物品丢失焦点：监听这个信号以清除物品信息显示
+@warning_ignore("unused_signal")
+signal sig_item_focus_lost(item_data: ItemData)
+
 
 ## 默认角色
 const DEFAULT_PLAYER: String = "player_1"
@@ -40,6 +47,8 @@ var inventory_service: InventoryService = InventoryService.new()
 var equipment_slot_service: EquipmentSlotService = EquipmentSlotService.new()
 ## 移动物品业务类全局引用，如有需要可以使用，不要自己new
 var moving_item_service: MovingItemService = MovingItemService.new()
+## 物品焦点业务类（处理鼠标在不在物品上），如有需要可以使用，不要自己new
+var item_focus_service: ItemFocusService = ItemFocusService.new()
 
 ## 当前角色，如果是单角色，不予理会即可，如果是多角色，操作每个角色前应更新这个值
 var current_player: String = DEFAULT_PLAYER
