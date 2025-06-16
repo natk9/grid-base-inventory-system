@@ -1,8 +1,8 @@
 extends Control
 
 func _ready() -> void:
-	GBIS.inventory_service.add_quick_move_relation("inv_1", "inv_2")
-	GBIS.inventory_service.add_quick_move_relation("inv_2", "inv_1")
+	GBIS.add_quick_move_relation("inv_1", "inv_2")
+	GBIS.add_quick_move_relation("inv_2", "inv_1")
 	GBIS.current_inventories = ["inv_1", "inv_2"]
 
 func _on_button_pressed() -> void:

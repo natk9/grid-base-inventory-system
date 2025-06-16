@@ -1,20 +1,29 @@
 extends Control
+## 物品视图，控制物品的绘制
 class_name ItemView
 
-
+## 堆叠数字的字体
 var stack_num_font: Font
+## 堆叠数字的字体大小
 var stack_num_font_size: int
-var stack_num_margin: int = 2
+## 堆叠数字的边距
+var stack_num_margin: int = 4
+## 堆叠数字的颜色
 var stack_num_color: Color = Color.WHITE
 
+## 物品数据
 var data: ItemData
+## 绘制基础大小（格子大小）
 var base_size: int:
 	set(value):
 		base_size = value
 		call_deferred("recalculate_size")
+## 是否正在移动
 var _is_moving: bool = false
+## 移动偏移量（坐标）
 var _moving_offset: Vector2i = Vector2i.ZERO
 
+## 构造函数
 @warning_ignore("shadowed_variable")
 func _init(data: ItemData, base_size: int, stack_num_font: Font = null, stack_num_font_size: int = 16, stack_num_margin: int = 2, stack_num_color: Color = Color.WHEAT) -> void:
 	self.data = data
@@ -26,14 +35,17 @@ func _init(data: ItemData, base_size: int, stack_num_font: Font = null, stack_nu
 	recalculate_size()
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 
+## 重写计算大小
 func recalculate_size() -> void:
 	size = Vector2(data.columns * base_size, data.rows * base_size)
 	queue_redraw()
 
+## 移动
 func move(offset: Vector2i = Vector2i.ZERO) -> void:
 	_is_moving = true
 	_moving_offset = offset
 
+## 绘制物品
 func _draw() -> void:
 	if data.icon:
 		draw_texture_rect(data.icon, Rect2(Vector2.ZERO, size), false)
@@ -45,12 +57,8 @@ func _draw() -> void:
 		)
 		draw_string(stack_num_font, pos, str(data.current_amount), HORIZONTAL_ALIGNMENT_RIGHT, -1, stack_num_font_size, stack_num_color)
 
+## 跟随鼠标
 func _process(_delta: float) -> void:
 	if _is_moving:
 		@warning_ignore("integer_division")
 		global_position = get_global_mouse_position() - Vector2(base_size * _moving_offset) - Vector2(base_size / 2, base_size / 2)
-
-func gui_input(event: InputEvent) -> void:
-	if event.is_action_pressed("inv_click") && get_global_rect().has_point(get_global_mouse_position()):
-		data.drop()
-		GBIS.moving_item_service.clear_moving_item()
