@@ -75,7 +75,6 @@ base_size = 48
 columns = 3
 rows = 3
 background = ExtResource("4_566py")
-INVILABLE_color = null
 avilable_types = Array[String](["BOOTS"])
 metadata/_custom_type_script = "uid://dg6xjko3rdcta"
 
@@ -90,7 +89,6 @@ slot_name = "boots_slot_2"
 base_size = 128
 rows = 3
 background = ExtResource("4_566py")
-INVILABLE_color = null
 avilable_types = Array[String](["BOOTS"])
 metadata/_custom_type_script = "uid://dg6xjko3rdcta"
 
@@ -105,7 +103,6 @@ script = ExtResource("3_qmsca")
 slot_name = "boots_slot_2"
 base_size = 128
 background = ExtResource("4_566py")
-INVILABLE_color = null
 avilable_types = Array[String](["BOOTS"])
 metadata/_custom_type_script = "uid://dg6xjko3rdcta"
 

@@ -28,7 +28,7 @@
 ### 基本配置
 
 ```gdscript
-# 在项目设置 -> 自动加载中添加
+# 在项目设置 -> 全局添加
 # res://plugins/grid_base_inventory_system/core/grid_base_inventory_system.gd
 # 名称必须设置为 "GBIS"
 ```
@@ -119,8 +119,7 @@ plugins/grid_base_inventory_system/
 
 ## 📜 许可证
 
-本项目采用 [MIT 许可证](LICENSE) 开源。
+MIT
 
-## 🙏 作者
-
+## 🙏 作者（请关注）
 - [B站: Java已死游戏当立](https://space.bilibili.com/3546831153793300)
