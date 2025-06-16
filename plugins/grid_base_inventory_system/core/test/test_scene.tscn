@@ -26,21 +26,35 @@ metadata/_custom_type_script = "uid://c5rou3jm33pbt"
 anchors_preset = 0
 offset_left = 35.0
 offset_top = 33.0
-offset_right = 803.0
-offset_bottom = 545.0
+offset_right = 547.0
+offset_bottom = 417.0
 script = ExtResource("1_n01jp")
 inventory_name = "inv_1"
-inventory_columns = 12
-inventory_rows = 8
+inventory_columns = 8
+inventory_rows = 6
 base_size = 64
+metadata/_custom_type_script = "uid://b3x4mwtjmm4tp"
+
+[node name="InventoryView3" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 572.0
+offset_top = 33.0
+offset_right = 956.0
+offset_bottom = 321.0
+script = ExtResource("1_n01jp")
+inventory_name = "inv_1"
+inventory_columns = 8
+inventory_rows = 6
+base_size = 48
 metadata/_custom_type_script = "uid://b3x4mwtjmm4tp"
 
 [node name="InventoryView2" type="Control" parent="."]
 anchors_preset = 0
-offset_left = 1176.0
-offset_top = 34.0
-offset_right = 1560.0
-offset_bottom = 546.0
+offset_left = 977.0
+offset_top = 33.0
+offset_right = 1361.0
+offset_bottom = 545.0
 script = ExtResource("1_n01jp")
 inventory_name = "inv_2"
 inventory_columns = 12
@@ -49,44 +63,12 @@ stack_num_font_size = 8
 stack_num_margin = 2
 metadata/_custom_type_script = "uid://b3x4mwtjmm4tp"
 
-[node name="Button" type="Button" parent="."]
-layout_mode = 0
-offset_left = 1388.0
-offset_top = 787.0
-offset_right = 1429.0
-offset_bottom = 818.0
-text = "Test"
-
-[node name="Button4" type="Button" parent="."]
-layout_mode = 0
-offset_left = 1384.0
-offset_top = 841.0
-offset_right = 1425.0
-offset_bottom = 872.0
-text = "Next Scene"
-
-[node name="Button2" type="Button" parent="."]
-layout_mode = 0
-offset_left = 1380.0
-offset_top = 686.0
-offset_right = 1424.0
-offset_bottom = 717.0
-text = "Save"
-
-[node name="Button3" type="Button" parent="."]
-layout_mode = 0
-offset_left = 1377.0
-offset_top = 739.0
-offset_right = 1423.0
-offset_bottom = 770.0
-text = "Load"
-
 [node name="SlotView" type="Control" parent="."]
 anchors_preset = 0
-offset_left = 350.0
-offset_top = 592.0
-offset_right = 494.0
-offset_bottom = 736.0
+offset_left = 316.0
+offset_top = 449.0
+offset_right = 460.0
+offset_bottom = 593.0
 script = ExtResource("3_qmsca")
 slot_name = "boots_slot_1"
 base_size = 48
@@ -98,10 +80,10 @@ metadata/_custom_type_script = "uid://dg6xjko3rdcta"
 
 [node name="SlotView2" type="Control" parent="."]
 anchors_preset = 0
-offset_left = 63.0
-offset_top = 587.0
-offset_right = 319.0
-offset_bottom = 971.0
+offset_left = 34.0
+offset_top = 445.0
+offset_right = 290.0
+offset_bottom = 829.0
 script = ExtResource("3_qmsca")
 slot_name = "boots_slot_2"
 base_size = 128
@@ -109,6 +91,52 @@ rows = 3
 background = ExtResource("4_566py")
 avilable_types = Array[String](["BOOTS"])
 metadata/_custom_type_script = "uid://dg6xjko3rdcta"
+
+[node name="SlotView3" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 315.0
+offset_top = 613.0
+offset_right = 571.0
+offset_bottom = 869.0
+script = ExtResource("3_qmsca")
+slot_name = "boots_slot_2"
+base_size = 128
+background = ExtResource("4_566py")
+avilable_types = Array[String](["BOOTS"])
+metadata/_custom_type_script = "uid://dg6xjko3rdcta"
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 685.0
+offset_top = 699.0
+offset_right = 757.0
+offset_bottom = 730.0
+text = "增加物品"
+
+[node name="Button4" type="Button" parent="."]
+layout_mode = 0
+offset_left = 768.0
+offset_top = 699.0
+offset_right = 863.0
+offset_bottom = 730.0
+text = "下一个场景"
+
+[node name="Button2" type="Button" parent="."]
+layout_mode = 0
+offset_left = 684.0
+offset_top = 740.0
+offset_right = 728.0
+offset_bottom = 771.0
+text = "保存"
+
+[node name="Button3" type="Button" parent="."]
+layout_mode = 0
+offset_left = 738.0
+offset_top = 740.0
+offset_right = 784.0
+offset_bottom = 771.0
+text = "加载"
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Button4" to="." method="_on_button_4_pressed"]

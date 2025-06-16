@@ -123,6 +123,7 @@ func _ready() -> void:
 	
 	var ret = GBIS.inventory_service.regist_inventory(inventory_name, inventory_columns, inventory_rows, avilable_types)
 	if not ret:
+		push_error("Inventory regist error.")
 		return
 	
 	mouse_filter = Control.MOUSE_FILTER_STOP
