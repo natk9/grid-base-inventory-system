@@ -86,7 +86,7 @@ func _ready() -> void:
 
 ## 输入控制
 func _gui_input(event: InputEvent) -> void:
-	if event.is_action_pressed("inv_click"):
+	if event.is_action_pressed(GBIS.input_click):
 		if has_taken:
 			if not GBIS.moving_item_service.moving_item:
 				# 先清除物品信息
@@ -98,15 +98,15 @@ func _gui_input(event: InputEvent) -> void:
 			_inventory_view.grid_hover(grid_id)
 		else:
 			GBIS.inventory_service.place_moving_item(_inventory_view.inventory_name, grid_id)
-	if event.is_action_pressed("inv_quick_move"):
+	if event.is_action_pressed(GBIS.input_quick_move):
 		if has_taken:
 			GBIS.item_focus_service.item_lose_focus(_inventory_view.find_item_view_by_grid(grid_id))
 			GBIS.inventory_service.quick_move(_inventory_view.inventory_name, grid_id)
-	if event.is_action_pressed("inv_use"):
+	if event.is_action_pressed(GBIS.input_use):
 		if has_taken:
 			GBIS.item_focus_service.item_lose_focus(_inventory_view.find_item_view_by_grid(grid_id))
 			GBIS.inventory_service.use_item(_inventory_view.inventory_name, grid_id)
-	if event.is_action_pressed("inv_split"):
+	if event.is_action_pressed(GBIS.input_split):
 		if has_taken and not GBIS.moving_item_service.moving_item:
 			GBIS.item_focus_service.item_lose_focus(_inventory_view.find_item_view_by_grid(grid_id))
 			GBIS.inventory_service.split_item(_inventory_view.inventory_name, grid_id, offset, _size)

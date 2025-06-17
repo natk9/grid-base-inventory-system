@@ -58,6 +58,15 @@ var current_save_path: String = DEFAULT_SAVE_FOLDER
 ## 当前存档名，支持 "tres" 和 "res"，目前版本会保存两个文件：inv_存档名、equipment_slot_存档名
 var current_save_name: String = "default.tres"
 
+## 点击物品
+var input_click: String = "inv_click"
+## 快速移动
+var input_quick_move: String = "inv_quick_move"
+## 使用物品
+var input_use: String = "inv_use"
+## 分割物品
+var input_split: String = "inv_split"
+
 ## 保存背包和装备槽
 func save() -> void:
 	inventory_service.save()

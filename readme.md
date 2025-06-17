@@ -27,10 +27,24 @@
 
 ### 基本配置
 
+1. **项目入口**
 ```gdscript
 # 在项目设置 -> 全局添加
 # res://plugins/grid_base_inventory_system/core/grid_base_inventory_system.gd
 # 名称必须设置为 "GBIS"
+```
+2. **输入配置**
+项目输入中需要配置四个输入，默认为：
+* inv_click：鼠标左键点击
+* inv_quick_move：shift + 鼠标右键
+* inv_use：鼠标右键
+* inv_split：鼠标中键
+如果输入的名字和默认不一致，请在启动时更新GBIS中的以下属性
+```gdscript
+var input_click
+var input_quick_move
+var input_use
+var input_split
 ```
 
 ## 🛠️ 使用指南
@@ -50,8 +64,8 @@ GBIS.current_inventories = ["背包A", "背包B"]
 监听以下信号来显示鼠标悬停物品信息：
 
 ```gdscript
-GBIS.connect("sig_item_focused", show_item_info)
-GBIS.connect("sig_item_focus_lost", hide_item_info)
+GBIS.sig_item_focused.connect(显示物品信息的方法)
+GBIS.sig_item_focus_lost.connect(清除物品信息的方法)
 ```
 
 ### 自定义物品类型
