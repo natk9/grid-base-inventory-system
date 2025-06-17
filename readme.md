@@ -39,6 +39,7 @@
 * inv_quick_move：shift + 鼠标右键
 * inv_use：鼠标右键
 * inv_split：鼠标中键
+
 如果输入的名字和默认不一致，请在启动时更新GBIS中的以下属性
 ```gdscript
 var input_click
