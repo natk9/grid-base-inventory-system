@@ -42,10 +42,10 @@
 
 如果输入的名字和默认不一致，请在启动时更新GBIS中的以下属性
 ```gdscript
-var input_click
-var input_quick_move
-var input_use
-var input_split
+GBIS.input_click = "你的输入名字"
+GBIS.input_quick_move = "你的输入名字"
+GBIS.input_use = "你的输入名字"
+GBIS.input_split = "你的输入名字"
 ```
 
 ## 🛠️ 使用指南
