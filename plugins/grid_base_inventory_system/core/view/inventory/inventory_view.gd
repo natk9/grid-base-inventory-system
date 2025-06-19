@@ -81,7 +81,7 @@ class_name InventoryView
 ## 格子容器
 var _grid_container: GridContainer
 ## 物品容器
-var _item_container: Node
+var _item_container: Control
 
 ## 所有物品的View
 var _items: Array[ItemView]
@@ -266,7 +266,7 @@ func _init_grid_container() -> void:
 
 ## 初始化物品容器
 func _init_item_container() -> void:
-	_item_container = Node.new()
+	_item_container = Control.new()
 	add_child(_item_container)
 
 ## 初始化格子View
