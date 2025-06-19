@@ -44,7 +44,7 @@ enum State{
 @export var avilable_types: Array[String] = ["ANY"]
 
 ## 物品容器
-var _item_container: Node
+var _item_container: Control
 ## 物品视图
 var _item_view: ItemView
 ## 当前绘制状态
@@ -126,8 +126,8 @@ func _on_item_unequipped(slot_name: String, _item_data: ItemData):
 ## 绘制装备
 func _draw_item(item_data: ItemData) -> ItemView:
 	var item = ItemView.new(item_data, base_size)
-	var center = global_position + size / 2 - item.size / 2
-	item.global_position = center
+	var center = size / 2 - item.size / 2
+	item.position = center
 	return item
 
 ## 清空装备槽显示（仅清空显示，与数据无关）
@@ -138,7 +138,7 @@ func _clear_slot() -> void:
 
 ## 初始化物品容器
 func _init_item_container() -> void:
-	_item_container = Node.new()
+	_item_container = Control.new()
 	add_child(_item_container)
 
 ## 绘制装备槽背景
