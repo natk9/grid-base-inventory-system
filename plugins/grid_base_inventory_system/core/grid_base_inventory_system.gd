@@ -95,3 +95,7 @@ func add_quick_move_relation(inv_name: String, target_inv_name: String) -> void:
 ## 删除背包间的快速移动关系
 func remove_quick_move_relation(inv_name: String, target_inv_name: String) -> void:
 	inventory_service.remove_quick_move_relation(inv_name, target_inv_name)
+
+## 是否有正在移动的物品
+func has_moving_item() -> bool:
+	return moving_item_service.moving_item != null

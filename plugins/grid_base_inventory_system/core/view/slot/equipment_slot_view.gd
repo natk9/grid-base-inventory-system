@@ -77,7 +77,7 @@ func _ready() -> void:
 	if not ret:
 		return
 	
-	mouse_filter = Control.MOUSE_FILTER_STOP
+	mouse_filter = Control.MOUSE_FILTER_PASS
 	_init_item_container()
 	GBIS.sig_slot_item_equipped.connect(_on_item_equipped)
 	GBIS.sig_slot_item_unequipped.connect(_on_item_unequipped)

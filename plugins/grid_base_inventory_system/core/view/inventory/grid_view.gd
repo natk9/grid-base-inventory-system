@@ -80,7 +80,7 @@ func _init(inventoryView: InventoryView, grid_id: Vector2i,size: int, border_siz
 
 ## 初始化
 func _ready() -> void:
-	mouse_filter = Control.MOUSE_FILTER_STOP
+	mouse_filter = Control.MOUSE_FILTER_PASS
 	mouse_entered.connect(_inventory_view.grid_hover.bind(grid_id))
 	mouse_exited.connect(_inventory_view.grid_lose_hover.bind(grid_id))
 

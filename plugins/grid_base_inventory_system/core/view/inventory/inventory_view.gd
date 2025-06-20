@@ -178,7 +178,7 @@ func _ready() -> void:
 		push_error("Inventory regist error.")
 		return
 	
-	mouse_filter = Control.MOUSE_FILTER_STOP
+	mouse_filter = Control.MOUSE_FILTER_PASS
 	_init_grid_container()
 	_init_item_container()
 	_init_grids()
