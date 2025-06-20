@@ -187,10 +187,18 @@ func _ready() -> void:
 	GBIS.sig_inv_item_updated.connect(_on_inv_item_updated)
 	GBIS.sig_inv_refresh.connect(refresh)
 	
+	visibility_changed.connect(_on_visible_changed)
+	
 	if not stack_num_font:
 		stack_num_font = get_theme_font("font")
 	
 	call_deferred("refresh")
+
+func _on_visible_changed() -> void:
+	if is_visible_in_tree():
+		# 需要等待GirdContainer处理完成，否则其下的所有grid没有position信息
+		await get_tree().process_frame
+		refresh()
 
 ## 清空背包显示
 ## 注意，只清空显示，不清空数据库
@@ -217,6 +225,8 @@ func _get_grids_by_shape(start: Vector2i, shape: Vector2i) -> Array[Vector2i]:
 func _on_item_added(inv_name:String, item_data: ItemData, grids: Array[Vector2i]) -> void:
 	if not inv_name == inventory_name:
 		return
+	if not is_visible_in_tree():
+		return
 	
 	var item = _draw_item(item_data, grids[0])
 	_items.append(item)
@@ -228,6 +238,8 @@ func _on_item_added(inv_name:String, item_data: ItemData, grids: Array[Vector2i]
 ## 监听移除物品
 func _on_item_removed(inv_name:String, item_data: ItemData) -> void:
 	if not inv_name == inventory_name:
+		return
+	if not is_visible_in_tree():
 		return
 	
 	for i in range(_items.size() - 1, -1, -1):
@@ -244,6 +256,8 @@ func _on_item_removed(inv_name:String, item_data: ItemData) -> void:
 ## 监听更新物品
 func _on_inv_item_updated(inv_name: String, grid_id: Vector2i) -> void:
 	if not inv_name == inventory_name:
+		return
+	if not is_visible_in_tree():
 		return
 	
 	_grid_item_map[grid_id].queue_redraw()
