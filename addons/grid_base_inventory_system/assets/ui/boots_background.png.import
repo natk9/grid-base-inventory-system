@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dxusr1agnbuhw"
-path="res://.godot/imported/boots_background.png-189651b713ed061d0f3bee2b708cd28d.ctex"
+path="res://.godot/imported/boots_background.png-83e2ecc836819cb40766d09410fc0b09.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://plugins/grid_base_inventory_system/assets/ui/boots_background.png"
-dest_files=["res://.godot/imported/boots_background.png-189651b713ed061d0f3bee2b708cd28d.ctex"]
+source_file="res://addons/grid_base_inventory_system/assets/ui/boots_background.png"
+dest_files=["res://.godot/imported/boots_background.png-83e2ecc836819cb40766d09410fc0b09.ctex"]
 
 [params]
 

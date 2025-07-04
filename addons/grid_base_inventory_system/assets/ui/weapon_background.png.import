@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://6lkn7qk3xsws"
-path="res://.godot/imported/Snipaste_2025-06-16_14-12-21.png-8d191a931c8db74053487440b5324ddd.ctex"
+uid="uid://cqcjctr2rgapu"
+path="res://.godot/imported/weapon_background.png-1dacc8167e93adc21bbd88e33c4dbb4c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://plugins/grid_base_inventory_system/assets/screenshots/Snipaste_2025-06-16_14-12-21.png"
-dest_files=["res://.godot/imported/Snipaste_2025-06-16_14-12-21.png-8d191a931c8db74053487440b5324ddd.ctex"]
+source_file="res://addons/grid_base_inventory_system/assets/ui/weapon_background.png"
+dest_files=["res://.godot/imported/weapon_background.png-1dacc8167e93adc21bbd88e33c4dbb4c.ctex"]
 
 [params]
 

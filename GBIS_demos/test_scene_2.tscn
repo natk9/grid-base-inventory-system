@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://bjjdrkxi0xy1q"]
 
-[ext_resource type="Script" uid="uid://b3x4mwtjmm4tp" path="res://plugins/grid_base_inventory_system/core/view/inventory/inventory_view.gd" id="1_5l0k7"]
-[ext_resource type="Script" uid="uid://bvwtw85ci3rky" path="res://plugins/grid_base_inventory_system/core/test/test_scene_2.gd" id="1_dgctx"]
-[ext_resource type="Script" uid="uid://dg6xjko3rdcta" path="res://plugins/grid_base_inventory_system/core/view/slot/equipment_slot_view.gd" id="2_8jwqu"]
-[ext_resource type="Texture2D" uid="uid://dxusr1agnbuhw" path="res://plugins/grid_base_inventory_system/assets/ui/boots_background.png" id="3_dgctx"]
+[ext_resource type="Script" uid="uid://b3x4mwtjmm4tp" path="res://addons/grid_base_inventory_system/core/view/inventory/inventory_view.gd" id="1_5l0k7"]
+[ext_resource type="Script" uid="uid://bvwtw85ci3rky" path="res://GBIS_demos/test_scene_2.gd" id="1_dgctx"]
+[ext_resource type="Script" uid="uid://dg6xjko3rdcta" path="res://addons/grid_base_inventory_system/core/view/slot/equipment_slot_view.gd" id="2_8jwqu"]
+[ext_resource type="Texture2D" uid="uid://dxusr1agnbuhw" path="res://addons/grid_base_inventory_system/assets/ui/boots_background.png" id="3_dgctx"]
 
 [node name="Control" type="Control"]
 layout_mode = 3

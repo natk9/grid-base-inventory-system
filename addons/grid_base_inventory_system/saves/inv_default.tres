@@ -1,12 +1,12 @@
 [gd_resource type="Resource" script_class="InventoryRepository" load_steps=21 format=3]
 
-[ext_resource type="Script" path="res://plugins/grid_base_inventory_system/core/model/inventory/inventory_data.gd" id="1_0qbgs"]
-[ext_resource type="Script" path="res://plugins/grid_base_inventory_system/core/model/item/item_data.gd" id="2_uoide"]
-[ext_resource type="Texture2D" path="res://plugins/grid_base_inventory_system/assets/test_item_icons/boots.png" id="3_ayxxw"]
-[ext_resource type="Texture2D" path="res://plugins/grid_base_inventory_system/assets/test_item_icons/bottle.png" id="3_pqdd6"]
-[ext_resource type="Script" path="res://plugins/grid_base_inventory_system/core/model/item/equipment_data.gd" id="4_7qql1"]
-[ext_resource type="Script" path="res://plugins/grid_base_inventory_system/core/model/item/consumable_data.gd" id="4_ayxxw"]
-[ext_resource type="Script" path="res://plugins/grid_base_inventory_system/core/repository/inventory_repository.gd" id="5_7qql1"]
+[ext_resource type="Script" uid="uid://bwep5uqxk4b4k" path="res://addons/grid_base_inventory_system/core/model/inventory/inventory_data.gd" id="1_0qbgs"]
+[ext_resource type="Script" uid="uid://c5uqs7o5b2w68" path="res://addons/grid_base_inventory_system/core/model/item/item_data.gd" id="2_uoide"]
+[ext_resource type="Texture2D" uid="uid://h387k1xiin2o" path="res://addons/grid_base_inventory_system/assets/test_item_icons/boots.png" id="3_ayxxw"]
+[ext_resource type="Texture2D" uid="uid://tlkilfmuuy0q" path="res://addons/grid_base_inventory_system/assets/test_item_icons/bottle.png" id="3_pqdd6"]
+[ext_resource type="Script" uid="uid://c81d67advvltj" path="res://addons/grid_base_inventory_system/core/model/item/equipment_data.gd" id="4_7qql1"]
+[ext_resource type="Script" uid="uid://x8lw6iyk5rf5" path="res://addons/grid_base_inventory_system/core/model/item/consumable_data.gd" id="4_ayxxw"]
+[ext_resource type="Script" uid="uid://buv85ki5jyttc" path="res://addons/grid_base_inventory_system/core/repository/inventory_repository.gd" id="5_7qql1"]
 
 [sub_resource type="Resource" id="Resource_pqdd6"]
 script = ExtResource("4_7qql1")

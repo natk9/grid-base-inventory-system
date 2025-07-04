@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://csjvmu777yo5q"]
 
-[ext_resource type="Script" uid="uid://b3x4mwtjmm4tp" path="res://plugins/grid_base_inventory_system/core/view/inventory/inventory_view.gd" id="1_n01jp"]
-[ext_resource type="Script" uid="uid://dy2bqex483xwa" path="res://plugins/grid_base_inventory_system/core/test/test_scene.gd" id="1_ofb33"]
-[ext_resource type="Script" uid="uid://dg6xjko3rdcta" path="res://plugins/grid_base_inventory_system/core/view/slot/equipment_slot_view.gd" id="3_qmsca"]
-[ext_resource type="Texture2D" uid="uid://dxusr1agnbuhw" path="res://plugins/grid_base_inventory_system/assets/ui/boots_background.png" id="4_566py"]
-[ext_resource type="Script" uid="uid://c5rou3jm33pbt" path="res://plugins/grid_base_inventory_system/core/view/item/drop_area_view.gd" id="5_gbedw"]
+[ext_resource type="Script" uid="uid://b3x4mwtjmm4tp" path="res://addons/grid_base_inventory_system/core/view/inventory/inventory_view.gd" id="1_n01jp"]
+[ext_resource type="Script" uid="uid://dy2bqex483xwa" path="res://GBIS_demos/test_scene.gd" id="1_ofb33"]
+[ext_resource type="Script" uid="uid://dg6xjko3rdcta" path="res://addons/grid_base_inventory_system/core/view/slot/equipment_slot_view.gd" id="3_qmsca"]
+[ext_resource type="Texture2D" uid="uid://dxusr1agnbuhw" path="res://addons/grid_base_inventory_system/assets/ui/boots_background.png" id="4_566py"]
+[ext_resource type="Script" uid="uid://c5rou3jm33pbt" path="res://addons/grid_base_inventory_system/core/view/item/drop_area_view.gd" id="5_gbedw"]
 
 [node name="TestScene" type="Control"]
 layout_mode = 3
@@ -18,7 +18,7 @@ script = ExtResource("1_ofb33")
 [node name="DropAreaView" type="Control" parent="."]
 visible = false
 anchors_preset = 0
-offset_right = 3747.0
+offset_right = 3746.0
 offset_bottom = 2126.0
 script = ExtResource("5_gbedw")
 metadata/_custom_type_script = "uid://c5rou3jm33pbt"

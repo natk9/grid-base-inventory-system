@@ -14,8 +14,8 @@ func _show_item_info(item_data: ItemData, is_focusing: bool) -> void:
 		print("%s lost focus, clear info" % item_data.item_name)
 
 func _on_button_pressed() -> void:
-	var consumable_item_data = load("res://plugins/grid_base_inventory_system/core/test/resources/consumable_1.tres")
-	var equipment_item_data = load("res://plugins/grid_base_inventory_system/core/test/resources/equipment_1.tres")
+	var consumable_item_data = load("res://demo/resources/consumable_1.tres")
+	var equipment_item_data = load("res://demo/resources/equipment_1.tres")
 	GBIS.add_item("inv_1", equipment_item_data)
 	GBIS.add_item("inv_1", consumable_item_data)
 	GBIS.add_item("inv_2", consumable_item_data)
@@ -27,4 +27,4 @@ func _on_button_3_pressed() -> void:
 	GBIS.load()
 
 func _on_button_4_pressed() -> void:
-	get_tree().change_scene_to_file("res://plugins/grid_base_inventory_system/core/test/test_scene_2.tscn")
+	get_tree().change_scene_to_file("res://demo/test_scene_2.tscn")

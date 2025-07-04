@@ -23,14 +23,14 @@
    直接使用本项目作为起始模板
 
 2. **作为插件使用**  
-   将`plugins/grid_base_inventory_system`文件夹复制到您的Godot项目中
+   将`addons/grid_base_inventory_system`文件夹复制到您的Godot项目中
 
 ### 基本配置
 
 1. **项目入口**
 ```gdscript
 # 在项目设置 -> 全局添加
-# res://plugins/grid_base_inventory_system/core/grid_base_inventory_system.gd
+# res://addons/grid_base_inventory_system/core/grid_base_inventory_system.gd
 # 名称必须设置为 "GBIS"
 ```
 2. **输入配置**
@@ -113,14 +113,13 @@ GBIS.current_inventories = new_player_inventories
 ## 📂 项目结构
 
 ```
-plugins/grid_base_inventory_system/
+addons/grid_base_inventory_system/
 ├── assets/            # 图标和UI素材
 ├── core/
 │   ├── model/         # 数据模型
 │   ├── repository/    # 数据存储
 │   ├── service/       # 业务逻辑
 │   ├── view/          # 视图组件
-│   └── test/          # 测试场景
 └── saves/             # 默认存档
 ```
 

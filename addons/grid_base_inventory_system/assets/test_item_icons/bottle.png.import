@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://h387k1xiin2o"
-path="res://.godot/imported/boots.png-f76c0db01a56d7ef1c9649399a2065ad.ctex"
+uid="uid://tlkilfmuuy0q"
+path="res://.godot/imported/bottle.png-b5d2bed116f5dcdf9b02845bbde3cc84.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://plugins/grid_base_inventory_system/assets/test_item_icons/boots.png"
-dest_files=["res://.godot/imported/boots.png-f76c0db01a56d7ef1c9649399a2065ad.ctex"]
+source_file="res://addons/grid_base_inventory_system/assets/test_item_icons/bottle.png"
+dest_files=["res://.godot/imported/bottle.png-b5d2bed116f5dcdf9b02845bbde3cc84.ctex"]
 
 [params]
 

@@ -22,7 +22,7 @@ general/stretch/mode="canvas_items"
 
 [autoload]
 
-GBIS="*res://plugins/grid_base_inventory_system/core/grid_base_inventory_system.gd"
+GBIS="*res://addons/grid_base_inventory_system/core/grid_base_inventory_system.gd"
 
 [display]
 
