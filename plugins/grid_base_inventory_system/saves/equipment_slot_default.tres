@@ -1,48 +1,21 @@
-[gd_resource type="Resource" script_class="EquipmentSlotRepository" load_steps=10 format=3]
+[gd_resource type="Resource" script_class="EquipmentSlotRepository" load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://plugins/grid_base_inventory_system/core/model/slot/equipment_slot_data.gd" id="1_b4vsl"]
-[ext_resource type="Script" path="res://plugins/grid_base_inventory_system/core/model/item/equipment_data.gd" id="3_dst7a"]
 [ext_resource type="Script" path="res://plugins/grid_base_inventory_system/core/repository/equipment_slot_repository.gd" id="4_sjdah"]
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_xvye0"]
-load_path = "res://.godot/imported/boots.png-f76c0db01a56d7ef1c9649399a2065ad.ctex"
-
-[sub_resource type="Resource" id="Resource_b4vsl"]
-script = ExtResource("3_dst7a")
-item_name = "Test Boots"
-type = "BOOTS"
-icon = SubResource("CompressedTexture2D_xvye0")
-columns = 2
-rows = 2
-metadata/_custom_type_script = "uid://c81d67advvltj"
-
-[sub_resource type="Resource" id="Resource_8wct7"]
+[sub_resource type="Resource" id="Resource_3balj"]
 script = ExtResource("1_b4vsl")
-equipped_item = SubResource("Resource_b4vsl")
 avilable_types = Array[String](["BOOTS"])
 slot_name = "boots_slot_1"
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_dst7a"]
-load_path = "res://.godot/imported/boots.png-f76c0db01a56d7ef1c9649399a2065ad.ctex"
-
-[sub_resource type="Resource" id="Resource_sjdah"]
-script = ExtResource("3_dst7a")
-item_name = "Test Boots"
-type = "BOOTS"
-icon = SubResource("CompressedTexture2D_dst7a")
-columns = 2
-rows = 2
-metadata/_custom_type_script = "uid://c81d67advvltj"
-
-[sub_resource type="Resource" id="Resource_41pmt"]
+[sub_resource type="Resource" id="Resource_xvye0"]
 script = ExtResource("1_b4vsl")
-equipped_item = SubResource("Resource_sjdah")
 avilable_types = Array[String](["BOOTS"])
 slot_name = "boots_slot_2"
 
 [resource]
 script = ExtResource("4_sjdah")
 _slot_data_map = Dictionary[String, ExtResource("1_b4vsl")]({
-"boots_slot_1": SubResource("Resource_8wct7"),
-"boots_slot_2": SubResource("Resource_41pmt")
+"boots_slot_1": SubResource("Resource_3balj"),
+"boots_slot_2": SubResource("Resource_xvye0")
 })

@@ -81,7 +81,7 @@ class_name InventoryView
 ## 格子容器
 var _grid_container: GridContainer
 ## 物品容器
-var _item_container: Node
+var _item_container: Control
 
 ## 所有物品的View
 var _items: Array[ItemView]
@@ -178,7 +178,7 @@ func _ready() -> void:
 		push_error("Inventory regist error.")
 		return
 	
-	mouse_filter = Control.MOUSE_FILTER_STOP
+	mouse_filter = Control.MOUSE_FILTER_PASS
 	_init_grid_container()
 	_init_item_container()
 	_init_grids()
@@ -187,10 +187,18 @@ func _ready() -> void:
 	GBIS.sig_inv_item_updated.connect(_on_inv_item_updated)
 	GBIS.sig_inv_refresh.connect(refresh)
 	
+	visibility_changed.connect(_on_visible_changed)
+	
 	if not stack_num_font:
 		stack_num_font = get_theme_font("font")
 	
 	call_deferred("refresh")
+
+func _on_visible_changed() -> void:
+	if is_visible_in_tree():
+		# 需要等待GirdContainer处理完成，否则其下的所有grid没有position信息
+		await get_tree().process_frame
+		refresh()
 
 ## 清空背包显示
 ## 注意，只清空显示，不清空数据库
@@ -217,6 +225,8 @@ func _get_grids_by_shape(start: Vector2i, shape: Vector2i) -> Array[Vector2i]:
 func _on_item_added(inv_name:String, item_data: ItemData, grids: Array[Vector2i]) -> void:
 	if not inv_name == inventory_name:
 		return
+	if not is_visible_in_tree():
+		return
 	
 	var item = _draw_item(item_data, grids[0])
 	_items.append(item)
@@ -228,6 +238,8 @@ func _on_item_added(inv_name:String, item_data: ItemData, grids: Array[Vector2i]
 ## 监听移除物品
 func _on_item_removed(inv_name:String, item_data: ItemData) -> void:
 	if not inv_name == inventory_name:
+		return
+	if not is_visible_in_tree():
 		return
 	
 	for i in range(_items.size() - 1, -1, -1):
@@ -241,9 +253,11 @@ func _on_item_removed(inv_name:String, item_data: ItemData) -> void:
 			_items.remove_at(i)
 			break
 
-## 监听移除物品
+## 监听更新物品
 func _on_inv_item_updated(inv_name: String, grid_id: Vector2i) -> void:
 	if not inv_name == inventory_name:
+		return
+	if not is_visible_in_tree():
 		return
 	
 	_grid_item_map[grid_id].queue_redraw()
@@ -266,7 +280,7 @@ func _init_grid_container() -> void:
 
 ## 初始化物品容器
 func _init_item_container() -> void:
-	_item_container = Node.new()
+	_item_container = Control.new()
 	add_child(_item_container)
 
 ## 初始化格子View

@@ -31,7 +31,6 @@ signal sig_item_focused(item_data: ItemData)
 @warning_ignore("unused_signal")
 signal sig_item_focus_lost(item_data: ItemData)
 
-
 ## 默认角色
 const DEFAULT_PLAYER: String = "player_1"
 ## 默认背包名称
@@ -58,6 +57,15 @@ var current_inventories: Array[String] = [DEFAULT_INVENTORY_NAME]
 var current_save_path: String = DEFAULT_SAVE_FOLDER
 ## 当前存档名，支持 "tres" 和 "res"，目前版本会保存两个文件：inv_存档名、equipment_slot_存档名
 var current_save_name: String = "default.tres"
+
+## 点击物品
+var input_click: String = "inv_click"
+## 快速移动
+var input_quick_move: String = "inv_quick_move"
+## 使用物品
+var input_use: String = "inv_use"
+## 分割物品
+var input_split: String = "inv_split"
 
 ## 保存背包和装备槽
 func save() -> void:
@@ -87,3 +95,7 @@ func add_quick_move_relation(inv_name: String, target_inv_name: String) -> void:
 ## 删除背包间的快速移动关系
 func remove_quick_move_relation(inv_name: String, target_inv_name: String) -> void:
 	inventory_service.remove_quick_move_relation(inv_name, target_inv_name)
+
+## 是否有正在移动的物品
+func has_moving_item() -> bool:
+	return moving_item_service.moving_item != null

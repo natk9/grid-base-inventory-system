@@ -27,10 +27,25 @@
 
 ### 基本配置
 
+1. **项目入口**
 ```gdscript
 # 在项目设置 -> 全局添加
 # res://plugins/grid_base_inventory_system/core/grid_base_inventory_system.gd
 # 名称必须设置为 "GBIS"
+```
+2. **输入配置**
+项目输入中需要配置四个输入，默认为：
+* inv_click：鼠标左键点击
+* inv_quick_move：shift + 鼠标右键
+* inv_use：鼠标右键
+* inv_split：鼠标中键
+
+如果输入的名字和默认不一致，请在启动时更新GBIS中的以下属性
+```gdscript
+GBIS.input_click = "你的输入名字"
+GBIS.input_quick_move = "你的输入名字"
+GBIS.input_use = "你的输入名字"
+GBIS.input_split = "你的输入名字"
 ```
 
 ## 🛠️ 使用指南
@@ -50,8 +65,8 @@ GBIS.current_inventories = ["背包A", "背包B"]
 监听以下信号来显示鼠标悬停物品信息：
 
 ```gdscript
-GBIS.connect("sig_item_focused", show_item_info)
-GBIS.connect("sig_item_focus_lost", hide_item_info)
+GBIS.sig_item_focused.connect(显示物品信息的方法)
+GBIS.sig_item_focus_lost.connect(清除物品信息的方法)
 ```
 
 ### 自定义物品类型
@@ -117,9 +132,29 @@ plugins/grid_base_inventory_system/
 
 欢迎提交Pull Request或Issue报告问题。请确保代码风格与现有项目一致。
 
-## 📜 许可证
-
-MIT
-
 ## 🙏 作者（请关注）
 - [B站: Java已死游戏当立](https://space.bilibili.com/3546831153793300)
+
+## 📜 许可证
+
+MIT License
+
+Copyright (c) 2025 Cabbage0211
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

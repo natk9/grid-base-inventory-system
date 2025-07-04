@@ -44,7 +44,7 @@ enum State{
 @export var avilable_types: Array[String] = ["ANY"]
 
 ## 物品容器
-var _item_container: Node
+var _item_container: Control
 ## 物品视图
 var _item_view: ItemView
 ## 当前绘制状态
@@ -77,7 +77,7 @@ func _ready() -> void:
 	if not ret:
 		return
 	
-	mouse_filter = Control.MOUSE_FILTER_STOP
+	mouse_filter = Control.MOUSE_FILTER_PASS
 	_init_item_container()
 	GBIS.sig_slot_item_equipped.connect(_on_item_equipped)
 	GBIS.sig_slot_item_unequipped.connect(_on_item_unequipped)
@@ -126,8 +126,8 @@ func _on_item_unequipped(slot_name: String, _item_data: ItemData):
 ## 绘制装备
 func _draw_item(item_data: ItemData) -> ItemView:
 	var item = ItemView.new(item_data, base_size)
-	var center = global_position + size / 2 - item.size / 2
-	item.global_position = center
+	var center = size / 2 - item.size / 2
+	item.position = center
 	return item
 
 ## 清空装备槽显示（仅清空显示，与数据无关）
@@ -138,7 +138,7 @@ func _clear_slot() -> void:
 
 ## 初始化物品容器
 func _init_item_container() -> void:
-	_item_container = Node.new()
+	_item_container = Control.new()
 	add_child(_item_container)
 
 ## 绘制装备槽背景
@@ -160,7 +160,7 @@ func _recalculate_size() -> void:
 
 ## 输入控制
 func _gui_input(event: InputEvent) -> void:
-	if event.is_action_pressed("inv_click"):
+	if event.is_action_pressed(GBIS.input_click):
 		if GBIS.moving_item_service.moving_item and is_empty():
 			GBIS.equipment_slot_service.equip_moving_item(slot_name)
 		elif not GBIS.moving_item_service.moving_item and not is_empty():
@@ -168,7 +168,7 @@ func _gui_input(event: InputEvent) -> void:
 			GBIS.item_focus_service.item_lose_focus(_item_view)
 			GBIS.equipment_slot_service.move_item(slot_name, base_size)
 			_on_slot_hover()
-	if event.is_action_pressed("inv_use"):
+	if event.is_action_pressed(GBIS.input_use):
 		if not is_empty():
 			# 先清除物品信息
 			GBIS.item_focus_service.item_lose_focus(_item_view)

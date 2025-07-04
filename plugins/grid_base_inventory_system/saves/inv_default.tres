@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="InventoryRepository" load_steps=17 format=3]
+[gd_resource type="Resource" script_class="InventoryRepository" load_steps=21 format=3]
 
 [ext_resource type="Script" path="res://plugins/grid_base_inventory_system/core/model/inventory/inventory_data.gd" id="1_0qbgs"]
 [ext_resource type="Script" path="res://plugins/grid_base_inventory_system/core/model/item/item_data.gd" id="2_uoide"]
@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://plugins/grid_base_inventory_system/core/model/item/consumable_data.gd" id="4_ayxxw"]
 [ext_resource type="Script" path="res://plugins/grid_base_inventory_system/core/repository/inventory_repository.gd" id="5_7qql1"]
 
-[sub_resource type="Resource" id="Resource_tok44"]
+[sub_resource type="Resource" id="Resource_pqdd6"]
 script = ExtResource("4_7qql1")
 item_name = "Test Boots"
 type = "BOOTS"
@@ -17,7 +17,7 @@ columns = 2
 rows = 2
 metadata/_custom_type_script = "uid://c81d67advvltj"
 
-[sub_resource type="Resource" id="Resource_cv6bd"]
+[sub_resource type="Resource" id="Resource_ayxxw"]
 script = ExtResource("4_ayxxw")
 destroy_if_empty = true
 stack_size = 5
@@ -29,7 +29,7 @@ columns = 1
 rows = 2
 metadata/_custom_type_script = "uid://x8lw6iyk5rf5"
 
-[sub_resource type="Resource" id="Resource_dinjb"]
+[sub_resource type="Resource" id="Resource_7qql1"]
 script = ExtResource("4_ayxxw")
 destroy_if_empty = true
 stack_size = 5
@@ -41,7 +41,7 @@ columns = 1
 rows = 2
 metadata/_custom_type_script = "uid://x8lw6iyk5rf5"
 
-[sub_resource type="Resource" id="Resource_kg8mk"]
+[sub_resource type="Resource" id="Resource_tok44"]
 script = ExtResource("4_ayxxw")
 destroy_if_empty = true
 stack_size = 5
@@ -53,7 +53,7 @@ columns = 1
 rows = 2
 metadata/_custom_type_script = "uid://x8lw6iyk5rf5"
 
-[sub_resource type="Resource" id="Resource_w6vo5"]
+[sub_resource type="Resource" id="Resource_cv6bd"]
 script = ExtResource("4_7qql1")
 item_name = "Test Boots"
 type = "BOOTS"
@@ -62,59 +62,85 @@ columns = 2
 rows = 2
 metadata/_custom_type_script = "uid://c81d67advvltj"
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_dinjb"]
+load_path = "res://.godot/imported/boots.png-f76c0db01a56d7ef1c9649399a2065ad.ctex"
+
+[sub_resource type="Resource" id="Resource_kg8mk"]
+script = ExtResource("4_7qql1")
+item_name = "Test Boots"
+type = "BOOTS"
+icon = SubResource("CompressedTexture2D_dinjb")
+columns = 2
+rows = 2
+metadata/_custom_type_script = "uid://c81d67advvltj"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_w6vo5"]
+load_path = "res://.godot/imported/boots.png-f76c0db01a56d7ef1c9649399a2065ad.ctex"
+
 [sub_resource type="Resource" id="Resource_mkj2v"]
+script = ExtResource("4_7qql1")
+item_name = "Test Boots"
+type = "BOOTS"
+icon = SubResource("CompressedTexture2D_w6vo5")
+columns = 2
+rows = 2
+metadata/_custom_type_script = "uid://c81d67advvltj"
+
+[sub_resource type="Resource" id="Resource_shtm4"]
 script = ExtResource("1_0qbgs")
 columns = 8
 rows = 6
 avilable_types = Array[String](["ANY"])
 inv_name = "inv_1"
-items = Array[ExtResource("2_uoide")]([SubResource("Resource_cv6bd"), SubResource("Resource_dinjb"), SubResource("Resource_tok44"), SubResource("Resource_kg8mk"), SubResource("Resource_w6vo5")])
+items = Array[ExtResource("2_uoide")]([SubResource("Resource_ayxxw"), SubResource("Resource_7qql1"), SubResource("Resource_pqdd6"), SubResource("Resource_tok44"), SubResource("Resource_cv6bd"), SubResource("Resource_kg8mk"), SubResource("Resource_mkj2v")])
 item_grids_map = Dictionary[ExtResource("2_uoide"), Array]({
-SubResource("Resource_cv6bd"): Array[Vector2i]([Vector2i(2, 0), Vector2i(2, 1)]),
-SubResource("Resource_dinjb"): Array[Vector2i]([Vector2i(3, 0), Vector2i(3, 1)]),
-SubResource("Resource_tok44"): Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(0, 1), Vector2i(1, 1)]),
-SubResource("Resource_kg8mk"): Array[Vector2i]([Vector2i(4, 0), Vector2i(4, 1)]),
-SubResource("Resource_w6vo5"): Array[Vector2i]([Vector2i(5, 0), Vector2i(6, 0), Vector2i(5, 1), Vector2i(6, 1)])
+SubResource("Resource_ayxxw"): Array[Vector2i]([Vector2i(2, 0), Vector2i(2, 1)]),
+SubResource("Resource_7qql1"): Array[Vector2i]([Vector2i(3, 0), Vector2i(3, 1)]),
+SubResource("Resource_pqdd6"): Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(0, 1), Vector2i(1, 1)]),
+SubResource("Resource_tok44"): Array[Vector2i]([Vector2i(4, 0), Vector2i(4, 1)]),
+SubResource("Resource_cv6bd"): Array[Vector2i]([Vector2i(5, 0), Vector2i(6, 0), Vector2i(5, 1), Vector2i(6, 1)]),
+SubResource("Resource_kg8mk"): Array[Vector2i]([Vector2i(0, 2), Vector2i(1, 2), Vector2i(0, 3), Vector2i(1, 3)]),
+SubResource("Resource_mkj2v"): Array[Vector2i]([Vector2i(2, 2), Vector2i(3, 2), Vector2i(2, 3), Vector2i(3, 3)])
 })
 grid_item_map = Dictionary[Vector2i, ExtResource("2_uoide")]({
-Vector2i(0, 0): SubResource("Resource_tok44"),
-Vector2i(0, 1): SubResource("Resource_tok44"),
-Vector2i(0, 2): null,
-Vector2i(0, 3): null,
+Vector2i(0, 0): SubResource("Resource_pqdd6"),
+Vector2i(0, 1): SubResource("Resource_pqdd6"),
+Vector2i(0, 2): SubResource("Resource_kg8mk"),
+Vector2i(0, 3): SubResource("Resource_kg8mk"),
 Vector2i(0, 4): null,
 Vector2i(0, 5): null,
-Vector2i(1, 0): SubResource("Resource_tok44"),
-Vector2i(1, 1): SubResource("Resource_tok44"),
-Vector2i(1, 2): null,
-Vector2i(1, 3): null,
+Vector2i(1, 0): SubResource("Resource_pqdd6"),
+Vector2i(1, 1): SubResource("Resource_pqdd6"),
+Vector2i(1, 2): SubResource("Resource_kg8mk"),
+Vector2i(1, 3): SubResource("Resource_kg8mk"),
 Vector2i(1, 4): null,
 Vector2i(1, 5): null,
-Vector2i(2, 0): SubResource("Resource_cv6bd"),
-Vector2i(2, 1): SubResource("Resource_cv6bd"),
-Vector2i(2, 2): null,
-Vector2i(2, 3): null,
+Vector2i(2, 0): SubResource("Resource_ayxxw"),
+Vector2i(2, 1): SubResource("Resource_ayxxw"),
+Vector2i(2, 2): SubResource("Resource_mkj2v"),
+Vector2i(2, 3): SubResource("Resource_mkj2v"),
 Vector2i(2, 4): null,
 Vector2i(2, 5): null,
-Vector2i(3, 0): SubResource("Resource_dinjb"),
-Vector2i(3, 1): SubResource("Resource_dinjb"),
-Vector2i(3, 2): null,
-Vector2i(3, 3): null,
+Vector2i(3, 0): SubResource("Resource_7qql1"),
+Vector2i(3, 1): SubResource("Resource_7qql1"),
+Vector2i(3, 2): SubResource("Resource_mkj2v"),
+Vector2i(3, 3): SubResource("Resource_mkj2v"),
 Vector2i(3, 4): null,
 Vector2i(3, 5): null,
-Vector2i(4, 0): SubResource("Resource_kg8mk"),
-Vector2i(4, 1): SubResource("Resource_kg8mk"),
+Vector2i(4, 0): SubResource("Resource_tok44"),
+Vector2i(4, 1): SubResource("Resource_tok44"),
 Vector2i(4, 2): null,
 Vector2i(4, 3): null,
 Vector2i(4, 4): null,
 Vector2i(4, 5): null,
-Vector2i(5, 0): SubResource("Resource_w6vo5"),
-Vector2i(5, 1): SubResource("Resource_w6vo5"),
+Vector2i(5, 0): SubResource("Resource_cv6bd"),
+Vector2i(5, 1): SubResource("Resource_cv6bd"),
 Vector2i(5, 2): null,
 Vector2i(5, 3): null,
 Vector2i(5, 4): null,
 Vector2i(5, 5): null,
-Vector2i(6, 0): SubResource("Resource_w6vo5"),
-Vector2i(6, 1): SubResource("Resource_w6vo5"),
+Vector2i(6, 0): SubResource("Resource_cv6bd"),
+Vector2i(6, 1): SubResource("Resource_cv6bd"),
 Vector2i(6, 2): null,
 Vector2i(6, 3): null,
 Vector2i(6, 4): null,
@@ -127,7 +153,7 @@ Vector2i(7, 4): null,
 Vector2i(7, 5): null
 })
 
-[sub_resource type="Resource" id="Resource_shtm4"]
+[sub_resource type="Resource" id="Resource_lvgfg"]
 script = ExtResource("4_ayxxw")
 destroy_if_empty = true
 stack_size = 5
@@ -139,7 +165,7 @@ columns = 1
 rows = 2
 metadata/_custom_type_script = "uid://x8lw6iyk5rf5"
 
-[sub_resource type="Resource" id="Resource_lvgfg"]
+[sub_resource type="Resource" id="Resource_tclyq"]
 script = ExtResource("4_ayxxw")
 destroy_if_empty = true
 stack_size = 5
@@ -151,20 +177,20 @@ columns = 1
 rows = 2
 metadata/_custom_type_script = "uid://x8lw6iyk5rf5"
 
-[sub_resource type="Resource" id="Resource_tclyq"]
+[sub_resource type="Resource" id="Resource_1h8vw"]
 script = ExtResource("1_0qbgs")
 columns = 12
 rows = 16
 avilable_types = Array[String](["ANY"])
 inv_name = "inv_2"
-items = Array[ExtResource("2_uoide")]([SubResource("Resource_shtm4"), SubResource("Resource_lvgfg")])
+items = Array[ExtResource("2_uoide")]([SubResource("Resource_lvgfg"), SubResource("Resource_tclyq")])
 item_grids_map = Dictionary[ExtResource("2_uoide"), Array]({
-SubResource("Resource_shtm4"): Array[Vector2i]([Vector2i(0, 0), Vector2i(0, 1)]),
-SubResource("Resource_lvgfg"): Array[Vector2i]([Vector2i(1, 0), Vector2i(1, 1)])
+SubResource("Resource_lvgfg"): Array[Vector2i]([Vector2i(0, 0), Vector2i(0, 1)]),
+SubResource("Resource_tclyq"): Array[Vector2i]([Vector2i(1, 0), Vector2i(1, 1)])
 })
 grid_item_map = Dictionary[Vector2i, ExtResource("2_uoide")]({
-Vector2i(0, 0): SubResource("Resource_shtm4"),
-Vector2i(0, 1): SubResource("Resource_shtm4"),
+Vector2i(0, 0): SubResource("Resource_lvgfg"),
+Vector2i(0, 1): SubResource("Resource_lvgfg"),
 Vector2i(0, 2): null,
 Vector2i(0, 3): null,
 Vector2i(0, 4): null,
@@ -179,8 +205,8 @@ Vector2i(0, 12): null,
 Vector2i(0, 13): null,
 Vector2i(0, 14): null,
 Vector2i(0, 15): null,
-Vector2i(1, 0): SubResource("Resource_lvgfg"),
-Vector2i(1, 1): SubResource("Resource_lvgfg"),
+Vector2i(1, 0): SubResource("Resource_tclyq"),
+Vector2i(1, 1): SubResource("Resource_tclyq"),
 Vector2i(1, 2): null,
 Vector2i(1, 3): null,
 Vector2i(1, 4): null,
@@ -360,8 +386,8 @@ Vector2i(11, 15): null
 [resource]
 script = ExtResource("5_7qql1")
 _inventory_data_map = Dictionary[String, ExtResource("1_0qbgs")]({
-"inv_1": SubResource("Resource_mkj2v"),
-"inv_2": SubResource("Resource_tclyq")
+"inv_1": SubResource("Resource_shtm4"),
+"inv_2": SubResource("Resource_1h8vw")
 })
 _quick_move_relations_map = Dictionary[String, Array]({
 "inv_1": Array[String](["inv_2", "inv_2", "inv_2", "inv_2"]),
