@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://csjvmu777yo5q"]
 
-[ext_resource type="Script" uid="uid://b3x4mwtjmm4tp" path="res://addons/grid_base_inventory_system/core/view/inventory/inventory_view.gd" id="1_n01jp"]
+[ext_resource type="Script" uid="uid://b3x4mwtjmm4tp" path="res://addons/grid_base_inventory_system/core/view/container/inventory/inventory_view.gd" id="1_n01jp"]
 [ext_resource type="Script" uid="uid://dy2bqex483xwa" path="res://GBIS_demos/test_scene.gd" id="1_ofb33"]
 [ext_resource type="Script" uid="uid://dg6xjko3rdcta" path="res://addons/grid_base_inventory_system/core/view/slot/equipment_slot_view.gd" id="3_qmsca"]
 [ext_resource type="Texture2D" uid="uid://dxusr1agnbuhw" path="res://addons/grid_base_inventory_system/assets/ui/boots_background.png" id="4_566py"]
@@ -16,10 +16,12 @@ grow_vertical = 2
 script = ExtResource("1_ofb33")
 
 [node name="DropAreaView" type="Control" parent="."]
-visible = false
-anchors_preset = 0
-offset_right = 3746.0
-offset_bottom = 2126.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("5_gbedw")
 metadata/_custom_type_script = "uid://c5rou3jm33pbt"
 
@@ -30,9 +32,9 @@ offset_top = 33.0
 offset_right = 547.0
 offset_bottom = 417.0
 script = ExtResource("1_n01jp")
-inventory_name = "inv_1"
-inventory_columns = 8
-inventory_rows = 6
+container_name = "inventory_1"
+container_columns = 8
+container_rows = 6
 base_size = 64
 metadata/_custom_type_script = "uid://b3x4mwtjmm4tp"
 
@@ -44,9 +46,9 @@ offset_top = 33.0
 offset_right = 956.0
 offset_bottom = 321.0
 script = ExtResource("1_n01jp")
-inventory_name = "inv_1"
-inventory_columns = 8
-inventory_rows = 6
+container_name = "inventory_1"
+container_columns = 8
+container_rows = 6
 base_size = 48
 metadata/_custom_type_script = "uid://b3x4mwtjmm4tp"
 
@@ -57,9 +59,9 @@ offset_top = 33.0
 offset_right = 1601.0
 offset_bottom = 865.0
 script = ExtResource("1_n01jp")
-inventory_name = "inv_2"
-inventory_columns = 12
-inventory_rows = 16
+container_name = "inventory_2"
+container_columns = 12
+container_rows = 16
 base_size = 52
 grid_border_size = 2
 grid_border_color = Color(0.797887, 0.692349, 0.918288, 1)

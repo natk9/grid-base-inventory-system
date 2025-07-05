@@ -1,21 +1,21 @@
 [gd_resource type="Resource" script_class="EquipmentSlotRepository" load_steps=5 format=3]
 
-[ext_resource type="Script" uid="uid://csn3cpxvpgr46" path="res://addons/grid_base_inventory_system/core/model/slot/equipment_slot_data.gd" id="1_b4vsl"]
-[ext_resource type="Script" uid="uid://bgtkqdvre4erv" path="res://addons/grid_base_inventory_system/core/repository/equipment_slot_repository.gd" id="4_sjdah"]
+[ext_resource type="Script" path="res://addons/grid_base_inventory_system/core/model/slot/equipment_slot_data.gd" id="1_v2ldv"]
+[ext_resource type="Script" path="res://addons/grid_base_inventory_system/core/repository/equipment_slot_repository.gd" id="2_fql2m"]
 
-[sub_resource type="Resource" id="Resource_3balj"]
-script = ExtResource("1_b4vsl")
+[sub_resource type="Resource" id="Resource_bax23"]
+script = ExtResource("1_v2ldv")
 avilable_types = Array[String](["BOOTS"])
 slot_name = "boots_slot_1"
 
-[sub_resource type="Resource" id="Resource_xvye0"]
-script = ExtResource("1_b4vsl")
+[sub_resource type="Resource" id="Resource_oiwxu"]
+script = ExtResource("1_v2ldv")
 avilable_types = Array[String](["BOOTS"])
 slot_name = "boots_slot_2"
 
 [resource]
-script = ExtResource("4_sjdah")
-_slot_data_map = Dictionary[String, ExtResource("1_b4vsl")]({
-"boots_slot_1": SubResource("Resource_3balj"),
-"boots_slot_2": SubResource("Resource_xvye0")
+script = ExtResource("2_fql2m")
+_slot_data_map = Dictionary[String, ExtResource("1_v2ldv")]({
+"boots_slot_1": SubResource("Resource_bax23"),
+"boots_slot_2": SubResource("Resource_oiwxu")
 })

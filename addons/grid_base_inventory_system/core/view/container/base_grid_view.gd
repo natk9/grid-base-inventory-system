@@ -1,6 +1,6 @@
 extends Control
 ## 格子视图，用于绘制格子
-class_name GridView
+class_name BaseGridView
 
 ## 格子的绘制状态：空、占用、冲突、可用
 enum State{
@@ -47,7 +47,7 @@ var _conflict_color: Color = DEFAULT_CONFLICT_COLOR
 var _avilable_color: Color = DEFAULT_AVILABLE_COLOR
 
 ## 所属的背包View
-var _inventory_view: InventoryView
+var _container_view: BaseContainerView
 
 ## 占用格子
 @warning_ignore("shadowed_variable")
@@ -65,10 +65,10 @@ func release() -> void:
 ## 构造函数
 @warning_ignore("shadowed_variable")
 @warning_ignore("shadowed_variable_base_class")
-func _init(inventoryView: InventoryView, grid_id: Vector2i,size: int, border_size: int, 
+func _init(inventoryView: BaseContainerView, grid_id: Vector2i,size: int, border_size: int, 
 	border_color: Color, empty_color: Color, taken_color: Color, conflict_color: Color, avilable_color: Color):
 		_avilable_color = avilable_color
-		_inventory_view = inventoryView
+		_container_view = inventoryView
 		self.grid_id = grid_id
 		_size = size
 		_border_size = border_size
@@ -81,35 +81,12 @@ func _init(inventoryView: InventoryView, grid_id: Vector2i,size: int, border_siz
 ## 初始化
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_PASS
-	mouse_entered.connect(_inventory_view.grid_hover.bind(grid_id))
-	mouse_exited.connect(_inventory_view.grid_lose_hover.bind(grid_id))
+	mouse_entered.connect(_container_view.grid_hover.bind(grid_id))
+	mouse_exited.connect(_container_view.grid_lose_hover.bind(grid_id))
 
 ## 输入控制
 func _gui_input(event: InputEvent) -> void:
-	if event.is_action_pressed(GBIS.input_click):
-		if has_taken:
-			if not GBIS.moving_item_service.moving_item:
-				# 先清除物品信息
-				GBIS.item_focus_service.item_lose_focus(_inventory_view.find_item_view_by_grid(grid_id))
-				GBIS.moving_item_service.move_item_by_grid(_inventory_view.inventory_name, grid_id, offset, _size)
-			elif GBIS.moving_item_service.moving_item is StackableData:
-				GBIS.inventory_service.stack_moving_item(_inventory_view.inventory_name, grid_id)
-			# 点击时，手动调用一次高亮
-			_inventory_view.grid_hover(grid_id)
-		else:
-			GBIS.inventory_service.place_moving_item(_inventory_view.inventory_name, grid_id)
-	if event.is_action_pressed(GBIS.input_quick_move):
-		if has_taken:
-			GBIS.item_focus_service.item_lose_focus(_inventory_view.find_item_view_by_grid(grid_id))
-			GBIS.inventory_service.quick_move(_inventory_view.inventory_name, grid_id)
-	if event.is_action_pressed(GBIS.input_use):
-		if has_taken:
-			GBIS.item_focus_service.item_lose_focus(_inventory_view.find_item_view_by_grid(grid_id))
-			GBIS.inventory_service.use_item(_inventory_view.inventory_name, grid_id)
-	if event.is_action_pressed(GBIS.input_split):
-		if has_taken and not GBIS.moving_item_service.moving_item:
-			GBIS.item_focus_service.item_lose_focus(_inventory_view.find_item_view_by_grid(grid_id))
-			GBIS.inventory_service.split_item(_inventory_view.inventory_name, grid_id, offset, _size)
+	pass
 
 ## 绘制逻辑
 func _draw() -> void:

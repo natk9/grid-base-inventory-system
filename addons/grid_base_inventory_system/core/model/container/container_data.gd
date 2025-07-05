@@ -1,15 +1,15 @@
 extends Resource
 ## 库存数据类，管理物品在网格中的存储和操作
-class_name InventoryData
+class_name ContainerData
 
 ## 库存列数
 @export_storage var columns: int = 2
 ## 库存行数
 @export_storage var rows: int = 2
+## 库存名称
+@export_storage var container_name: String
 ## 允许存放的物品类型列表
 @export_storage var avilable_types: Array[String]
-## 库存名称
-@export_storage var inv_name: String
 
 ## 当前存放的物品数据列表
 @export_storage var items: Array[ItemData] = []
@@ -18,9 +18,21 @@ class_name InventoryData
 ## 格子到物品的映射
 @export_storage var grid_item_map: Dictionary[Vector2i, ItemData] = {}
 
+## 构造函数
+@warning_ignore("shadowed_variable")
+func _init(container_name: String = GBIS.DEFAULT_INVENTORY_NAME, columns: int = 0, rows: int = 0, avilable_types: Array[String] = []) -> void:
+	self.container_name = container_name
+	self.avilable_types = avilable_types
+	self.columns = columns
+	self.rows = rows
+	for row in rows:
+		for col in columns:
+			var pos = Vector2i(col, row)
+			grid_item_map[pos] = null
+
 ## 深度复制当前库存数据
-func deep_duplicate() -> InventoryData:
-	var ret = InventoryData.new(inv_name, columns, rows, avilable_types)
+func deep_duplicate() -> ContainerData:
+	var ret = ContainerData.new(container_name, columns, rows, avilable_types)
 	for item_data in item_grids_map.keys():
 		ret.item_grids_map[item_data.duplicate()] = item_grids_map[item_data].duplicate(true)
 	ret.items.append_array(ret.item_grids_map.keys())
@@ -80,18 +92,6 @@ func find_item_data_by_item_name(item_name: String) -> Array[ItemData]:
 		if item.item_name == item_name:
 			ret.append(item)
 	return ret
-
-## 构造函数
-@warning_ignore("shadowed_variable")
-func _init(inv_name: String = GBIS.DEFAULT_INVENTORY_NAME, columns: int = 0, rows: int = 0, avilable_types: Array[String] = []) -> void:
-	self.inv_name = inv_name
-	self.avilable_types = avilable_types
-	self.columns = columns
-	self.rows = rows
-	for row in rows:
-		for col in columns:
-			var pos = Vector2i(col, row)
-			grid_item_map[pos] = null
 
 ## 将物品添加到指定网格位置，返回是否添加成功
 func _add_item_to_grids(item_data: ItemData, grids: Array[Vector2i]) -> bool:

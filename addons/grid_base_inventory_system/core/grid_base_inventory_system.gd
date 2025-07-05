@@ -35,10 +35,12 @@ signal sig_item_focus_lost(item_data: ItemData)
 const DEFAULT_PLAYER: String = "player_1"
 ## 默认背包名称
 const DEFAULT_INVENTORY_NAME: String = "Inventory"
+## 默认商店名称
+const DEFAULT_SHOP_NAME: String = "Shop"
 ## 默认装备槽名称
 const DEFAULT_SLOT_NAME: String = "Equipment Slot"
 ## 默认保存路径
-const DEFAULT_SAVE_FOLDER: String = "res://plugins/grid_base_inventory_system/saves/"
+const DEFAULT_SAVE_FOLDER: String = "res://addons/grid_base_inventory_system/saves/"
 
 ## 背包业务类全局引用，如有需要可以使用，不要自己new
 var inventory_service: InventoryService = InventoryService.new()
