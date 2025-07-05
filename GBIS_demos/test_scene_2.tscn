@@ -42,12 +42,12 @@ text = "上一场景"
 anchors_preset = 0
 offset_left = 620.0
 offset_top = 208.0
-offset_right = 1132.0
-offset_bottom = 592.0
+offset_right = 876.0
+offset_bottom = 464.0
 script = ExtResource("1_5l0k7")
 container_name = "inventory_1"
-container_columns = 8
-container_rows = 6
+container_columns = 4
+container_rows = 4
 base_size = 64
 metadata/_custom_type_script = "uid://b3x4mwtjmm4tp"
 

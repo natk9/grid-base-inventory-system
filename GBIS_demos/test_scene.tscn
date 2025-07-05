@@ -16,12 +16,10 @@ grow_vertical = 2
 script = ExtResource("1_ofb33")
 
 [node name="DropAreaView" type="Control" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+visible = false
+anchors_preset = 0
+offset_right = 3746.0
+offset_bottom = 2126.0
 script = ExtResource("5_gbedw")
 metadata/_custom_type_script = "uid://c5rou3jm33pbt"
 
@@ -43,12 +41,12 @@ layout_mode = 3
 anchors_preset = 0
 offset_left = 572.0
 offset_top = 33.0
-offset_right = 956.0
-offset_bottom = 321.0
+offset_right = 764.0
+offset_bottom = 225.0
 script = ExtResource("1_n01jp")
 container_name = "inventory_1"
-container_columns = 8
-container_rows = 6
+container_columns = 4
+container_rows = 4
 base_size = 48
 metadata/_custom_type_script = "uid://b3x4mwtjmm4tp"
 

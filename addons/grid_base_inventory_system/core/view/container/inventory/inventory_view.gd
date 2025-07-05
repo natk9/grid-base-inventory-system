@@ -65,9 +65,11 @@ func _ready() -> void:
 		return
 	
 	var ret = GBIS.inventory_service.regist_inventory(container_name, container_columns, container_rows, avilable_types)
-	if not ret:
-		push_error("Inventory regist error.")
-		return
+	
+	# 使用已注册的信息覆盖View设置
+	avilable_types = ret.avilable_types
+	container_columns = ret.columns
+	container_rows = ret.rows
 	
 	mouse_filter = Control.MOUSE_FILTER_PASS
 	_init_grid_container()

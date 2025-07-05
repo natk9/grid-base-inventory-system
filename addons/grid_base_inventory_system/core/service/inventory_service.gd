@@ -13,21 +13,9 @@ func save() -> void:
 func load() -> void:
 	_inventory_repository.load()
 
-## 注册背包，如果重名，检查新注册的是否和数据库中的一致（大小、允许存储的类型）
-## 注意：如果背包不显示，大概率是注册返回失败了，请检查配置
-func regist_inventory(inv_name: String, columns: int, rows: int, avilable_types: Array[String]) -> bool:
-	var inv_data = _inventory_repository.get_container(inv_name)
-	if inv_data:
-		var is_same_size = inv_data.rows == rows and inv_data.columns == columns
-		var is_same_avilable_types = avilable_types.size() == inv_data.avilable_types.size()
-		if is_same_avilable_types:
-			for i in range(avilable_types.size()):
-				is_same_avilable_types = avilable_types[i] == inv_data.avilable_types[i]
-				if not is_same_avilable_types:
-					break
-		return is_same_size && is_same_avilable_types
-	else:
-		return _inventory_repository.add_container(inv_name, columns, rows, avilable_types)
+## 注册背包，如果重名，则返回已存在的背包
+func regist_inventory(inv_name: String, columns: int, rows: int, avilable_types: Array[String]) -> ContainerData:
+	return _inventory_repository.add_container(inv_name, columns, rows, avilable_types)
 
 ## 获取背包数据
 func get_container(inv_name: String) -> ContainerData:

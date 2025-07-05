@@ -30,13 +30,14 @@ func load() -> void:
 		_container_data_map[inv_name] = saved_repository._container_data_map[inv_name].deep_duplicate()
 	_quick_move_relations_map = saved_repository._quick_move_relations_map.duplicate(true)
 
-## 增加一个背包
-func add_container(inv_name: String, columns: int, rows: int, avilable_types: Array[String]) -> bool:
+## 增加并返回背包，如果已存在，返回已经注册的背包
+func add_container(inv_name: String, columns: int, rows: int, avilable_types: Array[String] = ["ANY"]) -> ContainerData:
 	var inv = get_container(inv_name)
 	if not inv:
-		_container_data_map[inv_name] = ContainerData.new(inv_name, columns, rows, avilable_types)
-		return true
-	return false
+		var new_container = ContainerData.new(inv_name, columns, rows, avilable_types)
+		_container_data_map[inv_name] = new_container
+		return new_container
+	return inv
 
 ## 获取背包数据
 func get_container(inv_name: String) -> ContainerData:
