@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://6lkn7qk3xsws"
-path="res://.godot/imported/Snipaste_2025-06-16_14-12-21.png-1eaddae33093049167a0a7df91fdeea5.ctex"
+uid="uid://do70l1m84opc3"
+path="res://.godot/imported/sword.png-27dcbb4b9dd9f597d8ed5c43a55e90cf.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/grid_base_inventory_system/assets/screenshots/Snipaste_2025-06-16_14-12-21.png"
-dest_files=["res://.godot/imported/Snipaste_2025-06-16_14-12-21.png-1eaddae33093049167a0a7df91fdeea5.ctex"]
+source_file="res://GBIS_demos/assets/test_item_icons/sword.png"
+dest_files=["res://.godot/imported/sword.png-27dcbb4b9dd9f597d8ed5c43a55e90cf.ctex"]
 
 [params]
 

@@ -114,7 +114,6 @@ GBIS.current_inventories = new_player_inventories
 
 ```
 addons/grid_base_inventory_system/
-├── assets/            # 图标和UI素材
 ├── core/
 │   ├── model/         # 数据模型
 │   ├── repository/    # 数据存储
@@ -124,7 +123,7 @@ addons/grid_base_inventory_system/
 ```
 
 ## 🖼️ 示例截图
-![物品系统示例](plugins/grid_base_inventory_system/assets/screenshots/Snipaste_2025-06-16_14-12-21.png)  
+![物品系统示例](GBIS_demos/assets/screenshots/Snipaste_2025-06-16_14-12-21.png)  
 *截图*
 
 ## 👥 贡献指南

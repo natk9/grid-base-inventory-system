@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cqcjctr2rgapu"
-path="res://.godot/imported/weapon_background.png-1dacc8167e93adc21bbd88e33c4dbb4c.ctex"
+uid="uid://tlkilfmuuy0q"
+path="res://.godot/imported/bottle.png-c42142f4ca2a67654f362e73a3a16472.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/grid_base_inventory_system/assets/ui/weapon_background.png"
-dest_files=["res://.godot/imported/weapon_background.png-1dacc8167e93adc21bbd88e33c4dbb4c.ctex"]
+source_file="res://GBIS_demos/assets/test_item_icons/bottle.png"
+dest_files=["res://.godot/imported/bottle.png-c42142f4ca2a67654f362e73a3a16472.ctex"]
 
 [params]
 

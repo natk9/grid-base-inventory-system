@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://do70l1m84opc3"
-path="res://.godot/imported/sword.png-94d1b14fa7fac590732f94cd933d0c30.ctex"
+uid="uid://cqcjctr2rgapu"
+path="res://.godot/imported/weapon_background.png-0cc80fbc58ad9168308c65460111d6c1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/grid_base_inventory_system/assets/test_item_icons/sword.png"
-dest_files=["res://.godot/imported/sword.png-94d1b14fa7fac590732f94cd933d0c30.ctex"]
+source_file="res://GBIS_demos/assets/ui/weapon_background.png"
+dest_files=["res://.godot/imported/weapon_background.png-0cc80fbc58ad9168308c65460111d6c1.ctex"]
 
 [params]
 
