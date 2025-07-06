@@ -64,7 +64,7 @@ func _ready() -> void:
 		push_error("Inventory must have a name.")
 		return
 	
-	var ret = GBIS.inventory_service.regist_inventory(container_name, container_columns, container_rows, avilable_types)
+	var ret = GBIS.inventory_service.regist(container_name, container_columns, container_rows, avilable_types)
 	
 	# 使用已注册的信息覆盖View设置
 	avilable_types = ret.avilable_types
@@ -86,33 +86,6 @@ func _ready() -> void:
 		stack_num_font = get_theme_font("font")
 	
 	call_deferred("refresh")
-
-func _on_visible_changed() -> void:
-	if is_visible_in_tree():
-		# 需要等待GirdContainer处理完成，否则其下的所有grid没有position信息
-		await get_tree().process_frame
-		refresh()
-
-## 清空背包显示
-## 注意，只清空显示，不清空数据库
-func _clear_inv() -> void:
-	for item in _items:
-		item.queue_free()
-	_items = []
-	_item_grids_map = {}
-	for grid in _grid_map.values():
-		grid.release()
-	_grid_item_map = {}
-
-## 从指定格子开始，获取形状覆盖的格子
-func _get_grids_by_shape(start: Vector2i, shape: Vector2i) -> Array[Vector2i]:
-	var ret: Array[Vector2i] = []
-	for row in shape.y:
-		for col in shape.x:
-			var grid_id = Vector2i(start.x + col, start.y + row)
-			if _grid_map.has(grid_id):
-				ret.append(grid_id)
-	return ret
 
 ## 监听添加物品
 func _on_item_added(inv_name:String, item_data: ItemData, grids: Array[Vector2i]) -> void:
@@ -162,20 +135,6 @@ func _draw_item(item_data: ItemData, first_grid: Vector2i) -> ItemView:
 	item.global_position = _grid_map[first_grid].global_position
 	return item
 
-## 初始化格子容器
-func _init_grid_container() -> void:
-	_grid_container = GridContainer.new()
-	_grid_container.add_theme_constant_override("h_separation", 0)
-	_grid_container.add_theme_constant_override("v_separation", 0)
-	_grid_container.columns = container_columns
-	_grid_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(_grid_container)
-
-## 初始化物品容器
-func _init_item_container() -> void:
-	_item_container = Control.new()
-	add_child(_item_container)
-
 ## 初始化格子View
 func _init_grids() -> void:
 	for row in container_rows:
@@ -185,25 +144,3 @@ func _init_grids() -> void:
 				gird_background_color_empty, gird_background_color_taken, gird_background_color_conflict, grid_background_color_avilable)
 			_grid_container.add_child(grid)
 			_grid_map[grid_id] = grid
-
-## 编辑器中绘制示例
-func _draw() -> void:
-	if Engine.is_editor_hint():
-		var inner_size = base_size - grid_border_size * 2
-		for row in container_rows:
-			for col in container_columns:
-				draw_rect(Rect2(col * base_size, row * base_size, base_size, base_size), grid_border_color, true)
-				draw_rect(Rect2(col * base_size + grid_border_size, row * base_size + grid_border_size, inner_size, inner_size), gird_background_color_empty, true)
-				var font = stack_num_font if stack_num_font else get_theme_font("font")
-				var text_size = font.get_string_size("99", HORIZONTAL_ALIGNMENT_RIGHT, -1, stack_num_font_size)
-				var pos = Vector2(
-					base_size - text_size.x - stack_num_margin,
-					base_size - font.get_descent(stack_num_font_size) - stack_num_margin
-				)
-				pos += Vector2(col * base_size, row * base_size)
-				draw_string(font, pos, "99", HORIZONTAL_ALIGNMENT_RIGHT, -1, stack_num_font_size, stack_num_color)
-
-## 重新计算大小
-func _recalculate_size() -> void:
-		size = Vector2(container_columns * base_size, container_rows * base_size)
-		queue_redraw()

@@ -7,13 +7,15 @@ var _current_focus_item: ItemView
 
 ## 焦点物品
 func focus_item(item: ItemView) -> void:
-	if _current_focus_item != item && not GBIS.moving_item_service.moving_item:
+	if _current_focus_item and _current_focus_item != item and not GBIS.moving_item_service.moving_item:
+		item_lose_focus(_current_focus_item)
 		GBIS.sig_item_focused.emit(item.data)
 		_current_focus_item = item
 
 ## 焦点丢失
 func item_lose_focus(item: ItemView) -> void:
-	if _current_focus_item != item:
-		return
-	GBIS.sig_item_focus_lost.emit(item.data)
-	_current_focus_item = null
+	if item:
+		if _current_focus_item != item:
+			return
+		GBIS.sig_item_focus_lost.emit(item.data)
+		_current_focus_item = null

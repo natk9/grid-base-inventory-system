@@ -31,7 +31,7 @@ func load() -> void:
 	_quick_move_relations_map = saved_repository._quick_move_relations_map.duplicate(true)
 
 ## 增加并返回背包，如果已存在，返回已经注册的背包
-func add_container(inv_name: String, columns: int, rows: int, avilable_types: Array[String] = ["ANY"]) -> ContainerData:
+func add_container(inv_name: String, columns: int, rows: int, avilable_types: Array[String]) -> ContainerData:
 	var inv = get_container(inv_name)
 	if not inv:
 		var new_container = ContainerData.new(inv_name, columns, rows, avilable_types)
@@ -60,4 +60,4 @@ func remove_quick_move_relation(inv_name: String, target_inv_name: String) -> vo
 
 ## 获取指定背包的快速移动关系
 func get_quick_move_relations(inv_name: String) -> Array[String]:
-	return _quick_move_relations_map.get(inv_name, [])
+	return _quick_move_relations_map.get(inv_name, [] as Array[String])

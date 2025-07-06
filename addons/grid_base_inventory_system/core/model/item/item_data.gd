@@ -19,6 +19,38 @@ class_name ItemData
 func get_shape() -> Vector2i:
 	return Vector2i(columns, rows)
 
+func can_drop() -> bool:
+	push_warning("[Override this function] check if the item [%s] can drop" % item_name)
+	return true
+
 ## 丢弃物品时调用，需重写
 func drop() -> void:
 	push_warning("[Override this function] item [%s] dropped" % item_name)
+
+## 物品是否能出售（是否贵重物品等）
+func can_sell() -> bool:
+	push_warning("[Override this function] check if the item [%s] can be sell" % item_name)
+	return true
+
+## 物品是否能购买（检查资源是否足够等）
+func can_buy() -> bool:
+	push_warning("[Override this function] check if the item [%s] can be bought" % item_name)
+	return true
+
+## 购买后扣除资源
+func cost() -> void:
+	push_warning("[Override this function] [%s] cost resource" % item_name)
+
+## 出售后增加资源
+func sold() -> void:
+	push_warning("[Override this function] [%s] add resource" % item_name)
+
+## 购买并添加到背包
+func buy() -> bool:
+	if not can_buy():
+		return false
+	for target_inv in GBIS.current_inventories:
+		if GBIS.inventory_service.add_item(target_inv, self):
+			cost()
+			return true
+	return false

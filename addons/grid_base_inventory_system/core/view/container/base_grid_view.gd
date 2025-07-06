@@ -84,10 +84,6 @@ func _ready() -> void:
 	mouse_entered.connect(_container_view.grid_hover.bind(grid_id))
 	mouse_exited.connect(_container_view.grid_lose_hover.bind(grid_id))
 
-## 输入控制
-func _gui_input(event: InputEvent) -> void:
-	pass
-
 ## 绘制逻辑
 func _draw() -> void:
 	draw_rect(Rect2(0, 0, _size, _size), _border_color, true)

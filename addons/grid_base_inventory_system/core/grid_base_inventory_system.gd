@@ -15,6 +15,9 @@ signal sig_inv_item_updated(inv_name: String, grid_id: Vector2i)
 ## 刷新所有背包
 @warning_ignore("unused_signal")
 signal sig_inv_refresh
+## 刷新所有商店
+@warning_ignore("unused_signal")
+signal sig_shop_refresh
 ## 刷新所有装备槽
 @warning_ignore("unused_signal")
 signal sig_slot_refresh
@@ -44,6 +47,8 @@ const DEFAULT_SAVE_FOLDER: String = "res://addons/grid_base_inventory_system/sav
 
 ## 背包业务类全局引用，如有需要可以使用，不要自己new
 var inventory_service: InventoryService = InventoryService.new()
+## 背包业务类全局引用，如有需要可以使用，不要自己new
+var shop_service: ShopService = ShopService.new()
 ## 装备槽业务类全局引用，如有需要可以使用，不要自己new
 var equipment_slot_service: EquipmentSlotService = EquipmentSlotService.new()
 ## 移动物品业务类全局引用，如有需要可以使用，不要自己new
@@ -53,8 +58,8 @@ var item_focus_service: ItemFocusService = ItemFocusService.new()
 
 ## 当前角色，如果是单角色，不予理会即可，如果是多角色，操作每个角色前应更新这个值
 var current_player: String = DEFAULT_PLAYER
-## 当前角色的背包（用于右键点击装备槽脱装备），但角色不予理会即可，多角色请及时更新
-var current_inventories: Array[String] = [DEFAULT_INVENTORY_NAME]
+## 当前角色的背包，用于快捷脱装备和购买装备时物品的去向，多角色请及时更新
+var current_inventories: Array[String] = []
 ## 当前保存路径
 var current_save_path: String = DEFAULT_SAVE_FOLDER
 ## 当前存档名，支持 "tres" 和 "res"，目前版本会保存两个文件：inv_存档名、equipment_slot_存档名
@@ -71,6 +76,7 @@ var input_split: String = "inv_split"
 
 ## 保存背包和装备槽
 func save() -> void:
+	# 不需要保存商店，商店和背包使用的一个数据源，保存背包的时候会一起保存
 	inventory_service.save()
 	equipment_slot_service.save()
 
@@ -81,6 +87,7 @@ func load() -> void:
 	equipment_slot_service.load()
 	sig_inv_refresh.emit()
 	sig_slot_refresh.emit()
+	sig_shop_refresh.emit()
 
 ## 获取场景树的根（主要在Service中使用，因为Service没有加入场景树，所以没有 get_tree()）
 func get_root() -> Node:

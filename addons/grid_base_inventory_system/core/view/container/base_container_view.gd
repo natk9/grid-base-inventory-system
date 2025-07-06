@@ -117,10 +117,6 @@ func refresh() -> void:
 func find_item_view_by_grid(grid_id: Vector2i) -> ItemView:
 	return _grid_item_map.get(grid_id)
 
-## 初始化
-func _ready() -> void:
-	pass
-
 func _on_visible_changed() -> void:
 	if is_visible_in_tree():
 		# 需要等待GirdContainer处理完成，否则其下的所有grid没有position信息
@@ -168,16 +164,6 @@ func _init_grid_container() -> void:
 func _init_item_container() -> void:
 	_item_container = Control.new()
 	add_child(_item_container)
-
-## 初始化格子View
-func _init_grids() -> void:
-	for row in container_rows:
-		for col in container_columns:
-			var grid_id = Vector2i(col, row)
-			var grid = BaseGridView.new(self, grid_id, base_size, grid_border_size, grid_border_color, 
-				gird_background_color_empty, gird_background_color_taken, gird_background_color_conflict, grid_background_color_avilable)
-			_grid_container.add_child(grid)
-			_grid_map[grid_id] = grid
 
 ## 编辑器中绘制示例
 func _draw() -> void:

@@ -4,8 +4,6 @@ class_name InventoryGridView
 
 ## 输入控制
 func _gui_input(event: InputEvent) -> void:
-	if _container_view is InventoryView:
-		pass
 	if event.is_action_pressed(GBIS.input_click):
 		if has_taken:
 			if not GBIS.moving_item_service.moving_item:

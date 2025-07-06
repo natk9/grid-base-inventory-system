@@ -59,7 +59,7 @@ func equip_to(slot_name, item_data: ItemData) -> bool:
 ## 脱掉装备，需要先配置 GBIS.current_inventories，用于存放脱下来的装备，成功后发射信号 sig_slot_item_unequipped
 func unequip(slot_name) -> ItemData:
 	for current_inventory in GBIS.current_inventories:
-		if not GBIS.inventory_service.is_inventory_existed(current_inventory):
+		if not GBIS.inventory_service.is_container_existed(current_inventory):
 			push_error("Cannot find inventory name [%s]. Please ensure GBIS.current_main_inventories contains valid inventory name." % current_inventory)
 			return null
 		var item_data = get_slot(slot_name).equipped_item

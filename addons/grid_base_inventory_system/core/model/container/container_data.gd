@@ -30,6 +30,15 @@ func _init(container_name: String = GBIS.DEFAULT_INVENTORY_NAME, columns: int = 
 			var pos = Vector2i(col, row)
 			grid_item_map[pos] = null
 
+## 清空重启
+func clear() -> void:
+	items = []
+	item_grids_map = {}
+	for row in rows:
+		for col in columns:
+			var pos = Vector2i(col, row)
+			grid_item_map[pos] = null
+
 ## 深度复制当前库存数据
 func deep_duplicate() -> ContainerData:
 	var ret = ContainerData.new(container_name, columns, rows, avilable_types)
@@ -67,7 +76,7 @@ func is_item_avilable(item_data: ItemData) -> bool:
 
 ## 根据物品数据查找其占用的网格坐标列表
 func find_grids_by_item_data(item_data: ItemData) -> Array[Vector2i]:
-	return item_grids_map.get(item_data, [])
+	return item_grids_map.get(item_data, [] as Array[Vector2i])
 
 ## 检查库存中是否包含指定物品
 func has_item(item: ItemData) -> bool:
