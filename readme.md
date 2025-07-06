@@ -3,9 +3,13 @@
 [![Godot 4.x](https://img.shields.io/badge/Godot-4.x-%23478cbf)](https://godotengine.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Godot基础背包框架。
-采用类MVC设计，展示层和数据层分离，具有较高的拓展性。
-集成简单，对现有项目侵入低。
+Godot基础背包框架
+
+采用类MVC设计，展示层和数据层分离，具有较高的可扩展性
+
+集成简单，对现有项目侵入低
+
+可独立保存读取数据
 
 ## 🖼️ 示例截图
 
@@ -42,15 +46,16 @@ GBIS.input_quick_move = "你的输入名字"
 GBIS.input_use = "你的输入名字"
 GBIS.input_split = "你的输入名字"
 ```
-**可选配置**
+**背包关系配置**
 
 ```gdscript
 # 添加背包间快速移动关系
 GBIS.add_quick_move_relation("背包A", "背包B")
-
 # 设置当前背包列表
 GBIS.current_inventories = ["背包A", "背包B"]
 ```
+
+**监听显示鼠标下的物品信息**
 
 ```gdscript
 GBIS.sig_item_focused.connect(显示物品信息的方法)
@@ -61,12 +66,13 @@ GBIS.sig_item_focus_lost.connect(清除物品信息的方法)
 
 ```gdscript
 var my_item = preload("res://path/to/your_item.tres")
-GBIS.add_item("背包名称", my_item)
+GBIS.add_item("目标背包名称", my_item)
 ```
 
-**多角色支持**
+**多主角支持**
 
 在正确的时机更新以下属性：
+
 ```gdscript
 GBIS.current_player = new_player
 GBIS.current_inventories = new_player_inventories
