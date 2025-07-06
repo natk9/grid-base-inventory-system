@@ -16,7 +16,6 @@ Supports independent data saving and loading
 ![Inventory System Example](GBIS_demos/assets/screenshots/Snipaste_2025-07-06_16-32-34.png)  
 ![Inventory System Example](GBIS_demos/assets/screenshots/Snipaste_2025-07-06_16-33-31.png)  
 ![Inventory System Example](GBIS_demos/assets/screenshots/Snipaste_2025-07-06_16-33-52.png)  
-![Architecture Diagram](GBIS_demos/assets/screenshots/GBIS架构.drawio.png)  
 
 ## 🚀 Quick Start  
 
@@ -96,10 +95,7 @@ Godot基础背包框架
 可独立保存读取数据
 
 ## 🖼️ 示例截图
-
-![物品系统示例](GBIS_demos/assets/screenshots/Snipaste_2025-07-06_16-32-34.png)  
-![物品系统示例](GBIS_demos/assets/screenshots/Snipaste_2025-07-06_16-33-31.png)  
-![物品系统示例](GBIS_demos/assets/screenshots/Snipaste_2025-07-06_16-33-52.png)  
+ 
 ![架构示意图](GBIS_demos/assets/screenshots/GBIS架构.drawio.png)  
 
 ## 🚀 快速开始
