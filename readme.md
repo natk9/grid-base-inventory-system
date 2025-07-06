@@ -1,3 +1,87 @@
+# 🎮 Grid-Based Inventory System - Godot Plugin
+
+[![Godot 4.x](https://img.shields.io/badge/Godot-4.x-%23478cbf)](https://godotengine.org)  
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  
+
+A foundational inventory framework for Godot  
+
+Designed with an MVC-like architecture that separates presentation layer from data layer, offering high extensibility  
+
+Simple integration with minimal intrusion into existing projects  
+
+Supports independent data saving and loading  
+
+## 🖼️ Sample Screenshots  
+
+![Inventory System Example](GBIS_demos/assets/screenshots/Snipaste_2025-07-06_16-32-34.png)  
+![Inventory System Example](GBIS_demos/assets/screenshots/Snipaste_2025-07-06_16-33-31.png)  
+![Inventory System Example](GBIS_demos/assets/screenshots/Snipaste_2025-07-06_16-33-52.png)  
+![Architecture Diagram](GBIS_demos/assets/screenshots/GBIS架构.drawio.png)  
+
+## 🚀 Quick Start  
+
+### Usage  
+
+1. Copy the `addons/grid_base_inventory_system` folder to your Godot project  
+2. Configure `addons/grid_base_inventory_system/core/grid_base_inventory_system.gd` as a global script named GBIS  
+3. Refer to the input configuration below for Input settings  
+4. Select appropriate classes from `addons/grid_base_inventory_system/model/item/` to inherit, implement required methods, and define your item rules  
+5. (Optional) Configure quick transfer relationships between inventories  
+6. (Optional) Set current inventory list for quick unequipping and item destination when purchasing  
+7. (Optional) Listen to signals to display item information  
+
+**Input Configuration**  
+
+Configure these four inputs in project settings (defaults shown):  
+* inv_click: Left mouse click  
+* inv_quick_move: Shift + Right mouse click  
+* inv_use: Right mouse click  
+* inv_split: Middle mouse click  
+
+If input names differ from defaults, update these GBIS properties during initialization:  
+
+```gdscript
+GBIS.input_click = "your_input_name"
+GBIS.input_quick_move = "your_input_name"
+GBIS.input_use = "your_input_name"
+GBIS.input_split = "your_input_name"
+```
+
+**Inventory Relationship Configuration**
+
+```gdscript
+# Add quick transfer relationship between inventories
+GBIS.add_quick_move_relation("InventoryA", "InventoryB")
+# Set current inventory list
+GBIS.current_inventories = ["InventoryA", "InventoryB"]
+```
+
+**Display Hovered Item Information**
+
+```gdscript
+GBIS.sig_item_focused.connect(your_display_method)
+GBIS.sig_item_focus_lost.connect(your_clear_method)
+```
+
+**Add Items to Inventory**
+
+```gdscript
+var my_item = preload("res://path/to/your_item.tres")
+GBIS.add_item("target_inventory_name", my_item)
+```
+
+**Multi-Character Support**
+
+Update these properties when appropriate:
+	
+```gdscript
+GBIS.current_player = new_player
+GBIS.current_inventories = new_player_inventories
+```
+
+## 🙏 Author
+- [bilibili: Java已死游戏当立](https://space.bilibili.com/3546831153793300)
+
 # 🎮 网格基础物品系统 - Godot插件
 
 [![Godot 4.x](https://img.shields.io/badge/Godot-4.x-%23478cbf)](https://godotengine.org)
@@ -77,10 +161,6 @@ GBIS.add_item("目标背包名称", my_item)
 GBIS.current_player = new_player
 GBIS.current_inventories = new_player_inventories
 ```
-
-## 👥 贡献指南
-
-欢迎提交Pull Request或Issue报告问题。请确保代码风格与现有项目一致。
 
 ## 🙏 作者（请关注）
 - [B站: Java已死游戏当立](https://space.bilibili.com/3546831153793300)
