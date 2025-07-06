@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Grid Base Inventory System"
-run/main_scene="uid://csjvmu777yo5q"
+run/main_scene="uid://ywlis4fmaskq"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -22,12 +22,10 @@ general/stretch/mode="canvas_items"
 
 [autoload]
 
-GBIS="*res://plugins/grid_base_inventory_system/core/grid_base_inventory_system.gd"
+GBIS="*res://addons/grid_base_inventory_system/core/grid_base_inventory_system.gd"
 
 [display]
 
-window/size/viewport_width=1920
-window/size/viewport_height=1080
 window/stretch/mode="canvas_items"
 
 [input]
