@@ -13,8 +13,9 @@ func _ready() -> void:
 
 ## 防呆，自动移到最底层，防止挡住背包导致无法放置
 func resize() -> void:
-	size = get_tree().root.size
-	get_parent().move_child(self, 0)
+	if is_inside_tree():
+		size = get_tree().root.size
+		get_parent().move_child(self, 0)
 
 ## 输入控制
 func _gui_input(event: InputEvent) -> void:
