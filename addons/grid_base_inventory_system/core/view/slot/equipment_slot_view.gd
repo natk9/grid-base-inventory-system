@@ -155,8 +155,10 @@ func _draw() -> void:
 
 ## 重新计算大小
 func _recalculate_size() -> void:
-	size = Vector2(columns * base_size, rows * base_size)
-	queue_redraw()
+	var new_size = Vector2(columns * base_size, rows * base_size)
+	if size != new_size:
+		size = new_size
+		queue_redraw()
 
 ## 输入控制
 func _gui_input(event: InputEvent) -> void:
