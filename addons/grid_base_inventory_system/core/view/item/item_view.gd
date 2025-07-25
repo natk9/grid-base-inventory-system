@@ -64,6 +64,9 @@ func _process(_delta: float) -> void:
 		global_position = get_global_mouse_position() - Vector2(base_size * _moving_offset) - Vector2(base_size / 2, base_size / 2)
 
 func _input(event: InputEvent) -> void:
+	if not is_visible_in_tree():
+		GBIS.item_focus_service.try_lose_focus(self)
+		return
 	if event is InputEventMouseMotion and not get_global_rect().has_point(get_global_mouse_position()):
 		if data:
 			GBIS.item_focus_service.item_lose_focus(self)

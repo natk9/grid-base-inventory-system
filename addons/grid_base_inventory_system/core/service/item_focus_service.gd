@@ -22,3 +22,10 @@ func item_lose_focus(item: ItemView) -> void:
 			return
 		GBIS.sig_item_focus_lost.emit(item.data)
 		_current_focus_item = null
+
+## 尝试丢失焦点
+func try_lose_focus(item: ItemView) -> void:
+	if not _current_focus_item:
+		return
+	if _current_focus_item == item:
+		item_lose_focus(item)
