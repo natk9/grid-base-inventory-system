@@ -111,7 +111,6 @@ func refresh() -> void:
 			_grid_item_map[grid] = handled_item[item_data]
 		else:
 			_grid_item_map[grid] = null
-	pass
 
 ## 通过格子ID获取物品视图
 func find_item_view_by_grid(grid_id: Vector2i) -> ItemView:

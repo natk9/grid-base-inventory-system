@@ -56,6 +56,10 @@ var moving_item_service: MovingItemService = MovingItemService.new()
 ## 物品焦点业务类（处理鼠标在不在物品上），如有需要可以使用，不要自己new
 var item_focus_service: ItemFocusService = ItemFocusService.new()
 
+## 物品的 Material，如果不为空，则 ItemView 在创建时会给物品附加这个材质，用于使用 shader 做发光等效果
+## 如果不使用，留空即可
+var item_material: ShaderMaterial
+
 ## 当前角色，如果是单角色，不予理会即可，如果是多角色，操作每个角色前应更新这个值
 var current_player: String = DEFAULT_PLAYER
 ## 当前角色的背包，用于快捷脱装备和购买装备时物品的去向，多角色请及时更新

@@ -23,6 +23,9 @@ func _on_button_add_test_items_pressed() -> void:
 	var item_1 = load("res://GBIS_demos/resources/equipment_1.tres")
 	var item_2 = load("res://GBIS_demos/resources/stackable_1.tres")
 	var item_3 = load("res://GBIS_demos/resources/consumable_1.tres")
+	if randi_range(1, 100) > 50:
+		item_1 = item_1.duplicate()
+		(item_1 as ItemData).shader_params = {"enable_enhance": true}
 	GBIS.add_item("demo1_inventory", item_1)
 	GBIS.add_item("demo1_inventory", item_2)
 	GBIS.add_item("demo1_inventory", item_3)

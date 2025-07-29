@@ -16,8 +16,8 @@ script = ExtResource("1_d5jby")
 [node name="DropAreaView" type="Control" parent="."]
 visible = false
 anchors_preset = 0
-offset_right = 3747.0
-offset_bottom = 2126.0
+offset_right = 2846.0
+offset_bottom = 1836.0
 script = ExtResource("1_751o1")
 metadata/_custom_type_script = "uid://c5rou3jm33pbt"
 

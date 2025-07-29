@@ -2,6 +2,10 @@ extends Resource
 ## 物品数据基类，不要直接继承这个类
 class_name ItemData
 
+## 调用后，将调用包含这个 data 的 view 的 queue_redraw()
+## 场景：比如，强化装备后，修改了 shader 参数，但是不想重绘整个 Inventory，可以 emit 这个信号
+signal sig_refresh
+
 @export_group("Common Settings")
 ## 物品名称，需要唯一
 @export var item_name: String = "Item Name"
@@ -14,6 +18,10 @@ class_name ItemData
 @export var columns: int = 1
 ## 物品占的行数
 @export var rows: int = 1
+## view 上的材质，如果为空，则尝试获取 GBIS.material
+@export var material: ShaderMaterial
+## 把 shader 需要修改的参数设置在这里
+@export var shader_params: Dictionary[String, Variant]
 
 ## 获取货品形状
 func get_shape() -> Vector2i:
