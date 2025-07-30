@@ -6,49 +6,55 @@ class_name InventoryView
 ## 允许存放的物品类型，如果背包名字重复，可存放的物品类型需要一样
 @export var avilable_types: Array[String] = ["ANY"]
 
-## 格子高亮
 func grid_hover(grid_id: Vector2i) -> void:
-	if not GBIS.moving_item_service.moving_item:
-		return
-	
-	var moving_item_view = GBIS.moving_item_service.moving_item_view
-	moving_item_view.base_size = base_size
-	moving_item_view.stack_num_color = stack_num_color
-	moving_item_view.stack_num_font = stack_num_font
-	moving_item_view.stack_num_font_size = stack_num_font_size
-	moving_item_view.stack_num_margin = stack_num_margin
-	
-	var moving_item_offset = GBIS.moving_item_service.moving_item_offset
-	var moving_item = GBIS.moving_item_service.moving_item
-	var item_shape = moving_item.get_shape()
-	var grids = _get_grids_by_shape(grid_id - moving_item_offset, item_shape)
-	var has_conflict = item_shape.x * item_shape.y != grids.size() or not GBIS.inventory_service.get_container(container_name).is_item_avilable(moving_item)
-	for grid in grids:
-		if has_conflict:
-			break 
-		has_conflict = _grid_map[grid].has_taken
-		var item_view = _grid_item_map.get(grid_id)
-		if has_conflict and item_view:
-			var item_data: ItemData = item_view.data
-			if item_data is StackableData:
-				if item_data.item_name == GBIS.moving_item_service.moving_item.item_name and not item_data.is_full():
-					has_conflict = false
-	for grid in grids:
-		var grid_view = _grid_map[grid]
-		grid_view.state = BaseGridView.State.CONFLICT if has_conflict else BaseGridView.State.AVILABLE
-
-## 格子失去高亮
+	_handle_grid_hover(grid_id, true)
+ 
 func grid_lose_hover(grid_id: Vector2i) -> void:
+	_handle_grid_hover(grid_id, false)
+ 
+func _handle_grid_hover(grid_id: Vector2i, is_hover: bool) -> void:
 	if not GBIS.moving_item_service.moving_item:
+		var data: ItemData = GBIS.inventory_service.find_item_data_by_grid(container_name, grid_id)
+		if data:
+			if is_hover:
+				GBIS.item_focus_service.focus_item(data, container_name)
+			else:
+				GBIS.item_focus_service.item_lose_focus()
 		return
+	
+	# 下面是对正在移动的物体的处理
+	if is_hover:
+		var moving_item_view = GBIS.moving_item_service.moving_item_view
+		moving_item_view.base_size = base_size
+		moving_item_view.stack_num_color = stack_num_color
+		moving_item_view.stack_num_font = stack_num_font
+		moving_item_view.stack_num_font_size = stack_num_font_size
+		moving_item_view.stack_num_margin = stack_num_margin
 	
 	var moving_item_offset = GBIS.moving_item_service.moving_item_offset
 	var moving_item = GBIS.moving_item_service.moving_item
 	var item_shape = moving_item.get_shape()
 	var grids = _get_grids_by_shape(grid_id - moving_item_offset, item_shape)
+	
+	var has_conflict = false
+	if is_hover:
+		has_conflict = item_shape.x * item_shape.y != grids.size() or not GBIS.inventory_service.get_container(container_name).is_item_avilable(moving_item)
+		for grid in grids:
+			if has_conflict:
+				break 
+			has_conflict = _grid_map[grid].has_taken
+			var item_data: ItemData = GBIS.inventory_service.find_item_data_by_grid(container_name, grid_id)
+			if has_conflict and item_data:
+				if item_data is StackableData:
+					if item_data.item_name == GBIS.moving_item_service.moving_item.item_name and not item_data.is_full():
+						has_conflict = false
+	
 	for grid in grids:
 		var grid_view = _grid_map[grid]
-		grid_view.state = BaseGridView.State.TAKEN if grid_view.has_taken else BaseGridView.State.EMPTY
+		if is_hover:
+			grid_view.state = BaseGridView.State.CONFLICT if has_conflict else BaseGridView.State.AVILABLE
+		else:
+			grid_view.state = BaseGridView.State.TAKEN if grid_view.has_taken else BaseGridView.State.EMPTY
 
 ## 通过格子ID获取物品视图
 func find_item_view_by_grid(grid_id: Vector2i) -> ItemView:

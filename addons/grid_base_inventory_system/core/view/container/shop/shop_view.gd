@@ -8,6 +8,9 @@ class_name ShopView
 ## 格子高亮
 func grid_hover(grid_id: Vector2i) -> void:
 	if not GBIS.moving_item_service.moving_item:
+		var data: ItemData = GBIS.inventory_service.find_item_data_by_grid(container_name, grid_id)
+		if data:
+			GBIS.item_focus_service.focus_item(data, container_name)
 		return
 	
 	var moving_item_view = GBIS.moving_item_service.moving_item_view
@@ -19,7 +22,7 @@ func grid_hover(grid_id: Vector2i) -> void:
 
 ## 格子失去高亮
 func grid_lose_hover(grid_id: Vector2i) -> void:
-	pass
+	GBIS.item_focus_service.item_lose_focus()
 
 ## 通过格子ID获取物品视图
 func find_item_view_by_grid(grid_id: Vector2i) -> ItemView:

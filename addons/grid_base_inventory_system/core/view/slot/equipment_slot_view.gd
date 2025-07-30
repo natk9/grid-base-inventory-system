@@ -90,6 +90,9 @@ func _ready() -> void:
 ## 高亮
 func _on_slot_hover() -> void:
 	if not GBIS.moving_item_service.moving_item:
+		var item_data = GBIS.equipment_slot_service.get_slot(slot_name).equipped_item
+		if item_data:
+			GBIS.item_focus_service.focus_item(item_data, slot_name)
 		return
 	if GBIS.moving_item_service.moving_item is EquipmentData:
 		GBIS.moving_item_service.moving_item_view.base_size = base_size
@@ -102,6 +105,7 @@ func _on_slot_hover() -> void:
 ## 失去高亮
 func _on_slot_lose_hover() -> void:
 	_state = State.NORMAL
+	GBIS.item_focus_service.item_lose_focus()
 	queue_redraw()
 
 ## 监听穿装备
@@ -160,18 +164,16 @@ func _recalculate_size() -> void:
 		size = new_size
 		queue_redraw()
 
-## 输入控制
 func _gui_input(event: InputEvent) -> void:
+	# 点击动作处理
 	if event.is_action_pressed(GBIS.input_click):
+		GBIS.item_focus_service.item_lose_focus()
 		if GBIS.moving_item_service.moving_item and is_empty():
 			GBIS.equipment_slot_service.equip_moving_item(slot_name)
 		elif not GBIS.moving_item_service.moving_item and not is_empty():
-			# 先清除物品信息
-			GBIS.item_focus_service.item_lose_focus(_item_view)
 			GBIS.equipment_slot_service.move_item(slot_name, base_size)
 			_on_slot_hover()
-	if event.is_action_pressed(GBIS.input_use):
-		if not is_empty():
-			# 先清除物品信息
-			GBIS.item_focus_service.item_lose_focus(_item_view)
-			GBIS.equipment_slot_service.unequip(slot_name)
+	
+	# 使用动作处理
+	elif event.is_action_pressed(GBIS.input_use) and not is_empty():
+		GBIS.equipment_slot_service.unequip(slot_name)

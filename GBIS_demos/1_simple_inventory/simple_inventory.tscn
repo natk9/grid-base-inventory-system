@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://ywlis4fmaskq"]
+[gd_scene load_steps=5 format=3 uid="uid://ywlis4fmaskq"]
 
 [ext_resource type="Script" uid="uid://b3x4mwtjmm4tp" path="res://addons/grid_base_inventory_system/core/view/container/inventory/inventory_view.gd" id="1_7cb40"]
 [ext_resource type="Script" uid="uid://c5rou3jm33pbt" path="res://addons/grid_base_inventory_system/core/view/item/drop_area_view.gd" id="1_751o1"]
 [ext_resource type="Script" uid="uid://8jvttk2cbe1v" path="res://GBIS_demos/1_simple_inventory/simple_inventory.gd" id="1_d5jby"]
+[ext_resource type="PackedScene" uid="uid://bmtorijdfu4jh" path="res://GBIS_demos/item_info/item_info.tscn" id="4_8ewwq"]
 
 [node name="SimpleInventory" type="Control"]
 layout_mode = 3
@@ -16,8 +17,8 @@ script = ExtResource("1_d5jby")
 [node name="DropAreaView" type="Control" parent="."]
 visible = false
 anchors_preset = 0
-offset_right = 2846.0
-offset_bottom = 1836.0
+offset_right = 3747.0
+offset_bottom = 2126.0
 script = ExtResource("1_751o1")
 metadata/_custom_type_script = "uid://c5rou3jm33pbt"
 
@@ -204,6 +205,13 @@ offset_bottom = 61.0
 text = "Shift + right click to quick move item
 Middle mouse button to split stackable items
 Right mouse button to use consumable items"
+
+[node name="ItemInfo" parent="." instance=ExtResource("4_8ewwq")]
+layout_mode = 0
+offset_left = 42.0
+offset_top = 327.0
+offset_right = 184.0
+offset_bottom = 373.0
 
 [connection signal="pressed" from="Inventory/ButtonCloseInventory" to="." method="_on_button_close_inventory_pressed"]
 [connection signal="pressed" from="Storage/ButtonCloseStorage" to="." method="_on_button_close_storage_pressed"]
