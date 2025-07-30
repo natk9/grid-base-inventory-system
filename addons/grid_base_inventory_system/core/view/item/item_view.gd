@@ -62,8 +62,9 @@ func _draw() -> void:
 			size.y - stack_num_font.get_descent(stack_num_font_size) - stack_num_margin
 		)
 		draw_string(stack_num_font, pos, str(data.current_amount), HORIZONTAL_ALIGNMENT_RIGHT, -1, stack_num_font_size, stack_num_color)
-	for param_name in data.shader_params.keys():
-		(material as ShaderMaterial).set_shader_parameter(param_name, data.shader_params[param_name])
+	if material:
+		for param_name in data.shader_params.keys():
+			(material as ShaderMaterial).set_shader_parameter(param_name, data.shader_params[param_name])
 
 ## 跟随鼠标
 func _process(_delta: float) -> void:

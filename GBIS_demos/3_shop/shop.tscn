@@ -18,6 +18,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_al8bw")
+items = Array[ExtResource("4_5ac5d")]([ExtResource("5_al8bw"), ExtResource("6_cut32"), ExtResource("7_665db")])
 
 [node name="DropAreaView" type="Control" parent="."]
 visible = false

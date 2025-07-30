@@ -1,9 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://wxpgg74bd1yh"]
+[gd_scene load_steps=9 format=3 uid="uid://wxpgg74bd1yh"]
 
 [ext_resource type="Script" uid="uid://bo15n4nmxsopn" path="res://GBIS_demos/4_change_data_source/change_data_source.gd" id="1_npxgu"]
+[ext_resource type="Script" uid="uid://c5uqs7o5b2w68" path="res://addons/grid_base_inventory_system/core/model/item/item_data.gd" id="2_qpt3t"]
 [ext_resource type="Script" uid="uid://c5rou3jm33pbt" path="res://addons/grid_base_inventory_system/core/view/item/drop_area_view.gd" id="2_r5i8l"]
+[ext_resource type="Resource" uid="uid://dpx3omowkx6ty" path="res://GBIS_demos/resources/consumable_1.tres" id="3_fo70w"]
 [ext_resource type="Script" uid="uid://b3x4mwtjmm4tp" path="res://addons/grid_base_inventory_system/core/view/container/inventory/inventory_view.gd" id="3_wdhmk"]
 [ext_resource type="PackedScene" uid="uid://bmtorijdfu4jh" path="res://GBIS_demos/item_info/item_info.tscn" id="4_3yb58"]
+[ext_resource type="Resource" uid="uid://ce8kda8rqy6h2" path="res://GBIS_demos/resources/equipment_1.tres" id="4_snvts"]
+[ext_resource type="Resource" uid="uid://cuj07urfi512p" path="res://GBIS_demos/resources/stackable_1.tres" id="5_2rwun"]
 
 [node name="ChangeDataSource" type="Control"]
 layout_mode = 3
@@ -13,6 +17,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_npxgu")
+items = Array[ExtResource("2_qpt3t")]([ExtResource("3_fo70w"), ExtResource("4_snvts"), ExtResource("5_2rwun")])
 
 [node name="DropAreaView" type="Control" parent="."]
 visible = false

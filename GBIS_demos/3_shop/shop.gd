@@ -1,5 +1,7 @@
 extends Control
 
+@export var items: Array[ItemData]
+
 @onready var inventory: ColorRect = $Inventory
 @onready var shop: ColorRect = $Shop
 
@@ -16,12 +18,11 @@ func _on_button_toggle_shop_pressed() -> void:
 	shop.visible = not shop.visible
 
 func _on_button_add_test_items_pressed() -> void:
-	var item_1 = load("res://GBIS_demos/resources/equipment_1.tres")
-	var item_2 = load("res://GBIS_demos/resources/stackable_1.tres")
-	var item_3 = load("res://GBIS_demos/resources/consumable_1.tres")
-	GBIS.add_item("demo3_inventory", item_1)
-	GBIS.add_item("demo3_inventory", item_2)
-	GBIS.add_item("demo3_inventory", item_3)
+	for item in items:
+		if randi_range(1, 100) > 50:
+			item = item.duplicate()
+			(item as ItemData).shader_params = {"enable_enhance": true}
+		GBIS.add_item("demo3_inventory", item)
 
 func _on_button_save_pressed() -> void:
 	GBIS.save()
