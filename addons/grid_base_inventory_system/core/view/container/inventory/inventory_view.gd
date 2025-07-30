@@ -68,6 +68,8 @@ func _ready() -> void:
 	
 	var ret = GBIS.inventory_service.regist(container_name, container_columns, container_rows, false, avilable_types)
 	
+	GBIS.opened_container.append(container_name)
+	
 	if not GBIS.inventory_names.has(container_name):
 		GBIS.inventory_names.append(container_name)
 	

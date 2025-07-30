@@ -65,8 +65,11 @@ var inventory_names: Array[String]
 ## 所有商店的name
 var shop_names: Array[String]
 
-## 当前角色的背包，用于快捷脱装备和购买装备时物品的去向，多角色请及时更新
+## 当前打开的container（包含背包和商店）
+var opened_container: Array[String]
+## 当前角色的背包，用于快捷脱装备和购买装备时物品的去向
 var current_inventories: Array[String] = []
+
 ## 当前保存路径
 var current_save_path: String = DEFAULT_SAVE_FOLDER
 ## 当前存档名，支持 "tres" 和 "res"，目前版本会保存两个文件：inv_存档名、equipment_slot_存档名

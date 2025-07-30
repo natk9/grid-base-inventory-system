@@ -36,6 +36,8 @@ func _ready() -> void:
 	
 	var ret = GBIS.shop_service.regist(container_name, container_columns, container_rows, true)
 	
+	GBIS.opened_container.append(container_name)
+	
 	# 使用已注册的信息覆盖View设置
 	container_columns = ret.columns
 	container_rows = ret.rows

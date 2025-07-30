@@ -121,9 +121,12 @@ func find_item_view_by_grid(grid_id: Vector2i) -> ItemView:
 
 func _on_visible_changed() -> void:
 	if is_visible_in_tree():
+		GBIS.opened_container.append(container_name)
 		# 需要等待GirdContainer处理完成，否则其下的所有grid没有position信息
 		await get_tree().process_frame
 		refresh()
+	else:
+		GBIS.opened_container.erase(container_name)
 
 ## 清空背包显示
 ## 注意，只清空显示，不清空数据库
