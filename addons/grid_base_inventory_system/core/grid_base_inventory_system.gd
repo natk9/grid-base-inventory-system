@@ -29,7 +29,7 @@ signal sig_slot_item_equipped(slot_name: String, item_data: ItemData)
 signal sig_slot_item_unequipped(slot_name: String, item_data: ItemData)
 ## 焦点物品：监听这个信号以处理信息显示
 @warning_ignore("unused_signal")
-signal sig_item_focused(item_data: ItemData)
+signal sig_item_focused(item_data: ItemData, container_name: String)
 ## 物品丢失焦点：监听这个信号以清除物品信息显示
 @warning_ignore("unused_signal")
 signal sig_item_focus_lost(item_data: ItemData)
@@ -56,10 +56,20 @@ var moving_item_service: MovingItemService = MovingItemService.new()
 ## 物品焦点业务类（处理鼠标在不在物品上），如有需要可以使用，不要自己new
 var item_focus_service: ItemFocusService = ItemFocusService.new()
 
-## 当前角色，如果是单角色，不予理会即可，如果是多角色，操作每个角色前应更新这个值
-var current_player: String = DEFAULT_PLAYER
-## 当前角色的背包，用于快捷脱装备和购买装备时物品的去向，多角色请及时更新
-var current_inventories: Array[String] = []
+## 物品的 Material，如果不为空，则 ItemView 在创建时会给物品附加这个材质，用于使用 shader 做发光等效果
+## 如果不使用，留空即可
+var item_material: ShaderMaterial
+
+## 所有背包的name
+var inventory_names: Array[String]
+## 所有商店的name
+var shop_names: Array[String]
+
+## 当前打开的container（包含背包和商店）
+var opened_containers: Array[String]
+## 当前打开的装备槽
+var opened_equipment_slots: Array[String]
+
 ## 当前保存路径
 var current_save_path: String = DEFAULT_SAVE_FOLDER
 ## 当前存档名，支持 "tres" 和 "res"，目前版本会保存两个文件：inv_存档名、equipment_slot_存档名

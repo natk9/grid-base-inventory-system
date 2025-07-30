@@ -77,6 +77,9 @@ func _ready() -> void:
 	if not ret:
 		return
 	
+	if visible:
+		GBIS.opened_equipment_slots.append(slot_name)
+	
 	mouse_filter = Control.MOUSE_FILTER_PASS
 	_init_item_container()
 	GBIS.sig_slot_item_equipped.connect(_on_item_equipped)
@@ -85,11 +88,22 @@ func _ready() -> void:
 	mouse_entered.connect(_on_slot_hover)
 	mouse_exited.connect(_on_slot_lose_hover)
 	
+	visibility_changed.connect(_on_visible_changed)
+	
 	call_deferred("refresh")
+
+func _on_visible_changed() -> void:
+	if is_visible_in_tree():
+		GBIS.opened_equipment_slots.append(slot_name)
+	else:
+		GBIS.opened_equipment_slots.erase(slot_name)
 
 ## 高亮
 func _on_slot_hover() -> void:
 	if not GBIS.moving_item_service.moving_item:
+		var item_data = GBIS.equipment_slot_service.get_slot(slot_name).equipped_item
+		if item_data:
+			GBIS.item_focus_service.focus_item(item_data, slot_name)
 		return
 	if GBIS.moving_item_service.moving_item is EquipmentData:
 		GBIS.moving_item_service.moving_item_view.base_size = base_size
@@ -102,6 +116,7 @@ func _on_slot_hover() -> void:
 ## 失去高亮
 func _on_slot_lose_hover() -> void:
 	_state = State.NORMAL
+	GBIS.item_focus_service.item_lose_focus()
 	queue_redraw()
 
 ## 监听穿装备
@@ -155,21 +170,21 @@ func _draw() -> void:
 
 ## 重新计算大小
 func _recalculate_size() -> void:
-	size = Vector2(columns * base_size, rows * base_size)
-	queue_redraw()
+	var new_size = Vector2(columns * base_size, rows * base_size)
+	if size != new_size:
+		size = new_size
+		queue_redraw()
 
-## 输入控制
 func _gui_input(event: InputEvent) -> void:
+	# 点击动作处理
 	if event.is_action_pressed(GBIS.input_click):
+		GBIS.item_focus_service.item_lose_focus()
 		if GBIS.moving_item_service.moving_item and is_empty():
 			GBIS.equipment_slot_service.equip_moving_item(slot_name)
 		elif not GBIS.moving_item_service.moving_item and not is_empty():
-			# 先清除物品信息
-			GBIS.item_focus_service.item_lose_focus(_item_view)
 			GBIS.equipment_slot_service.move_item(slot_name, base_size)
 			_on_slot_hover()
-	if event.is_action_pressed(GBIS.input_use):
-		if not is_empty():
-			# 先清除物品信息
-			GBIS.item_focus_service.item_lose_focus(_item_view)
-			GBIS.equipment_slot_service.unequip(slot_name)
+	
+	# 使用动作处理
+	elif event.is_action_pressed(GBIS.input_use) and not is_empty():
+		GBIS.equipment_slot_service.unequip(slot_name)

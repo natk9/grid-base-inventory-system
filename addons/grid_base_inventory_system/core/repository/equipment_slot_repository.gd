@@ -50,6 +50,6 @@ func add_slot(slot_name: String, avilable_types: Array[String]) -> bool:
 ## 尝试装备一件物品，如果装备成功，返回装备上这个物品的装备槽
 func try_equip(item_data: ItemData) -> EquipmentSlotData:
 	for slot in _slot_data_map.values():
-		if slot.equip(item_data):
+		if GBIS.opened_equipment_slots.has(slot.slot_name) and slot.equip(item_data):
 			return slot
 	return null

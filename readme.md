@@ -26,8 +26,7 @@ Supports independent data saving and loading
 3. Refer to the input configuration below for Input settings  
 4. Select appropriate classes from `addons/grid_base_inventory_system/model/item/` to inherit, implement required methods, and define your item rules  
 5. (Optional) Configure quick transfer relationships between inventories  
-6. (Optional) Set current inventory list for quick unequipping and item destination when purchasing  
-7. (Optional) Listen to signals to display item information  
+6. (Optional) Listen to signals to display item information  
 
 **Input Configuration**  
 
@@ -51,8 +50,6 @@ GBIS.input_split = "your_input_name"
 ```gdscript
 # Add quick transfer relationship between inventories
 GBIS.add_quick_move_relation("InventoryA", "InventoryB")
-# Set current inventory list
-GBIS.current_inventories = ["InventoryA", "InventoryB"]
 ```
 
 **Display Hovered Item Information**
@@ -67,15 +64,6 @@ GBIS.sig_item_focus_lost.connect(your_clear_method)
 ```gdscript
 var my_item = preload("res://path/to/your_item.tres")
 GBIS.add_item("target_inventory_name", my_item)
-```
-
-**Multi-Character Support**
-
-Update these properties when appropriate:
-	
-```gdscript
-GBIS.current_player = new_player
-GBIS.current_inventories = new_player_inventories
 ```
 
 ## 🙏 Author
@@ -107,8 +95,7 @@ Godot基础背包框架
 3. 参考下方输入配置，进行Input设置
 4. 在`addons/grid_base_inventory_system/model/item/`中选择合适的类进行继承，实现必要方法并书写自己的物品规则
 5. （可选）配置背包间的快速移动关系
-6. （可选）配置当前背包列表，用于快速脱装备和购买物品时物品的去向
-7. （可选）监听信号显示物品信息
+6. （可选）监听信号显示物品信息
 
 **输入配置**
 
@@ -131,8 +118,6 @@ GBIS.input_split = "你的输入名字"
 ```gdscript
 # 添加背包间快速移动关系
 GBIS.add_quick_move_relation("背包A", "背包B")
-# 设置当前背包列表
-GBIS.current_inventories = ["背包A", "背包B"]
 ```
 
 **监听显示鼠标下的物品信息**
@@ -147,15 +132,6 @@ GBIS.sig_item_focus_lost.connect(清除物品信息的方法)
 ```gdscript
 var my_item = preload("res://path/to/your_item.tres")
 GBIS.add_item("目标背包名称", my_item)
-```
-
-**多主角支持**
-
-在正确的时机更新以下属性：
-
-```gdscript
-GBIS.current_player = new_player
-GBIS.current_inventories = new_player_inventories
 ```
 
 ## 🙏 作者（请关注）

@@ -34,6 +34,12 @@ func _init(data: ItemData, base_size: int, stack_num_font: Font = null, stack_nu
 	self.stack_num_color = stack_num_color
 	recalculate_size()
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# 如果 material 不为空，则加上 material
+	if data.material:
+		material = data.material.duplicate()
+	elif GBIS.item_material:
+		material = GBIS.item_material.duplicate()
+	data.sig_refresh.connect(queue_redraw)
 
 ## 重写计算大小
 func recalculate_size() -> void:
@@ -56,17 +62,12 @@ func _draw() -> void:
 			size.y - stack_num_font.get_descent(stack_num_font_size) - stack_num_margin
 		)
 		draw_string(stack_num_font, pos, str(data.current_amount), HORIZONTAL_ALIGNMENT_RIGHT, -1, stack_num_font_size, stack_num_color)
+	if material:
+		for param_name in data.shader_params.keys():
+			(material as ShaderMaterial).set_shader_parameter(param_name, data.shader_params[param_name])
 
 ## 跟随鼠标
 func _process(_delta: float) -> void:
 	if _is_moving:
 		@warning_ignore("integer_division")
 		global_position = get_global_mouse_position() - Vector2(base_size * _moving_offset) - Vector2(base_size / 2, base_size / 2)
-
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion and not get_global_rect().has_point(get_global_mouse_position()):
-		if data:
-			GBIS.item_focus_service.item_lose_focus(self)
-	if event is InputEventMouseMotion and get_global_rect().has_point(get_global_mouse_position()):
-		if data:
-			GBIS.item_focus_service.focus_item(self)

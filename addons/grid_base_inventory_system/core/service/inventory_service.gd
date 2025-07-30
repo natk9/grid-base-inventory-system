@@ -90,6 +90,9 @@ func quick_move(inv_name: String, grid_id: Vector2i) -> void:
 	if target_inventories.is_empty() or not item_to_move:
 		return
 	for target_container in target_inventories:
+		# 目标背包必须打开
+		if not GBIS.opened_containers.has(target_container):
+			continue
 		if add_item(target_container, item_to_move):
 			remove_item_by_data(inv_name, item_to_move)
 			break
@@ -108,3 +111,9 @@ func remove_quick_move_relation(inv_name: String, target_inv_name: String) -> vo
 func remove_item_by_data(inv_name: String, item_data: ItemData) -> void:
 	if _container_repository.get_container(inv_name).remove_item(item_data):
 		GBIS.sig_inv_item_removed.emit(inv_name, item_data)
+
+## 只返回背包
+func get_container(container_name: String) -> ContainerData:
+	if GBIS.inventory_names.has(container_name):
+		return _container_repository.get_container(container_name)
+	return null

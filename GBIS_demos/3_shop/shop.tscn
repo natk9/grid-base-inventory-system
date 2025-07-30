@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bcjtoey3n1cm"]
+[gd_scene load_steps=10 format=3 uid="uid://bcjtoey3n1cm"]
 
 [ext_resource type="Script" uid="uid://b6k6cimo20y2w" path="res://GBIS_demos/3_shop/shop.gd" id="1_al8bw"]
 [ext_resource type="Script" uid="uid://c5rou3jm33pbt" path="res://addons/grid_base_inventory_system/core/view/item/drop_area_view.gd" id="2_1ct8h"]
@@ -8,6 +8,7 @@
 [ext_resource type="Resource" uid="uid://dpx3omowkx6ty" path="res://GBIS_demos/resources/consumable_1.tres" id="5_al8bw"]
 [ext_resource type="Resource" uid="uid://ce8kda8rqy6h2" path="res://GBIS_demos/resources/equipment_1.tres" id="6_cut32"]
 [ext_resource type="Resource" uid="uid://cuj07urfi512p" path="res://GBIS_demos/resources/stackable_1.tres" id="7_665db"]
+[ext_resource type="PackedScene" uid="uid://bmtorijdfu4jh" path="res://GBIS_demos/item_info/item_info.tscn" id="9_cut32"]
 
 [node name="Shop" type="Control"]
 layout_mode = 3
@@ -17,11 +18,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_al8bw")
+items = Array[ExtResource("4_5ac5d")]([ExtResource("5_al8bw"), ExtResource("6_cut32"), ExtResource("7_665db")])
 
 [node name="DropAreaView" type="Control" parent="."]
 visible = false
 anchors_preset = 0
-offset_right = 3746.0
+offset_right = 3747.0
 offset_bottom = 2126.0
 script = ExtResource("2_1ct8h")
 metadata/_custom_type_script = "uid://c5rou3jm33pbt"
@@ -176,6 +178,13 @@ offset_right = 916.0
 offset_bottom = 78.0
 text = "Click an item to buy it. 
 Drag an item to the shop to sell it."
+
+[node name="ItemInfo" parent="." instance=ExtResource("9_cut32")]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 354.0
+offset_right = 212.0
+offset_bottom = 408.0
 
 [connection signal="pressed" from="Inventory/ButtonCloseInventory" to="." method="_on_button_close_inventory_pressed"]
 [connection signal="pressed" from="Shop/ButtonCloseStorage" to="." method="_on_button_close_storage_pressed"]

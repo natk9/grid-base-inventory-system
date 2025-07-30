@@ -50,10 +50,9 @@ var _avilable_color: Color = DEFAULT_AVILABLE_COLOR
 var _container_view: BaseContainerView
 
 ## 占用格子
-@warning_ignore("shadowed_variable")
-func taken(offset: Vector2i) -> void:
+func taken(in_offset: Vector2i) -> void:
 	has_taken = true
-	self.offset = offset
+	offset = in_offset
 	state = State.TAKEN
 
 ## 释放格子
@@ -63,13 +62,11 @@ func release() -> void:
 	state = State.EMPTY
 
 ## 构造函数
-@warning_ignore("shadowed_variable")
-@warning_ignore("shadowed_variable_base_class")
-func _init(inventoryView: BaseContainerView, grid_id: Vector2i,size: int, border_size: int, 
+func _init(inventoryView: BaseContainerView, in_grid_id: Vector2i,size: int, border_size: int, 
 	border_color: Color, empty_color: Color, taken_color: Color, conflict_color: Color, avilable_color: Color):
 		_avilable_color = avilable_color
 		_container_view = inventoryView
-		self.grid_id = grid_id
+		grid_id = in_grid_id
 		_size = size
 		_border_size = border_size
 		_border_color = border_color

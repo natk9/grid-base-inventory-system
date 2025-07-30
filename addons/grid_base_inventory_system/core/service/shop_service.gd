@@ -17,3 +17,9 @@ func sell(item: ItemData) -> bool:
 		GBIS.moving_item_service.clear_moving_item()
 		return true
 	return false
+
+## 只返回商店
+func get_container(container_name: String) -> ContainerData:
+	if GBIS.shop_names.has(container_name):
+		return _container_repository.get_container(container_name)
+	return null
