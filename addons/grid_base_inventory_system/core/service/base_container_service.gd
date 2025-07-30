@@ -32,10 +32,6 @@ func find_item_data_by_item_name(container_name: String, item_name: String) -> A
 func find_item_data_by_grid(container_name: String, grid_id: Vector2i) -> ItemData:
 	return _container_repository.get_container(container_name).find_item_data_by_grid(grid_id)
 
-## 判断容器是否存在
-func is_container_existed(container_name: String) -> bool:
-	return _container_repository.get_container(container_name) != null
-
 ## 尝试把物品放置到指定格子
 func place_to(container_name: String, item_data: ItemData, grid_id: Vector2i) -> bool:
 	if item_data:

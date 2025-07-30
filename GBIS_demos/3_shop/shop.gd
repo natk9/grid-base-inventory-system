@@ -3,9 +3,6 @@ extends Control
 @onready var inventory: ColorRect = $Inventory
 @onready var shop: ColorRect = $Shop
 
-func _ready() -> void:
-	GBIS.current_inventories = ["demo3_inventory"]
-
 func _on_button_close_inventory_pressed() -> void:
 	inventory.hide()
 

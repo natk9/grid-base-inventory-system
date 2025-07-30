@@ -77,6 +77,9 @@ func _ready() -> void:
 	if not ret:
 		return
 	
+	if visible:
+		GBIS.opened_equipment_slots.append(slot_name)
+	
 	mouse_filter = Control.MOUSE_FILTER_PASS
 	_init_item_container()
 	GBIS.sig_slot_item_equipped.connect(_on_item_equipped)
@@ -85,7 +88,15 @@ func _ready() -> void:
 	mouse_entered.connect(_on_slot_hover)
 	mouse_exited.connect(_on_slot_lose_hover)
 	
+	visibility_changed.connect(_on_visible_changed)
+	
 	call_deferred("refresh")
+
+func _on_visible_changed() -> void:
+	if is_visible_in_tree():
+		GBIS.opened_equipment_slots.append(slot_name)
+	else:
+		GBIS.opened_equipment_slots.erase(slot_name)
 
 ## 高亮
 func _on_slot_hover() -> void:

@@ -220,7 +220,7 @@ offset_bottom = 413.0
 [connection signal="pressed" from="Inventory/ButtonCloseInventory" to="." method="_on_button_close_inventory_pressed"]
 [connection signal="pressed" from="Character/ButtonCloseStorage" to="." method="_on_button_close_storage_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonToggleInventory" to="." method="_on_button_toggle_inventory_pressed"]
-[connection signal="pressed" from="VBoxContainer/ButtonToggleCharacterInfo" to="." method="_on_button_toggle_storage_pressed"]
+[connection signal="pressed" from="VBoxContainer/ButtonToggleCharacterInfo" to="." method="_on_button_toggle_character_info_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonAddTestItems" to="." method="_on_button_add_test_items_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonSave" to="." method="_on_button_save_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonLoad" to="." method="_on_button_load_pressed"]

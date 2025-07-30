@@ -66,9 +66,9 @@ var inventory_names: Array[String]
 var shop_names: Array[String]
 
 ## 当前打开的container（包含背包和商店）
-var opened_container: Array[String]
-## 当前角色的背包，用于快捷脱装备和购买装备时物品的去向
-var current_inventories: Array[String] = []
+var opened_containers: Array[String]
+## 当前打开的装备槽
+var opened_equipment_slots: Array[String]
 
 ## 当前保存路径
 var current_save_path: String = DEFAULT_SAVE_FOLDER
