@@ -56,10 +56,6 @@ func _handle_grid_hover(grid_id: Vector2i, is_hover: bool) -> void:
 		else:
 			grid_view.state = BaseGridView.State.TAKEN if grid_view.has_taken else BaseGridView.State.EMPTY
 
-## 通过格子ID获取物品视图
-func find_item_view_by_grid(grid_id: Vector2i) -> ItemView:
-	return _grid_item_map.get(grid_id)
-
 ## 初始化
 func _ready() -> void:
 	if Engine.is_editor_hint():
@@ -70,7 +66,7 @@ func _ready() -> void:
 		push_error("Inventory must have a name.")
 		return
 	
-	var ret = GBIS.inventory_service.regist(container_name, container_columns, container_rows, avilable_types)
+	var ret = GBIS.inventory_service.regist(container_name, container_columns, container_rows, false, avilable_types)
 	
 	if not GBIS.inventory_names.has(container_name):
 		GBIS.inventory_names.append(container_name)

@@ -93,12 +93,15 @@ var _grid_item_map: Dictionary[Vector2i, ItemView]
 ## 刷新背包显示
 func refresh() -> void:
 	_clear_inv()
-	var inv_data = GBIS.inventory_service.get_container(container_name)
+	var container_data = GBIS.inventory_service.get_container(container_name)
+	if not container_data:
+		container_data = GBIS.shop_service.get_container(container_name)
+	
 	var handled_item: Dictionary[ItemData, ItemView]
 	for grid in _grid_map.keys():
-		var item_data = inv_data.grid_item_map[grid]
+		var item_data = container_data.grid_item_map[grid]
 		if item_data and not handled_item.has(item_data):
-			var grids = inv_data.item_grids_map[item_data]
+			var grids = container_data.item_grids_map[item_data]
 			var item = _draw_item(item_data, grids[0])
 			handled_item[item_data] = item
 			_items.append(item)
