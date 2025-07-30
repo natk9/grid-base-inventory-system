@@ -56,6 +56,19 @@ func _handle_grid_hover(grid_id: Vector2i, is_hover: bool) -> void:
 		else:
 			grid_view.state = BaseGridView.State.TAKEN if grid_view.has_taken else BaseGridView.State.EMPTY
 
+func change_data_source(new_container_name: String) -> void:
+	for child in get_children():
+		child.queue_free()
+	var ret = GBIS.inventory_service.regist(new_container_name, container_columns, container_rows, false, avilable_types)
+	container_name = new_container_name
+	avilable_types = ret.avilable_types
+	container_columns = ret.columns
+	container_rows = ret.rows
+	_init_grid_container()
+	_init_item_container()
+	_init_grids()
+	call_deferred("refresh")
+
 ## 初始化
 func _ready() -> void:
 	if Engine.is_editor_hint():
@@ -145,6 +158,7 @@ func _draw_item(item_data: ItemData, first_grid: Vector2i) -> ItemView:
 
 ## 初始化格子View
 func _init_grids() -> void:
+	_grid_map.clear()
 	for row in container_rows:
 		for col in container_columns:
 			var grid_id = Vector2i(col, row)
