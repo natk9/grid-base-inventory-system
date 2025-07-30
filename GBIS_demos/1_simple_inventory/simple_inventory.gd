@@ -6,8 +6,6 @@ extends Control
 func _ready() -> void:
 	GBIS.add_quick_move_relation("demo1_inventory", "demo1_storage")
 	GBIS.add_quick_move_relation("demo1_storage", "demo1_inventory")
-	GBIS.sig_item_focused.connect(func(item_data: ItemData): print("%s focused" % item_data.item_name))
-	GBIS.sig_item_focus_lost.connect(func(item_data: ItemData): print("%s focus lost" % item_data.item_name))
 
 func _on_button_close_inventory_pressed() -> void:
 	inventory.hide()

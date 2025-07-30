@@ -35,10 +35,13 @@ func _ready() -> void:
 		return
 	
 	if not container_name:
-		push_error("Inventory must have a name.")
+		push_error("Shop must have a name.")
 		return
 	
 	var ret = GBIS.shop_service.regist(container_name, container_columns, container_rows)
+	
+	if not GBIS.shop_names.has(container_name):
+		GBIS.shop_names.append(container_name)
 	
 	# 使用已注册的信息覆盖View设置
 	container_columns = ret.columns

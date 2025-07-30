@@ -180,10 +180,10 @@ Drag an item to the shop to sell it."
 
 [node name="ItemInfo" parent="." instance=ExtResource("9_cut32")]
 layout_mode = 0
-offset_left = 37.0
-offset_top = 357.0
-offset_right = 175.0
-offset_bottom = 428.0
+offset_left = 15.0
+offset_top = 354.0
+offset_right = 212.0
+offset_bottom = 408.0
 
 [connection signal="pressed" from="Inventory/ButtonCloseInventory" to="." method="_on_button_close_inventory_pressed"]
 [connection signal="pressed" from="Shop/ButtonCloseStorage" to="." method="_on_button_close_storage_pressed"]

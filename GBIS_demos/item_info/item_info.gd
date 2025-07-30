@@ -4,9 +4,12 @@ extends ColorRect
 
 func _ready() -> void:
 	hide()
-	GBIS.sig_item_focused.connect(func(item_data: ItemData): 
+	GBIS.sig_item_focused.connect(func(item_data: ItemData, container_name: String): 
 		show()
-		item_name_label.text = item_data.item_name)
+		if GBIS.shop_names.has(container_name):
+			item_name_label.text = "[Shop] %s" % item_data.item_name
+		else:
+			item_name_label.text = item_data.item_name)
 	GBIS.sig_item_focus_lost.connect(func(_item_data: ItemData): hide())
 
 func _process(_delta: float) -> void:

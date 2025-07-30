@@ -29,7 +29,7 @@ signal sig_slot_item_equipped(slot_name: String, item_data: ItemData)
 signal sig_slot_item_unequipped(slot_name: String, item_data: ItemData)
 ## 焦点物品：监听这个信号以处理信息显示
 @warning_ignore("unused_signal")
-signal sig_item_focused(item_data: ItemData)
+signal sig_item_focused(item_data: ItemData, container_name: String)
 ## 物品丢失焦点：监听这个信号以清除物品信息显示
 @warning_ignore("unused_signal")
 signal sig_item_focus_lost(item_data: ItemData)
@@ -59,6 +59,11 @@ var item_focus_service: ItemFocusService = ItemFocusService.new()
 ## 物品的 Material，如果不为空，则 ItemView 在创建时会给物品附加这个材质，用于使用 shader 做发光等效果
 ## 如果不使用，留空即可
 var item_material: ShaderMaterial
+
+## 所有背包的name
+var inventory_names: Array[String]
+## 所有商店的name
+var shop_names: Array[String]
 
 ## 当前角色，如果是单角色，不予理会即可，如果是多角色，操作每个角色前应更新这个值
 var current_player: String = DEFAULT_PLAYER

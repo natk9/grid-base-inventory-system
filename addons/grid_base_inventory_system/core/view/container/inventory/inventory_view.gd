@@ -72,6 +72,9 @@ func _ready() -> void:
 	
 	var ret = GBIS.inventory_service.regist(container_name, container_columns, container_rows, avilable_types)
 	
+	if not GBIS.inventory_names.has(container_name):
+		GBIS.inventory_names.append(container_name)
+	
 	# 使用已注册的信息覆盖View设置
 	avilable_types = ret.avilable_types
 	container_columns = ret.columns
