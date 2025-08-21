@@ -57,7 +57,7 @@ func sold() -> void:
 func buy() -> bool:
 	if not can_buy():
 		return false
-	for target_inv in GBIS.current_inventories:
+	for target_inv in GBIS.inventory_names:
 		if GBIS.inventory_service.add_item(target_inv, self):
 			cost()
 			return true
