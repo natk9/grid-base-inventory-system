@@ -13,4 +13,5 @@ type = "POTION"
 icon = ExtResource("1_yk66e")
 columns = 1
 rows = 2
+shader_params = Dictionary[String, Variant]({})
 metadata/_custom_type_script = "uid://x8lw6iyk5rf5"

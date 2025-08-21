@@ -12,5 +12,5 @@ icon = ExtResource("1_07u3w")
 columns = 2
 rows = 2
 material = ExtResource("2_8ux6s")
-material_params = Dictionary[String, Variant]({})
+shader_params = Dictionary[String, Variant]({})
 metadata/_custom_type_script = "uid://c81d67advvltj"
