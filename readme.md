@@ -1,3 +1,6 @@
+待修改需求：修改装备类，增加分类，不同类装备只能拖动到对应图标框。
+           增加物品分类，背包分页栏。
+
 # 🎮 Grid-Based Inventory System - Godot Plugin
 
 [![Godot 4.x](https://img.shields.io/badge/Godot-4.x-%23478cbf)](https://godotengine.org)
